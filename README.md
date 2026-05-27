@@ -1,4 +1,4 @@
-# myKG — Markdown Knowledge Graph Extractor
+# myKG — Knowledge Graph Extractor
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -52,6 +52,7 @@ sessions/2026-05-17T18-31-07/
   - [Merging Sessions](#merging-sessions)
   - [Walkthrough Report](#walkthrough-report)
 - [Development](#development)
+- [Roadmap](#roadmap)
 - [Design](#design)
 
 ## Features
@@ -81,6 +82,7 @@ sessions/2026-05-17T18-31-07/
 - **Cross-session merge** — combine two independently-produced graphs into one unified knowledge graph
 - **Resumable pipeline** — every stage persists intermediate state; re-enter at any step after a crash or edit
 - **Session isolation** — each run is fully self-contained; inputs, intermediate state, outputs, and logs co-located
+- **Query knowledge graph** *(coming soon)* — natural-language and structured queries directly against the extracted graph
 
 ## Quick Start
 
@@ -504,6 +506,12 @@ Outputs a ready-to-paste YAML snippet for the `pipeline:` block.
 python -m cProfile -o profile.out -m mykg.cli extract input_files/
 uv run snakeviz profile.out
 ```
+
+---
+
+## Roadmap
+
+- **Query knowledge graph** — natural-language and structured queries directly against the extracted graph; planned support for SPARQL, graph traversal, and LLM-assisted Q&A over nodes and edges
 
 ---
 
