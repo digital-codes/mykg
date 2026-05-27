@@ -62,16 +62,31 @@ sessions/2026-05-27T10-00-00/
 
 ## Features
 
-- **Zero-schema setup** — schema is induced automatically from your documents by the LLM
+### Ontology-Guided Extraction
+
+- **Schema-guided knowledge graph generation** — the extracted graph is always grounded in a formal RDFS schema: concept types, property names, domain/range constraints, and the is-a hierarchy are explicit and inspectable before any entity is extracted
+- **Bring your own ontology** — supply a `--base-schema` TTL file to lock in classes and properties from an existing formal ontology; the LLM expands it with domain-specific concepts but cannot rename, remove, or contradict your authoritative vocabulary
+- **SKOS thesaurus support** — pass `--thesaurus` to load a SKOS vocabulary; `skos:exactMatch` terms are collapsed silently, `skos:closeMatch` terms trigger a warning — giving the schema merger richer synonym awareness than string matching alone
+- **Verifiable schema** — after Pass 1, `intermediate/schema.ttl` is validated with rdflib (syntax + semantic checks: domain/range refer to declared classes, no conflicting ranges); validation errors are sent back to the LLM for a correction round before extraction begins
+- **Human review gate** — run with `--review` to pause after schema induction and inspect/edit `schema.json` before a single entity is extracted; approve with `mykg approve-schema`
+- **Incremental updates** — run with `--append` on an existing session to add new or modified Markdown files without re-running Pass 1; the schema is reused and only the new files go through Pass 2
+
+### Input
+
+- **Markdown files** — any directory of `.md` files; subdirectory structure is preserved; YAML/TOML frontmatter, headings, lists, and code blocks are all treated as structural signals
+- **Other formats** — convert PDFs, Word docs, HTML, and other formats to Markdown first using a document parser such as [MinerU](https://github.com/opendatalab/mineru), then point mykg at the output directory
+
+### Graph & Output
+
 - **Provider-agnostic** — works with Anthropic (Claude), OpenAI (GPT-4o), Ollama (local), OpenRouter, or the `claude` CLI with no API key
 - **Three output families** — JSONL for Neo4j/NetworkX/RAG, Turtle RDF for OWL toolchains, NetworkX multi-format for graph analysis
 - **Interactive HTML graph** — node/edge filtering, search, hover popups; opens directly in a browser
-- **Resumable pipeline** — every stage persists intermediate state; re-enter at any step after a crash or edit
-- **Orphan-connection pass** — reconnects isolated nodes via co-occurrence heuristic + LLM confirmation
-- **Name normalization** — surface-form variants ("Acme Corp", "ACME", "Acme Corporation") resolved to a single canonical node with aliases
-- **Session isolation** — each run is fully self-contained; inputs, intermediate state, outputs, and logs co-located
-- **Cross-session merge** — combine two independently-produced graphs into one unified knowledge graph
 - **Confidence scoring** — every extracted attribute, node, and edge carries a `0.0–1.0` confidence score
+- **Name normalization** — surface-form variants ("Acme Corp", "ACME", "Acme Corporation") resolved to a single canonical node with aliases
+- **Orphan-connection pass** — reconnects isolated nodes via co-occurrence heuristic + LLM confirmation
+- **Cross-session merge** — combine two independently-produced graphs into one unified knowledge graph
+- **Resumable pipeline** — every stage persists intermediate state; re-enter at any step after a crash or edit
+- **Session isolation** — each run is fully self-contained; inputs, intermediate state, outputs, and logs co-located
 
 ---
 
