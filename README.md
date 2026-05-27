@@ -7,20 +7,13 @@
 
 **mykg** turns a directory of Markdown files into a typed, confidence-scored property graph — with no manual schema authoring required.
 
-It provides **two independent pipelines**:
-
-- **`mykg extract-graph`** — two-pass LLM pipeline that reads `.md` files and produces a knowledge graph. Pass 1 induces a global RDFS/OWL schema from your corpus; Pass 2 extracts typed node and edge instances per file against that schema.
-- **`mykg merge-graphs`** — merges two independently-produced graph sessions into a unified knowledge graph. Schemas are reconciled via the same three-stage merge chain as Pass 1; nodes are deduplicated across sessions by stable ID; new schema properties trigger targeted re-extraction.
-
-Both pipelines write to three parallel formats: JSONL for property-graph consumers, Turtle RDF for OWL toolchains, and seven NetworkX formats for graph analysis and visualization.
+It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema from your corpus; Pass 2 extracts typed node and edge instances per file against that schema. The result is exported to three parallel formats: JSONL for property-graph consumers, Turtle RDF for OWL toolchains, and seven NetworkX formats for graph analysis and visualization.
 
 ```
 mykg extract-graph my_notes/
-mykg merge-graphs session-a session-b
 ```
 
 ```
-# Extract output
 sessions/2026-05-17T18-31-07/
   output/
     nodes.jsonl                    ← typed entities with confidence scores
@@ -29,14 +22,6 @@ sessions/2026-05-17T18-31-07/
     networkx_output/               ← GML, GraphML, GEXF, Pajek, JSON node-link,
                                       knowledge_graph.html (interactive vis)
   walkthrough.md                   ← per-run report: schema, stats, timing
-
-# Merge output (same structure, additional merge artifacts)
-sessions/2026-05-27T10-00-00/
-  intermediate/
-    source_map.json                ← file provenance for all namespaced files
-    merge_manifest.json            ← schema deltas, re-extraction strategy used
-  output/  ← same files as extract output above
-  walkthrough.md                   ← includes Merge Provenance section
 ```
 
 ---
@@ -53,8 +38,13 @@ sessions/2026-05-27T10-00-00/
   - [Outputs](#outputs)
   - [Re-running from a Specific Step](#re-running-from-a-specific-step)
   - [Orphan-Connection Pass](#orphan-connection-pass)
-- [Merge Pipeline](#merge-pipeline)
 - [Advanced Options](#advanced-options)
+  - [Human Review Gate](#human-review-gate---review)
+  - [Locked Base Schema](#locked-base-schema---base-schema)
+  - [SKOS Thesaurus](#skos-thesaurus---thesaurus)
+  - [Append Mode](#append-mode)
+  - [Merging Sessions](#merging-sessions)
+  - [Walkthrough Report](#walkthrough-report)
 - [Development](#development)
 - [Design](#design)
 
@@ -405,67 +395,6 @@ Configure via `pipeline.orphan_pass.*` in `pipeline_config.yaml`. Disable entire
 
 ---
 
-## Merge Pipeline
-
-`mykg merge-graphs` is a 12-step pipeline that combines two independently-produced extract sessions into a single unified knowledge graph. Both sessions are read-only; all output lands in a fresh timestamped session.
-
-```bash
-uv run mykg merge-graphs <session-A> <session-B> [OPTIONS]
-```
-
-```bash
-# Example
-uv run mykg merge-graphs 2026-05-01T10-00-00 2026-05-15T14-30-00
-
-# Resume a merge (last incomplete step auto-detected)
-uv run mykg merge-graphs A B --output-session <merged-name>
-```
-
-**Options:**
-
-| Option | Description |
-|---|---|
-| `--output-session TEXT` | Name for the merged session (default: auto-timestamped) |
-| `--no-review` | Skip the human review gate after schema merge |
-| `--thesaurus PATH` | SKOS thesaurus for schema synonym matching |
-| `--base-schema PATH` | Locked TBox TTL base schema |
-| `--from-step NAME` | Force re-run from a specific merge step |
-
-### Merge Pipeline Steps
-
-| # | Step | LLM | What it does |
-|---|---|---|---|
-| 1 | `merge_setup` | — | Load both sessions, namespace shard files, write `source_map.json` |
-| 2 | `merge_schema` | ✓ (3 calls) | Schema union → LLM harmonization → LLM quality review → `schema.json` |
-| 3 | `schema_validate` | — | RDFS/OWL validation; LLM correction on failure |
-| 4 | `human_review` | — | Optional gate (`--review`); edit `schema.json` before re-extraction |
-| 5 | `schema_flatten` | — | Flatten inheritance for LLM prompts |
-| 6 | `merge_reextract` | ✓ | Re-extract chunks for new properties (`none`/`surgical`/`full`) |
-| 7 | `merge_raw` | — | Namespace + merge raw extractions from both sessions |
-| 8 | `assemble` | — | Stable IDs, node/edge dedup, edge metadata sidecar |
-| 9 | `orphan_score` | — | Co-occurrence heuristic for isolated nodes |
-| 10 | `orphan_connect` | ✓ | LLM confirmation for orphan edges |
-| 11 | `validate_graph` | — | Export `nodes.jsonl`, `edges.jsonl`, `knowledge_graph.ttl`, `networkx_output/` |
-| 12 | `merge_manifest` | — | Write `merge_manifest.json` audit record |
-
-**What happens:**
-
-1. Both schemas are merged via the same three-stage chain as Pass 1 (algorithmic union → LLM harmonization → LLM quality review)
-2. All file-keyed structures are namespaced (`session_a/<filename>`, `session_b/<filename>`) before merging
-3. Nodes are deduplicated across sessions: same type + canonical name → single node, regardless of source session
-4. Re-extraction strategy (`none` / `surgical` / `full`) handles properties absent from one session's schema
-5. `source_map.json` records full file provenance; `merge_manifest.json` records schema deltas and strategy used
-6. `walkthrough.md` includes a Merge Provenance section with before/after counts and node/edge breakdowns
-
-Configure the re-extraction strategy:
-
-```yaml
-merge_graphs:
-  reextraction_strategy: surgical   # none | surgical | full
-```
-
----
-
 ## Advanced Options
 
 ### Human Review Gate (`--review`)
@@ -501,6 +430,54 @@ uv run mykg extract-graph my_notes/ --thesaurus ontology/terms.skos.ttl
 - `skos:closeMatch` → collapse with warning in `merge_log.json`
 - `skos:broader` / `skos:narrower` → advisory hints only
 
+### Append Mode
+
+Re-run the pipeline on new or modified files without re-running Pass 1:
+
+```bash
+uv run mykg extract-graph my_notes/ --session <name> --append
+```
+
+### Merging Sessions
+
+Combine two independently-produced sessions into a unified knowledge graph:
+
+```bash
+uv run mykg merge-graphs <session-A> <session-B> [OPTIONS]
+
+# Example
+uv run mykg merge-graphs 2026-05-01T10-00-00 2026-05-15T14-30-00
+
+# Resume a merge (last incomplete step auto-detected)
+uv run mykg merge-graphs A B --output-session <merged-name>
+```
+
+**Options:**
+
+| Option | Description |
+|---|---|
+| `--output-session TEXT` | Name for the merged session (default: auto-timestamped) |
+| `--no-review` | Skip the human review gate after schema merge |
+| `--thesaurus PATH` | SKOS thesaurus for schema synonym matching |
+| `--base-schema PATH` | Locked TBox TTL base schema |
+| `--from-step NAME` | Force re-run from a specific merge step |
+
+**What happens:**
+
+1. Both schemas are merged via the same three-stage chain as Pass 1 (algorithmic union → LLM harmonization → LLM quality review)
+2. All file-keyed structures are namespaced (`session_a/<filename>`, `session_b/<filename>`) before merging
+3. Nodes are deduplicated across sessions: same type + canonical name → single node, regardless of source session
+4. Re-extraction strategy (`none` / `surgical` / `full`) handles properties absent from one session's schema
+5. `source_map.json` records full file provenance; `merge_manifest.json` records schema deltas and strategy used
+6. `walkthrough.md` includes a Merge Provenance section with before/after counts and node/edge breakdowns
+
+Configure the re-extraction strategy:
+
+```yaml
+merge_graphs:
+  reextraction_strategy: surgical   # none | surgical | full
+```
+
 ### Walkthrough Report
 
 A human-readable summary is written to `sessions/<name>/walkthrough.md` after every run:
@@ -511,14 +488,6 @@ uv run mykg walkthrough --session 2026-05-17T18-31-07
 ```
 
 Disable with `pipeline.report.enabled: false`.
-
-### Append Mode
-
-Re-run the pipeline on new or modified files without re-running Pass 1:
-
-```bash
-uv run mykg extract-graph my_notes/ --session <name> --append
-```
 
 ---
 
