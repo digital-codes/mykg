@@ -9,7 +9,7 @@
 
 It provides **two independent pipelines**:
 
-- **`mykg extract-graph`** — two-pass LLM pipeline that reads `.md` files and produces a knowledge graph. Pass 1 induces a global RDFS schema from your corpus; Pass 2 extracts typed node and edge instances per file against that schema.
+- **`mykg extract-graph`** — two-pass LLM pipeline that reads `.md` files and produces a knowledge graph. Pass 1 induces a global RDFS/OWL schema from your corpus; Pass 2 extracts typed node and edge instances per file against that schema.
 - **`mykg merge-graphs`** — merges two independently-produced graph sessions into a unified knowledge graph. Schemas are reconciled via the same three-stage merge chain as Pass 1; nodes are deduplicated across sessions by stable ID; new schema properties trigger targeted re-extraction.
 
 Both pipelines write to three parallel formats: JSONL for property-graph consumers, Turtle RDF for OWL toolchains, and seven NetworkX formats for graph analysis and visualization.
@@ -25,7 +25,7 @@ sessions/2026-05-17T18-31-07/
   output/
     nodes.jsonl                    ← typed entities with confidence scores
     edges.jsonl                    ← typed relationships with provenance
-    knowledge_graph.ttl            ← RDFS TBox + RDF ABox (Protégé, SPARQL)
+    knowledge_graph.ttl            ← RDFS/OWL TBox + RDF ABox (Protégé, SPARQL)
     networkx_output/               ← GML, GraphML, GEXF, Pajek, JSON node-link,
                                       knowledge_graph.html (interactive vis)
   walkthrough.md                   ← per-run report: schema, stats, timing
@@ -64,10 +64,10 @@ sessions/2026-05-27T10-00-00/
 
 ### Ontology-Guided Extraction
 
-- **Schema-guided knowledge graph generation** — the extracted graph is always grounded in a formal RDFS schema: concept types, property names, domain/range constraints, and the is-a hierarchy are explicit and inspectable before any entity is extracted
+- **Schema-guided knowledge graph generation** — the extracted graph is always grounded in a formal RDFS/OWL schema: concept types, property names, domain/range constraints, and the is-a hierarchy are explicit and inspectable before any entity is extracted
 - **Bring your own ontology** — supply a `--base-schema` TTL file to lock in classes and properties from an existing formal ontology; the LLM expands it with domain-specific concepts but cannot rename, remove, or contradict your authoritative vocabulary
 - **SKOS thesaurus support** — pass `--thesaurus` to load a SKOS vocabulary; `skos:exactMatch` terms are collapsed silently, `skos:closeMatch` terms trigger a warning — giving the schema merger richer synonym awareness than string matching alone
-- **Verifiable TTL ontology** — after Pass 1, the induced schema is exported as a valid RDFS Turtle file (`intermediate/schema.ttl`) that can be opened directly in ontology editors such as [Protégé](https://protege.stanford.edu/); the same TTL is validated by rdflib (syntax + semantic checks: domain/range refer to declared classes, no conflicting ranges) before any extraction begins
+- **Verifiable TTL ontology** — after Pass 1, the induced schema is exported as a valid RDFS/OWL Turtle file (`intermediate/schema.ttl`) that can be opened directly in ontology editors such as [Protégé](https://protege.stanford.edu/); the same TTL is validated by rdflib (syntax + semantic checks: domain/range refer to declared classes, no conflicting ranges) before any extraction begins
 - **Human-in-the-loop ontology design** — run with `--review` to pause after schema induction; inspect and edit `schema.json` (or load `schema.ttl` in Protégé, modify, and save back) before a single entity is extracted; resume with `mykg approve-schema`
 - **Incremental updates** — run with `--append` on an existing session to add new or modified Markdown files without re-running Pass 1; the schema is reused and only the new files go through Pass 2
 
@@ -317,7 +317,7 @@ The `method` field distinguishes edges extracted by Pass 2 (`llm_extraction`) fr
 
 ### RDF / OWL (Turtle)
 
-**`knowledge_graph.ttl`** — pure RDFS triples, no edge metadata:
+**`knowledge_graph.ttl`** — pure RDFS/OWL triples, no edge metadata:
 
 ```turtle
 @prefix ex: <http://mykg.local/schema/> .
@@ -437,7 +437,7 @@ uv run mykg merge-graphs A B --output-session <merged-name>
 |---|---|---|---|
 | 1 | `merge_setup` | — | Load both sessions, namespace shard files, write `source_map.json` |
 | 2 | `merge_schema` | ✓ (3 calls) | Schema union → LLM harmonization → LLM quality review → `schema.json` |
-| 3 | `schema_validate` | — | RDFS validation; LLM correction on failure |
+| 3 | `schema_validate` | — | RDFS/OWL validation; LLM correction on failure |
 | 4 | `human_review` | — | Optional gate (`--review`); edit `schema.json` before re-extraction |
 | 5 | `schema_flatten` | — | Flatten inheritance for LLM prompts |
 | 6 | `merge_reextract` | ✓ | Re-extract chunks for new properties (`none`/`surgical`/`full`) |
