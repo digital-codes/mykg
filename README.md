@@ -92,7 +92,8 @@ git clone <repo-url> && cd mykg
 uv sync          # or: pip install -e .
 
 # 2. Configure (example: Anthropic Claude)
-edit pipeline_config.yaml and create .env file from sample.env file. Enter your api key credentials
+cp sample.env .env          # then add your API key to .env
+# edit pipeline_config.yaml to set profile: and model:
 
 # 3. Run
 uv run mykg extract-graph my_notes/
@@ -103,13 +104,15 @@ For Ollama (no API key needed):
 
 ```bash
 ollama pull llama3.3
-change active profile in pipeline_config.yaml
+# set profile: ollama-local in pipeline_config.yaml
 uv run mykg extract-graph my_notes/
 ```
 
 ## Configuration
 
-All configuration lives in a single `pipeline_config.yaml` file discovered automatically from the working directory (or any parent). There are no hardcoded defaults in the code — the YAML is the sole source of truth.
+All configuration lives in a single [`pipeline_config.yaml`](pipeline_config.yaml) file discovered automatically from the working directory (or any parent). There are no hardcoded defaults in the code — the YAML is the sole source of truth.
+
+API keys are loaded from `.env` — copy [`sample.env`](sample.env) to `.env` and fill in your credentials.
 
 ### LLM Providers
 
@@ -121,7 +124,7 @@ All configuration lives in a single `pipeline_config.yaml` file discovered autom
 | OpenRouter | `openrouter-free` | `OPENROUTER_API_KEY` | Access many models via one key |
 | Claude CLI | `claude-cli` | — | Uses `claude -p` subprocess; billing via Claude Pro/Max; serial only |
 
-Switch provider by setting `profile:` at the top of `pipeline_config.yaml`.
+Switch provider by setting `profile:` at the top of [`pipeline_config.yaml`](pipeline_config.yaml).
 
 ### Key Pipeline Parameters
 
@@ -466,7 +469,7 @@ uv sync
 uv run pytest -m "not live" -v
 
 # All tests including live API integration tests
-# Requires OPENROUTER_API_KEY in environment or .env
+# Requires OPENROUTER_API_KEY in environment or .env (see sample.env)
 uv run pytest -m live -v
 
 # Single file
