@@ -36,6 +36,7 @@ sessions/2026-05-17T18-31-07/
 
 - [Features](#features)
 - [Quick Start](#quick-start)
+- [Using with Claude Code](#using-with-claude-code)
 - [Configuration](#configuration)
 - [Extract Pipeline](#extract-pipeline)
   - [Running](#running)
@@ -109,6 +110,67 @@ ollama pull llama3.3
 # set profile: ollama-local in pipeline_config.yaml
 uv run mykg extract-graph my_notes/
 ```
+
+## Using with Claude Code
+
+myKG ships with a `claude-cli` profile that runs extractions through the locally-installed `claude` CLI — no API key or billing setup needed beyond your existing Claude Pro/Max plan.
+
+### Setup
+
+```bash
+# 1. Install the claude CLI (if not already installed)
+npm install -g @anthropic-ai/claude-code
+
+# 2. Set the active profile
+#    In pipeline_config.yaml, set:
+#    profile: claude-cli
+
+# 3. Run
+uv run mykg extract-graph my_notes/
+```
+
+### How it works
+
+The `claude-cli` provider calls `claude -p` as a subprocess for every LLM step (Pass 1 schema induction, Pass 2 extraction, orphan connection, name normalization). All pipeline features — session isolation, resumability, orphan recovery, cross-session merge — work identically to API-based providers.
+
+**Key constraints of the `claude-cli` profile:**
+- `max_workers` must be `1` — the `claude` CLI is serial by design; parallel workers will queue
+- No API key required — billing goes through your Claude Pro/Max subscription
+- The `effort` and `model` fields in `pipeline_config.yaml` map directly to `--effort` and `--model` flags passed to `claude -p`
+
+### Using myKG from inside Claude Code
+
+You can run myKG extractions as a tool call from within a Claude Code session. This is useful for building knowledge graphs from notes or documentation while you work:
+
+```bash
+# From any Claude Code session terminal:
+uv run mykg extract-graph ./docs/ --session my-docs-kg
+
+# Then reference the output in your session:
+# sessions/my-docs-kg/output/nodes.jsonl
+# sessions/my-docs-kg/output/knowledge_graph.ttl
+```
+
+Claude Code can then read `nodes.jsonl` or `edges.jsonl` directly to answer questions about the extracted graph, or load `knowledge_graph.ttl` into a SPARQL tool for structured queries.
+
+### Recommended `pipeline_config.yaml` settings for Claude Code
+
+```yaml
+profile: claude-cli
+
+profiles:
+  claude-cli:
+    llm:
+      model: sonnet       # or opus for higher quality
+      effort: medium      # low | medium | high
+    pipeline:
+      pass1:
+        max_workers: 1    # required — claude CLI is serial
+      pass2:
+        max_workers: 1
+```
+
+---
 
 ## Configuration
 
