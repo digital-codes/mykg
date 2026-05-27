@@ -84,7 +84,7 @@ sessions/2026-05-17T18-31-07/
 - **Cross-session merge** — combine two independently-produced graphs into one unified knowledge graph
 - **Resumable pipeline** — every stage persists intermediate state; re-enter at any step after a crash or edit
 - **Session isolation** — each run is fully self-contained; inputs, intermediate state, outputs, and logs co-located
-- **Query knowledge graph** *(coming soon)* — natural-language and structured queries directly against the extracted graph
+- **Query knowledge graph** *(coming soon)* — natural-language and structured queries directly against the extracted graph via AI coding assistants such as [Claude Code](https://claude.ai/code), SPARQL endpoints, or graph traversal APIs
 
 ## Quick Start
 
