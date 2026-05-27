@@ -506,7 +506,7 @@ uv run snakeviz profile.out
 
 ## Design
 
-For a thorough description of the architecture, algorithm, data models, and design decisions, see [docs/design.md](docs/design.md).
+For a thorough description of the architecture, algorithm, data models, and design decisions, see [architecture.md](architecture.md).
 
 ---
 
