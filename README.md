@@ -75,6 +75,7 @@ sessions/2026-05-17T18-31-07/
 ### Graph & Output
 
 - **Provider-agnostic** — works with Anthropic (Claude), OpenAI (GPT-4o), Ollama (local), OpenRouter, or the `claude` CLI with no API key
+- **Claude Code integration** — run extractions directly from a Claude Code session using the `claude-cli` profile; no API key needed, billed via your Claude Pro/Max plan; see [Using with Claude Code](#using-with-claude-code)
 - **Three output families** — JSONL for Neo4j/NetworkX/RAG, Turtle RDF for OWL toolchains, NetworkX multi-format for graph analysis
 - **Interactive HTML graph** — node/edge filtering, search, hover popups; opens directly in a browser
 - **Confidence scoring** — every extracted attribute, node, and edge carries a `0.0–1.0` confidence score
