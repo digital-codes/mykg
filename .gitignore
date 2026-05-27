@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+.venv/
+.env
+*.log
+
+
+
+# IDE
+.idea/
+.vscode/
+
+# Local data and archives
+input_files/
+_input_files/
+_input_files2/
+output/
+intermediate/
+.old/
+sessions/
+
+.coverage
