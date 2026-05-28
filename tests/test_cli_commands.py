@@ -24,7 +24,7 @@ def test_extract_session_and_output_dir_mutually_exclusive(tmp_path, input_dir, 
     import mykg.config as cfg_mod
 
     monkeypatch.setattr(cfg_mod, "SESSIONS_DIR", str(tmp_path / "sessions"))
-    monkeypatch.setattr(cli_mod, "load_adapter", lambda **kw: MagicMock())
+    monkeypatch.setattr("mykg.llm.config.load_adapter", lambda **kw: MagicMock())
 
     runner = CliRunner()
     result = runner.invoke(
@@ -53,8 +53,8 @@ def test_extract_append_and_from_step_mutually_exclusive(tmp_path, input_dir, mo
 
     (sessions_root / "2026-01-01T00-00-00").mkdir(parents=True)
 
-    monkeypatch.setattr(cli_mod, "load_adapter", lambda **kw: MagicMock())
-    monkeypatch.setattr(cli_mod, "run", lambda steps, ctx: None)
+    monkeypatch.setattr("mykg.llm.config.load_adapter", lambda **kw: MagicMock())
+    monkeypatch.setattr("mykg.orchestrator.run", lambda steps, ctx: None)
 
     runner = CliRunner()
     result = runner.invoke(
@@ -134,8 +134,8 @@ def test_extract_creates_session_dir(tmp_path, input_dir, monkeypatch):
 
     sessions_root = tmp_path / "sessions"
     monkeypatch.setattr(cfg_mod, "SESSIONS_DIR", str(sessions_root))
-    monkeypatch.setattr(cli_mod, "run", lambda steps, ctx: None)
-    monkeypatch.setattr(cli_mod, "load_adapter", lambda **kw: MagicMock())
+    monkeypatch.setattr("mykg.orchestrator.run", lambda steps, ctx: None)
+    monkeypatch.setattr("mykg.llm.config.load_adapter", lambda **kw: MagicMock())
 
     runner = CliRunner()
     result = runner.invoke(cli_mod.cli, ["extract-graph", str(input_dir)])
@@ -148,8 +148,9 @@ def test_extract_creates_session_dir(tmp_path, input_dir, monkeypatch):
 
 def test_extract_graph_help_contains_obsidian_vault():
     """--help output for extract-graph must advertise --obsidian-vault."""
-    import mykg.cli as cli_mod
     from click.testing import CliRunner
+
+    import mykg.cli as cli_mod
 
     runner = CliRunner()
     result = runner.invoke(cli_mod.cli, ["extract-graph", "--help"])
@@ -162,7 +163,7 @@ def test_from_step_without_session_or_dirs_errors(tmp_path, input_dir, monkeypat
     import mykg.config as cfg_mod
 
     monkeypatch.setattr(cfg_mod, "SESSIONS_DIR", str(tmp_path / "sessions"))
-    monkeypatch.setattr(cli_mod, "load_adapter", lambda **kw: MagicMock())
+    monkeypatch.setattr("mykg.llm.config.load_adapter", lambda **kw: MagicMock())
 
     runner = CliRunner()
     result = runner.invoke(

@@ -654,14 +654,20 @@ def _section_node_edge_trace(session_root: Path) -> str | None:
 
     # Merge log breakdown
     merge_log = _load_json(session_root / "intermediate" / "merge_log.json") or []
-    node_merge_events = sum(1 for e in merge_log if e.get("event") == "node_merge") if isinstance(merge_log, list) else 0
-    edge_merge_events = sum(1 for e in merge_log if e.get("event") == "edge_merge") if isinstance(merge_log, list) else 0
+    node_merge_events = (
+        sum(1 for e in merge_log if e.get("event") == "node_merge")
+        if isinstance(merge_log, list)
+        else 0
+    )
+    edge_merge_events = (
+        sum(1 for e in merge_log if e.get("event") == "edge_merge")
+        if isinstance(merge_log, list)
+        else 0
+    )
 
     # Orphan pass
     orphan_candidates = _load_json(session_root / "intermediate" / "orphan_candidates.json")
-    orphan_groups_count = (
-        len(orphan_candidates.get("groups", [])) if orphan_candidates else None
-    )
+    orphan_groups_count = len(orphan_candidates.get("groups", [])) if orphan_candidates else None
     orphan_connections = _load_json(session_root / "intermediate" / "orphan_connections.json")
     orphan_edges_added = len(orphan_connections) if orphan_connections is not None else None
 
@@ -680,7 +686,11 @@ def _section_node_edge_trace(session_root: Path) -> str | None:
 
     # Type-filter at validate_graph: edges in edge_metadata whose type is not in merged schema
     declared_props = {p["name"] for p in merged_schema.get("properties", [])}
-    valid_edges = sum(1 for e in merged_edge_data.values() if isinstance(e, dict) and e.get("type") in declared_props)
+    valid_edges = sum(
+        1
+        for e in merged_edge_data.values()
+        if isinstance(e, dict) and e.get("type") in declared_props
+    )
     filtered_edges = m_edges - valid_edges
     filtered_by_type: dict[str, int] = {}
     for e in merged_edge_data.values():
@@ -695,9 +705,13 @@ def _section_node_edge_trace(session_root: Path) -> str | None:
     nodes_jsonl = output_dir / "nodes.jsonl"
     edges_jsonl = output_dir / "edges.jsonl"
     if nodes_jsonl.exists():
-        nodes_jsonl_count = sum(1 for ln in nodes_jsonl.read_text(encoding="utf-8").splitlines() if ln.strip())
+        nodes_jsonl_count = sum(
+            1 for ln in nodes_jsonl.read_text(encoding="utf-8").splitlines() if ln.strip()
+        )
     if edges_jsonl.exists():
-        edges_jsonl_count = sum(1 for ln in edges_jsonl.read_text(encoding="utf-8").splitlines() if ln.strip())
+        edges_jsonl_count = sum(
+            1 for ln in edges_jsonl.read_text(encoding="utf-8").splitlines() if ln.strip()
+        )
 
     delta_b = manifest.get("schema_delta_session_b") or []
     reextract_note = (
@@ -876,11 +890,19 @@ def _section_merge_provenance(session_root: Path) -> str | None:
     ]
 
     # Net-new nodes: present in merged but not in either source session
-    ids_a = {n["id"] for n in (_load_json(sessions_root / name_a / "intermediate" / "nodes.json") or [])}
-    ids_b = {n["id"] for n in (_load_json(sessions_root / name_b / "intermediate" / "nodes.json") or [])}
+    ids_a = {
+        n["id"] for n in (_load_json(sessions_root / name_a / "intermediate" / "nodes.json") or [])
+    }
+    ids_b = {
+        n["id"] for n in (_load_json(sessions_root / name_b / "intermediate" / "nodes.json") or [])
+    }
     merged_by_id = {n["id"]: n for n in merged_nodes}
-    net_new = sorted((merged_by_id[nid] for nid in (set(merged_by_id) - ids_a - ids_b)), key=lambda n: n["id"])
-    deduped = sorted((merged_by_id[nid] for nid in (ids_a & ids_b & set(merged_by_id))), key=lambda n: n["id"])
+    net_new = sorted(
+        (merged_by_id[nid] for nid in (set(merged_by_id) - ids_a - ids_b)), key=lambda n: n["id"]
+    )
+    deduped = sorted(
+        (merged_by_id[nid] for nid in (ids_a & ids_b & set(merged_by_id))), key=lambda n: n["id"]
+    )
 
     out += ["", "### Node Provenance", ""]
     out += [
@@ -949,7 +971,10 @@ def _section_merge_provenance(session_root: Path) -> str | None:
 
     if edges_cross:
         out += ["", "**Cross-session edges:**", ""]
-        out += ["| ID | Type | From | From-session | To | To-session |", "|---|---|---|---|---|---|"]
+        out += [
+            "| ID | Type | From | From-session | To | To-session |",
+            "|---|---|---|---|---|---|",
+        ]
         for eid, edge in edges_cross[:20]:
             frm = edge.get("from", "?")
             to = edge.get("to", "?")
@@ -971,7 +996,9 @@ def _section_merge_provenance(session_root: Path) -> str | None:
         for eid, edge in edges_new_prop[:20]:
             frm = edge.get("from", "?")
             to = edge.get("to", "?")
-            out.append(f"| `{eid}` | {edge.get('type', '?')} | {_node_name(frm)} | {_node_name(to)} |")
+            out.append(
+                f"| `{eid}` | {edge.get('type', '?')} | {_node_name(frm)} | {_node_name(to)} |"
+            )
         if len(edges_new_prop) > 20:
             out.append(f"| *…and {len(edges_new_prop) - 20} more* | | | |")
 
@@ -979,9 +1006,16 @@ def _section_merge_provenance(session_root: Path) -> str | None:
     delta_a = manifest.get("schema_delta_session_a") or []
     delta_b = manifest.get("schema_delta_session_b") or []
     if delta_a:
-        out += ["", "**New properties for Session A** (surgical re-extraction): " + ", ".join(f"`{p}`" for p in delta_a)]
+        out += [
+            "",
+            "**New properties for Session A** (surgical re-extraction): "
+            + ", ".join(f"`{p}`" for p in delta_a),
+        ]
     if delta_b:
-        out += ["**New properties for Session B** (surgical re-extraction): " + ", ".join(f"`{p}`" for p in delta_b)]
+        out += [
+            "**New properties for Session B** (surgical re-extraction): "
+            + ", ".join(f"`{p}`" for p in delta_b)
+        ]
 
     # Schema synonym log
     synonym_log = manifest.get("schema_synonym_log") or []
@@ -1006,11 +1040,15 @@ def _section_health_status(session_root: Path, lines: list[dict], state: dict) -
     steps = state.get("steps", {})
     failed_steps = [name for name, info in steps.items() if info.get("status") == "failed"]
     if failed_steps:
-        issues.append(f"**{len(failed_steps)} step(s) failed:** " + ", ".join(f"`{s}`" for s in failed_steps))
+        issues.append(
+            f"**{len(failed_steps)} step(s) failed:** " + ", ".join(f"`{s}`" for s in failed_steps)
+        )
 
     # ERROR-level log lines (includes 402 credit errors after our fix)
     error_lines = [ln for ln in lines if ln["level"] == "ERROR"]
-    credit_errors = [ln for ln in error_lines if "402" in ln["message"] or "credit" in ln["message"].lower()]
+    credit_errors = [
+        ln for ln in error_lines if "402" in ln["message"] or "credit" in ln["message"].lower()
+    ]
     other_errors = [ln for ln in error_lines if ln not in credit_errors]
     if credit_errors:
         issues.append(
@@ -1150,7 +1188,9 @@ def generate_walkthrough(session_root: Path, log_file: Path | None = None) -> st
     if node_edge_trace:
         # Renumber trace header: §2 when provenance present, §1 when alone
         trace_num = 2 if merge_provenance else 1
-        nt = node_edge_trace.replace("## 2. Node & Edge Count Trace", f"## {trace_num}. Node & Edge Count Trace")
+        nt = node_edge_trace.replace(
+            "## 2. Node & Edge Count Trace", f"## {trace_num}. Node & Edge Count Trace"
+        )
         sections += [nt, ""]
     final_graph_num = 1 + offset
     sections += [

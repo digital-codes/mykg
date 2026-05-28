@@ -171,17 +171,19 @@ MINIMAL_SCHEMA = {
 }
 MINIMAL_FLAT = {"Person": ["name"]}
 
-VALID_EXTRACTION = json.dumps({
-    "nodes": [
-        {
-            "id": "person-alice",
-            "type": "Person",
-            "confidence": 0.9,
-            "attributes": {"name": {"value": "Alice", "confidence": 0.9}},
-        }
-    ],
-    "edges": [],
-})
+VALID_EXTRACTION = json.dumps(
+    {
+        "nodes": [
+            {
+                "id": "person-alice",
+                "type": "Person",
+                "confidence": 0.9,
+                "attributes": {"name": {"value": "Alice", "confidence": 0.9}},
+            }
+        ],
+        "edges": [],
+    }
+)
 
 
 class _MockAdapter:

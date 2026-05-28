@@ -166,7 +166,7 @@ def _normalize_scalars(extraction: dict) -> dict:
     Null scalars get confidence 0.0 (value unknown). Non-null scalars get
     CONFIDENCE_SCALAR_OMITTED (LLM knew the value but omitted the wrapper).
     """
-    for node in (extraction.get("nodes") or []):
+    for node in extraction.get("nodes") or []:
         if node is None:
             continue
         attrs = node.get("attributes", {})
@@ -177,7 +177,7 @@ def _normalize_scalars(extraction: dict) -> dict:
             if not isinstance(val, dict) or "value" not in val:
                 conf = 0.0 if val is None else _cfg.CONFIDENCE_SCALAR_OMITTED
                 node["attributes"][attr] = {"value": val, "confidence": conf}
-    for edge in (extraction.get("edges") or []):
+    for edge in extraction.get("edges") or []:
         if edge is None:
             continue
         attrs = edge.get("attributes", {})
@@ -196,7 +196,7 @@ def _backfill_extraction(extraction: dict, schema: dict, flat_schema: dict) -> d
     prop_attrs: dict[str, list[str]] = {
         p["name"]: p.get("attributes", []) for p in schema["properties"]
     }
-    for node in (extraction.get("nodes") or []):
+    for node in extraction.get("nodes") or []:
         if node is None:
             continue
         expected = flat_schema.get(node["type"], [])
@@ -204,7 +204,7 @@ def _backfill_extraction(extraction: dict, schema: dict, flat_schema: dict) -> d
         for attr in expected:
             if attr not in attrs:
                 attrs[attr] = {"value": None, "confidence": 0.0}
-    for edge in (extraction.get("edges") or []):
+    for edge in extraction.get("edges") or []:
         if edge is None:
             continue
         expected = prop_attrs.get(edge["type"], [])
@@ -619,10 +619,7 @@ def run_pass2_batched(
             "total_batches": total_batches,
             "completed": 0,
             "failed": 0,
-            "batches": {
-                name: {**entry, "status": "pending"}
-                for name, entry in batch_map.items()
-            },
+            "batches": {name: {**entry, "status": "pending"} for name, entry in batch_map.items()},
         }
         progress_path.write_text(json.dumps(progress, indent=2))
 
@@ -638,9 +635,7 @@ def run_pass2_batched(
 
     # Process batches in order so stateful prior_nodes flow correctly when per_file=True.
     # When per_file=False (mixed), prior_nodes are still threaded per source file.
-    def _process_batch(
-        batch_idx: int, batch: list[Chunk]
-    ) -> tuple[int, dict | None, list[Chunk]]:
+    def _process_batch(batch_idx: int, batch: list[Chunk]) -> tuple[int, dict | None, list[Chunk]]:
         # Collect per-file prior_nodes for files appearing in this batch.
         # For mixed batches we aggregate prior_nodes from all files in the batch.
         batch_files = {c.source_file for c in batch}
@@ -663,7 +658,10 @@ def run_pass2_batched(
         token_count = sum(c.token_end - c.token_start for c in batch)
         log.info(
             "  batch %d/%d — %d chunk(s), ~%d tokens",
-            batch_idx + 1, total_batches, len(batch), token_count,
+            batch_idx + 1,
+            total_batches,
+            len(batch),
+            token_count,
         )
         extraction = _extract_batch(
             batch, schema, flat_schema, adapter, batch_idx + 1, prior, hint_block
@@ -672,7 +670,9 @@ def run_pass2_batched(
             clean = _strip_nulls(extraction)
             log.debug(
                 "  batch %d — %d node(s), %d edge(s)",
-                batch_idx + 1, len(clean["nodes"]), len(clean["edges"]),
+                batch_idx + 1,
+                len(clean["nodes"]),
+                len(clean["edges"]),
             )
         return batch_idx, extraction, batch
 
@@ -699,9 +699,7 @@ def run_pass2_batched(
     done_batches = 0
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        futures = {
-            executor.submit(_process_batch, i, batch): i for i, batch in enumerate(batches)
-        }
+        futures = {executor.submit(_process_batch, i, batch): i for i, batch in enumerate(batches)}
         # Sort completed futures by batch index before merging so stateful
         # prior_nodes are updated sequentially.
         completed: list[tuple[int, dict | None, list[Chunk]]] = []
@@ -721,15 +719,12 @@ def run_pass2_batched(
             done_batches += 1
             elapsed = time.monotonic() - batch_start
             remaining_secs = (
-                (elapsed / done_batches) * (total_batches - done_batches)
-                if done_batches
-                else 0.0
+                (elapsed / done_batches) * (total_batches - done_batches) if done_batches else 0.0
             )
             eta_h = int(remaining_secs // 3600)
             eta_m = int((remaining_secs % 3600) // 60)
             log.info(
-                "Pass 2 batched progress — %d/%d batches (%.1f%%) "
-                "— elapsed %s — ETA ~%dh %02dm",
+                "Pass 2 batched progress — %d/%d batches (%.1f%%) — elapsed %s — ETA ~%dh %02dm",
                 done_batches,
                 total_batches,
                 done_batches / total_batches * 100 if total_batches else 0.0,
@@ -748,14 +743,15 @@ def run_pass2_batched(
                 break
             log.info(
                 "Pass 2 batched — retry round %d/%d: %d failed batch(es): %s",
-                retry_round + 1, batch_retry_max,
-                len(failed_items), [bi for bi, _ in failed_items],
+                retry_round + 1,
+                batch_retry_max,
+                len(failed_items),
+                [bi for bi, _ in failed_items],
             )
             retry_completed: list[tuple[int, dict | None, list[Chunk]]] = []
             with ThreadPoolExecutor(max_workers=max_workers) as retry_executor:
                 retry_futures = {
-                    retry_executor.submit(_process_batch, bi, b): bi
-                    for bi, b in failed_items
+                    retry_executor.submit(_process_batch, bi, b): bi for bi, b in failed_items
                 }
                 for future in as_completed(retry_futures):
                     bi = retry_futures[future]
@@ -766,13 +762,16 @@ def run_pass2_batched(
                         _flush_progress(bname, result[1], None)
                         log.info(
                             "Pass 2 batched — retry round %d batch %d succeeded",
-                            retry_round + 1, bi,
+                            retry_round + 1,
+                            bi,
                         )
                     except Exception as exc:
                         gate.record_error(exc)
                         log.error(
                             "Pass 2 batched — retry round %d batch %d still failed: %s",
-                            retry_round + 1, bi, exc,
+                            retry_round + 1,
+                            bi,
+                            exc,
                         )
                         retry_completed.append((bi, None, batches[bi]))
                         _flush_progress(bname, None, str(exc))
@@ -810,14 +809,14 @@ def run_pass2_batched(
                 if stateful:
                     prior_nodes_by_file[fname] = _dedup_within_file(file_nodes[fname])
 
-
     # Finalize per-file results: dedup nodes and drop dangling edges.
     results: dict[str, dict] = {}
     for fname in files:
         nodes = _dedup_within_file(file_nodes[fname])
         surviving_ids = {n["id"] for n in nodes}
         edges = [
-            e for e in file_edges[fname]
+            e
+            for e in file_edges[fname]
             if e.get("from") in surviving_ids and e.get("to") in surviving_ids
         ]
         log.info("  %s — total: %d node(s), %d edge(s)", fname, len(nodes), len(edges))

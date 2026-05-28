@@ -340,37 +340,125 @@ def _make_merge_sessions(tmp_path: Path):
     # --- session A ---
     _write(
         sess_a / "intermediate" / "nodes.json",
-        [{"id": "person-alice", "type": "Person", "confidence": 1.0, "attributes": {"name": {"value": "Alice", "confidence": 1.0}}, "source_files": ["a.md"]}],
+        [
+            {
+                "id": "person-alice",
+                "type": "Person",
+                "confidence": 1.0,
+                "attributes": {"name": {"value": "Alice", "confidence": 1.0}},
+                "source_files": ["a.md"],
+            }
+        ],
     )
     _write(
         sess_a / "intermediate" / "edge_metadata.json",
-        {"edge-a1": {"type": "works_at", "from": "person-alice", "to": "org-x", "confidence": 0.9, "method": "llm_extraction", "attributes": {}, "source_files": ["a.md"]}},
+        {
+            "edge-a1": {
+                "type": "works_at",
+                "from": "person-alice",
+                "to": "org-x",
+                "confidence": 0.9,
+                "method": "llm_extraction",
+                "attributes": {},
+                "source_files": ["a.md"],
+            }
+        },
     )
     _write(
         sess_a / "intermediate" / "schema.json",
-        {"concepts": [{"type": "Person", "parent": None, "attributes": ["name"]}], "properties": [{"name": "works_at", "domain": "Person", "range": "Organization", "attributes": []}]},
+        {
+            "concepts": [{"type": "Person", "parent": None, "attributes": ["name"]}],
+            "properties": [
+                {"name": "works_at", "domain": "Person", "range": "Organization", "attributes": []}
+            ],
+        },
     )
     _write(
         sess_a / "intermediate" / "raw_extractions.json",
-        {"a.md": {"nodes": [{"id": "person-alice", "type": "Person", "confidence": 1.0, "attributes": {}, "source_files": []}], "edges": [{"type": "works_at", "from": "person-alice", "to": "org-x", "confidence": 0.9, "attributes": {}}]}},
+        {
+            "a.md": {
+                "nodes": [
+                    {
+                        "id": "person-alice",
+                        "type": "Person",
+                        "confidence": 1.0,
+                        "attributes": {},
+                        "source_files": [],
+                    }
+                ],
+                "edges": [
+                    {
+                        "type": "works_at",
+                        "from": "person-alice",
+                        "to": "org-x",
+                        "confidence": 0.9,
+                        "attributes": {},
+                    }
+                ],
+            }
+        },
     )
 
     # --- session B ---
     _write(
         sess_b / "intermediate" / "nodes.json",
-        [{"id": "org-acme", "type": "Organization", "confidence": 1.0, "attributes": {"name": {"value": "Acme", "confidence": 1.0}}, "source_files": ["b.md"]}],
+        [
+            {
+                "id": "org-acme",
+                "type": "Organization",
+                "confidence": 1.0,
+                "attributes": {"name": {"value": "Acme", "confidence": 1.0}},
+                "source_files": ["b.md"],
+            }
+        ],
     )
     _write(
         sess_b / "intermediate" / "edge_metadata.json",
-        {"edge-b1": {"type": "works_at", "from": "person-bob", "to": "org-acme", "confidence": 0.8, "method": "llm_extraction", "attributes": {}, "source_files": ["b.md"]}},
+        {
+            "edge-b1": {
+                "type": "works_at",
+                "from": "person-bob",
+                "to": "org-acme",
+                "confidence": 0.8,
+                "method": "llm_extraction",
+                "attributes": {},
+                "source_files": ["b.md"],
+            }
+        },
     )
     _write(
         sess_b / "intermediate" / "schema.json",
-        {"concepts": [{"type": "Organization", "parent": None, "attributes": ["name"]}], "properties": [{"name": "works_at", "domain": "Person", "range": "Organization", "attributes": []}]},
+        {
+            "concepts": [{"type": "Organization", "parent": None, "attributes": ["name"]}],
+            "properties": [
+                {"name": "works_at", "domain": "Person", "range": "Organization", "attributes": []}
+            ],
+        },
     )
     _write(
         sess_b / "intermediate" / "raw_extractions.json",
-        {"b.md": {"nodes": [{"id": "org-acme", "type": "Organization", "confidence": 1.0, "attributes": {}, "source_files": []}], "edges": [{"type": "works_at", "from": "person-bob", "to": "org-acme", "confidence": 0.8, "attributes": {}}]}},
+        {
+            "b.md": {
+                "nodes": [
+                    {
+                        "id": "org-acme",
+                        "type": "Organization",
+                        "confidence": 1.0,
+                        "attributes": {},
+                        "source_files": [],
+                    }
+                ],
+                "edges": [
+                    {
+                        "type": "works_at",
+                        "from": "person-bob",
+                        "to": "org-acme",
+                        "confidence": 0.8,
+                        "attributes": {},
+                    }
+                ],
+            }
+        },
     )
 
     # --- merged session ---
@@ -381,8 +469,18 @@ def _make_merge_sessions(tmp_path: Path):
                 "session_a": {"name": "sess-a", "prep_mode": "per_file"},
                 "session_b": {"name": "sess-b", "prep_mode": "per_file"},
             },
-            "session_a/a.md": {"original_session": "sess-a", "alias": "session_a", "sha256": "aaa", "role": "input_a"},
-            "session_b/b.md": {"original_session": "sess-b", "alias": "session_b", "sha256": "bbb", "role": "input_b"},
+            "session_a/a.md": {
+                "original_session": "sess-a",
+                "alias": "session_a",
+                "sha256": "aaa",
+                "role": "input_a",
+            },
+            "session_b/b.md": {
+                "original_session": "sess-b",
+                "alias": "session_b",
+                "sha256": "bbb",
+                "role": "input_b",
+            },
         },
     )
     _write(
@@ -414,30 +512,132 @@ def _make_merge_sessions(tmp_path: Path):
     _write(
         merged / "intermediate" / "raw_extractions.json",
         {
-            "session_a/a.md": {"nodes": [{"id": "person-alice", "type": "Person", "confidence": 1.0, "attributes": {}, "source_files": []}], "edges": [{"type": "works_at", "from": "person-alice", "to": "org-acme", "confidence": 0.9, "attributes": {}}]},
-            "session_b/b.md": {"nodes": [{"id": "org-acme", "type": "Organization", "confidence": 1.0, "attributes": {}, "source_files": []}], "edges": [{"type": "works_at", "from": "person-bob", "to": "org-acme", "confidence": 0.8, "attributes": {}}, {"type": "new_prop", "from": "person-alice", "to": "org-acme", "confidence": 0.7, "attributes": {}}]},
+            "session_a/a.md": {
+                "nodes": [
+                    {
+                        "id": "person-alice",
+                        "type": "Person",
+                        "confidence": 1.0,
+                        "attributes": {},
+                        "source_files": [],
+                    }
+                ],
+                "edges": [
+                    {
+                        "type": "works_at",
+                        "from": "person-alice",
+                        "to": "org-acme",
+                        "confidence": 0.9,
+                        "attributes": {},
+                    }
+                ],
+            },
+            "session_b/b.md": {
+                "nodes": [
+                    {
+                        "id": "org-acme",
+                        "type": "Organization",
+                        "confidence": 1.0,
+                        "attributes": {},
+                        "source_files": [],
+                    }
+                ],
+                "edges": [
+                    {
+                        "type": "works_at",
+                        "from": "person-bob",
+                        "to": "org-acme",
+                        "confidence": 0.8,
+                        "attributes": {},
+                    },
+                    {
+                        "type": "new_prop",
+                        "from": "person-alice",
+                        "to": "org-acme",
+                        "confidence": 0.7,
+                        "attributes": {},
+                    },
+                ],
+            },
         },
     )
     _write(
         merged / "intermediate" / "nodes.json",
         [
-            {"id": "person-alice", "type": "Person", "confidence": 1.0, "attributes": {"name": {"value": "Alice", "confidence": 1.0}}, "source_files": ["session_a/a.md"]},
-            {"id": "org-acme", "type": "Organization", "confidence": 1.0, "attributes": {"name": {"value": "Acme", "confidence": 1.0}}, "source_files": ["session_b/b.md"]},
+            {
+                "id": "person-alice",
+                "type": "Person",
+                "confidence": 1.0,
+                "attributes": {"name": {"value": "Alice", "confidence": 1.0}},
+                "source_files": ["session_a/a.md"],
+            },
+            {
+                "id": "org-acme",
+                "type": "Organization",
+                "confidence": 1.0,
+                "attributes": {"name": {"value": "Acme", "confidence": 1.0}},
+                "source_files": ["session_b/b.md"],
+            },
         ],
     )
     _write(
         merged / "intermediate" / "edge_metadata.json",
         {
-            "edge-a1": {"type": "works_at", "from": "person-alice", "to": "org-acme", "confidence": 0.9, "method": "llm_extraction", "attributes": {}, "source_files": ["session_a/a.md"]},
-            "edge-b1": {"type": "works_at", "from": "org-acme", "to": "person-alice", "confidence": 0.8, "method": "llm_extraction", "attributes": {}, "source_files": ["session_b/b.md"]},
+            "edge-a1": {
+                "type": "works_at",
+                "from": "person-alice",
+                "to": "org-acme",
+                "confidence": 0.9,
+                "method": "llm_extraction",
+                "attributes": {},
+                "source_files": ["session_a/a.md"],
+            },
+            "edge-b1": {
+                "type": "works_at",
+                "from": "org-acme",
+                "to": "person-alice",
+                "confidence": 0.8,
+                "method": "llm_extraction",
+                "attributes": {},
+                "source_files": ["session_b/b.md"],
+            },
         },
     )
-    _write(merged / "intermediate" / "merge_log.json", [
-        {"event": "node_merge", "id": "person-alice"},
-        {"event": "edge_merge", "id": "edge-a1"},
-    ])
-    _write(merged / "intermediate" / "orphan_candidates.json", {"groups": [{"orphan_ids": ["person-bob"], "connected_node_ids": ["org-acme"], "filename": "b.md", "chunk_idx": 0}], "schema_gap_orphans": []})
-    _write(merged / "intermediate" / "orphan_connections.json", {"edge-orphan-1": {"type": "works_at", "from": "person-bob", "to": "org-acme", "confidence": 0.7, "method": "orphan_inferred", "attributes": {}, "source_files": []}})
+    _write(
+        merged / "intermediate" / "merge_log.json",
+        [
+            {"event": "node_merge", "id": "person-alice"},
+            {"event": "edge_merge", "id": "edge-a1"},
+        ],
+    )
+    _write(
+        merged / "intermediate" / "orphan_candidates.json",
+        {
+            "groups": [
+                {
+                    "orphan_ids": ["person-bob"],
+                    "connected_node_ids": ["org-acme"],
+                    "filename": "b.md",
+                    "chunk_idx": 0,
+                }
+            ],
+            "schema_gap_orphans": [],
+        },
+    )
+    _write(
+        merged / "intermediate" / "orphan_connections.json",
+        {
+            "edge-orphan-1": {
+                "type": "works_at",
+                "from": "person-bob",
+                "to": "org-acme",
+                "confidence": 0.7,
+                "method": "orphan_inferred",
+                "attributes": {},
+                "source_files": [],
+            }
+        },
+    )
 
     return sessions_root, merged, sess_a, sess_b
 
@@ -491,7 +691,15 @@ def test_node_edge_trace_reextract_calls_from_llm_log(tmp_path):
     _, merged, _, _ = _make_merge_sessions(tmp_path)
     # Write an llm.log with a pass2/reextract call
     (merged / "llm.log").write_text(
-        json.dumps({"context": "pass2 reextract chunk 1", "input_tokens": 100, "output_tokens": 50, "duration_s": 2.0}) + "\n"
+        json.dumps(
+            {
+                "context": "pass2 reextract chunk 1",
+                "input_tokens": 100,
+                "output_tokens": 50,
+                "duration_s": 2.0,
+            }
+        )
+        + "\n"
     )
     result = _section_node_edge_trace(merged)
     assert result is not None
@@ -620,7 +828,10 @@ def test_extraction_summary_includes_name_normalization_when_present(tmp_path):
     (session / "intermediate").mkdir(parents=True)
     _write(
         session / "intermediate" / "name_normalization.json",
-        {"metadata": {"aliases_mapped": 5}, "mappings": {"Person": {"Bob": "Alice"}, "Org": {"Corp": "Company"}}},
+        {
+            "metadata": {"aliases_mapped": 5},
+            "mappings": {"Person": {"Bob": "Alice"}, "Org": {"Corp": "Company"}},
+        },
     )
     result = _section_extraction_summary(session, [], {})
     assert "Name normalization" in result
@@ -641,7 +852,11 @@ def test_extraction_summary_includes_dedup_counts_from_merge_log(tmp_path):
     (session / "intermediate").mkdir(parents=True)
     _write(
         session / "intermediate" / "merge_log.json",
-        [{"event": "node_merge", "id": "x"}, {"event": "node_merge", "id": "y"}, {"event": "edge_merge", "id": "e1"}],
+        [
+            {"event": "node_merge", "id": "x"},
+            {"event": "node_merge", "id": "y"},
+            {"event": "edge_merge", "id": "e1"},
+        ],
     )
     result = _section_extraction_summary(session, [], {})
     assert "Deduplication" in result
@@ -654,9 +869,24 @@ def test_extraction_summary_retry_rate_shown_when_chunks_dispatched(tmp_path):
     (session / "intermediate").mkdir(parents=True)
     # Simulate log lines with chunk dispatch and a retry
     log_lines = [
-        {"ts": "10:00:01", "level": "INFO", "logger": "mykg.pass2", "message": "Processing chunk 1/5"},
-        {"ts": "10:00:02", "level": "INFO", "logger": "mykg.pass2", "message": "Processing chunk 2/5"},
-        {"ts": "10:00:03", "level": "WARNING", "logger": "mykg.pass2", "message": "chunk 1 — JSON parse error — retrying"},
+        {
+            "ts": "10:00:01",
+            "level": "INFO",
+            "logger": "mykg.pass2",
+            "message": "Processing chunk 1/5",
+        },
+        {
+            "ts": "10:00:02",
+            "level": "INFO",
+            "logger": "mykg.pass2",
+            "message": "Processing chunk 2/5",
+        },
+        {
+            "ts": "10:00:03",
+            "level": "WARNING",
+            "logger": "mykg.pass2",
+            "message": "chunk 1 — JSON parse error — retrying",
+        },
     ]
     result = _section_extraction_summary(session, log_lines, {})
     assert "Retry rate" in result

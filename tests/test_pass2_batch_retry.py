@@ -1,4 +1,5 @@
 """Tests for in-run retry of failed batches in run_pass2_batched."""
+
 import unittest.mock as mock
 from unittest.mock import MagicMock
 
@@ -12,20 +13,26 @@ def test_failed_batches_are_retried():
         "a.md": "# A\ncontent about Alice",
         "b.md": "# B\ncontent about Bob",
     }
-    schema = {"concepts": [{"type": "Person", "attributes": ["name"], "parent": None}], "properties": []}
+    schema = {
+        "concepts": [{"type": "Person", "attributes": ["name"], "parent": None}],
+        "properties": [],
+    }
     flat = {"Person": ["name"]}
 
     extract_calls = []
 
     def counting_extract(batch, *args, **kwargs):
         extract_calls.append(len(batch))
-        if len(extract_calls) <= 2:   # first round: both batches fail
+        if len(extract_calls) <= 2:  # first round: both batches fail
             raise RuntimeError("simulated timeout")
         return {"nodes": [], "edges": []}  # retry succeeds
 
     with mock.patch.object(p2_mod, "_extract_batch", side_effect=counting_extract):
         results, _, _, _ = run_pass2_batched(
-            files, schema, flat, MagicMock(),
+            files,
+            schema,
+            flat,
+            MagicMock(),
             batch_token_target=8,  # small enough to force one file per batch
             batch_retry_max=1,
             max_workers=2,
@@ -53,7 +60,10 @@ def test_retry_disabled_when_batch_retry_max_is_zero():
 
     with mock.patch.object(p2_mod, "_extract_batch", side_effect=always_fail):
         run_pass2_batched(
-            files, schema, flat, MagicMock(),
+            files,
+            schema,
+            flat,
+            MagicMock(),
             batch_token_target=100_000,
             batch_retry_max=0,
             max_workers=1,
@@ -78,11 +88,16 @@ def test_retry_runs_n_rounds_per_batch_retry_max():
 
     with mock.patch.object(p2_mod, "_extract_batch", side_effect=fail_twice_then_succeed):
         results, _, _, _ = run_pass2_batched(
-            files, schema, flat, MagicMock(),
+            files,
+            schema,
+            flat,
+            MagicMock(),
             batch_token_target=100_000,
             batch_retry_max=2,
             max_workers=1,
         )
 
-    assert len(extract_calls) == 3, f"Expected 3 calls (1 initial + 2 retries) but got {len(extract_calls)}"
+    assert len(extract_calls) == 3, (
+        f"Expected 3 calls (1 initial + 2 retries) but got {len(extract_calls)}"
+    )
     assert "a.md" in results

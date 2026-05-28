@@ -4,6 +4,7 @@ Focuses on the SchemaUpdatedError restart loop (lines 135–212) and other
 exception paths that are not exercised by the integration tests in
 test_merge_pipeline.py.
 """
+
 from __future__ import annotations
 
 import json
@@ -18,10 +19,10 @@ from mykg.merge_pipeline import MERGE_STEPS
 from mykg.merge_run import _MERGE_SCHEMA_RESTART_INVALIDATE, _log_merge_advisory, run_merge
 from mykg.orchestrator import PipelineHaltError, SchemaUpdatedError, Step
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 def _make_ctx(tmp_path: Path, review: bool = False) -> MergeContext:
     intermediate = tmp_path / "intermediate"
@@ -69,6 +70,7 @@ def _schema_updated_error(
 # Test: SchemaUpdatedError restart loop — outputs invalidated
 # ---------------------------------------------------------------------------
 
+
 def test_run_merge_schema_restart_invalidates_outputs(tmp_path):
     """SchemaUpdatedError on orphan_connect causes outputs in
     _MERGE_SCHEMA_RESTART_INVALIDATE to be deleted."""
@@ -108,7 +110,9 @@ def test_run_merge_schema_restart_regenerates_schema_ttl(tmp_path):
 
     schema = {
         "concepts": [{"type": "Person", "parent": None, "attributes": ["name"]}],
-        "properties": [{"name": "new_prop", "domain": "Person", "range": "Person", "attributes": []}],
+        "properties": [
+            {"name": "new_prop", "domain": "Person", "range": "Person", "attributes": []}
+        ],
     }
     (ctx.intermediate_dir / "schema.json").write_text(json.dumps(schema))
     ttl_path = ctx.intermediate_dir / "schema.ttl"
@@ -259,6 +263,7 @@ def test_run_merge_schema_restart_increments_restart_count(tmp_path):
 # Test: schema_hints populated from gap_orphans
 # ---------------------------------------------------------------------------
 
+
 def test_run_merge_sets_schema_hints_on_restart(tmp_path):
     """ctx.schema_hints is populated with orphan data from gap_orphans on SchemaUpdatedError."""
     ctx = _make_ctx(tmp_path)
@@ -306,6 +311,7 @@ def test_run_merge_sets_schema_hints_on_restart(tmp_path):
 # Test: restart limit reached
 # ---------------------------------------------------------------------------
 
+
 def test_run_merge_schema_restart_limit_reached_continues(tmp_path):
     """When schema_restart_count >= MERGE_ORPHAN_SCHEMA_MAX_RESTARTS,
     a warning is logged and the pipeline continues (no exception raised)."""
@@ -337,6 +343,7 @@ def test_run_merge_schema_restart_limit_reached_continues(tmp_path):
 # Test: _log_merge_advisory — fallback hint for unknown step
 # ---------------------------------------------------------------------------
 
+
 def test_run_merge_hint_for_unknown_step_in_advisory(tmp_path):
     """_log_merge_advisory uses a fallback message for unknown step names."""
     ctx = _make_ctx(tmp_path)
@@ -356,6 +363,7 @@ def test_run_merge_hint_for_unknown_step_in_advisory(tmp_path):
 # ---------------------------------------------------------------------------
 # Test: blocking step failure → PipelineHaltError
 # ---------------------------------------------------------------------------
+
 
 def test_run_merge_halt_error_raised_on_blocking_step_failure(tmp_path):
     """A blocking step that fails after all retries raises PipelineHaltError."""
@@ -377,6 +385,7 @@ def test_run_merge_halt_error_raised_on_blocking_step_failure(tmp_path):
 # Test: _log_merge_advisory called on step failure
 # ---------------------------------------------------------------------------
 
+
 def test_run_merge_log_advisory_called_on_step_failure(tmp_path):
     """_log_merge_advisory is invoked when a blocking step fails after all retries."""
     ctx = _make_ctx(tmp_path)
@@ -396,6 +405,7 @@ def test_run_merge_log_advisory_called_on_step_failure(tmp_path):
 # ---------------------------------------------------------------------------
 # Test: non-blocking step continues after failure
 # ---------------------------------------------------------------------------
+
 
 def test_run_merge_non_blocking_step_continues_after_failure(tmp_path):
     """A non-blocking step failure logs a warning but does not halt the pipeline."""
@@ -428,6 +438,7 @@ def test_run_merge_non_blocking_step_continues_after_failure(tmp_path):
 # ---------------------------------------------------------------------------
 # Test: KeyboardInterrupt — state saved as failed before re-raise
 # ---------------------------------------------------------------------------
+
 
 def test_run_merge_keyboard_interrupt_saved_to_state(tmp_path):
     """KeyboardInterrupt during a step saves the step as failed before re-raising."""

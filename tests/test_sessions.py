@@ -68,7 +68,9 @@ def sessions_root(tmp_path, monkeypatch):
 _SHARD_DIRS = ("raw_extractions_shards", "chunk_index_shards")
 
 
-def _populate_step_files(steps, intermediate_dir: Path, output_dir: Path, *, extras: list[str] | None = None) -> None:
+def _populate_step_files(
+    steps, intermediate_dir: Path, output_dir: Path, *, extras: list[str] | None = None
+) -> None:
     """Write a placeholder file for every step output, create shard dirs, and write the approval flag.
 
     extras: additional filenames written into intermediate_dir (e.g. pass2_concat_map.json).
@@ -85,7 +87,7 @@ def _populate_step_files(steps, intermediate_dir: Path, output_dir: Path, *, ext
 
     (intermediate_dir / "schema_approved.flag").write_text("approved")
 
-    for fname in (extras or []):
+    for fname in extras or []:
         (intermediate_dir / fname).write_text("{}")
 
 
@@ -186,8 +188,8 @@ def test_extract_auto_creates_session(tmp_path, input_dir, monkeypatch):
     import mykg.config as cfg_mod
 
     monkeypatch.setattr(cfg_mod, "SESSIONS_DIR", str(tmp_path / "sessions"))
-    monkeypatch.setattr(cli_mod, "run", lambda steps, ctx: None)
-    monkeypatch.setattr(cli_mod, "load_adapter", lambda **kw: MagicMock())
+    monkeypatch.setattr("mykg.orchestrator.run", lambda steps, ctx: None)
+    monkeypatch.setattr("mykg.llm.config.load_adapter", lambda **kw: MagicMock())
 
     (input_dir / "doc.md").write_text("test")
 
@@ -217,8 +219,8 @@ def test_extract_log_file_placed_in_session(tmp_path, input_dir, monkeypatch):
     import mykg.config as cfg_mod
 
     monkeypatch.setattr(cfg_mod, "SESSIONS_DIR", str(tmp_path / "sessions"))
-    monkeypatch.setattr(cli_mod, "run", lambda steps, ctx: None)
-    monkeypatch.setattr(cli_mod, "load_adapter", lambda **kw: MagicMock())
+    monkeypatch.setattr("mykg.orchestrator.run", lambda steps, ctx: None)
+    monkeypatch.setattr("mykg.llm.config.load_adapter", lambda **kw: MagicMock())
 
     (input_dir / "doc.md").write_text("test")
 
@@ -254,8 +256,8 @@ def test_extract_session_uses_existing_dirs(tmp_path, input_dir, monkeypatch):
         captured["output_dir"] = ctx.output_dir
         captured["intermediate_dir"] = ctx.intermediate_dir
 
-    monkeypatch.setattr(cli_mod, "run", fake_run)
-    monkeypatch.setattr(cli_mod, "load_adapter", lambda **kw: MagicMock())
+    monkeypatch.setattr("mykg.orchestrator.run", fake_run)
+    monkeypatch.setattr("mykg.llm.config.load_adapter", lambda **kw: MagicMock())
 
     runner = CliRunner()
     result = runner.invoke(
@@ -278,7 +280,7 @@ def test_extract_session_nonexistent_raises(tmp_path, input_dir, monkeypatch):
     import mykg.config as cfg_mod
 
     monkeypatch.setattr(cfg_mod, "SESSIONS_DIR", str(tmp_path / "sessions"))
-    monkeypatch.setattr(cli_mod, "load_adapter", lambda **kw: MagicMock())
+    monkeypatch.setattr("mykg.llm.config.load_adapter", lambda **kw: MagicMock())
 
     runner = CliRunner()
     result = runner.invoke(cli_mod.cli, ["extract-graph", str(input_dir), "--session", "ghost"])
@@ -303,7 +305,7 @@ def test_extract_session_with_output_dir_raises(tmp_path, input_dir, monkeypatch
     (sess / "intermediate").mkdir(parents=True)
     (sess / "output").mkdir(parents=True)
 
-    monkeypatch.setattr(cli_mod, "load_adapter", lambda **kw: MagicMock())
+    monkeypatch.setattr("mykg.llm.config.load_adapter", lambda **kw: MagicMock())
 
     runner = CliRunner()
     result = runner.invoke(
@@ -338,8 +340,8 @@ def test_extract_session_refreshes_input_copy(tmp_path, input_dir, monkeypatch):
     (sess / "output").mkdir(parents=True)
     (sess / "input").mkdir(parents=True)
 
-    monkeypatch.setattr(cli_mod, "run", lambda steps, ctx: None)
-    monkeypatch.setattr(cli_mod, "load_adapter", lambda **kw: MagicMock())
+    monkeypatch.setattr("mykg.orchestrator.run", lambda steps, ctx: None)
+    monkeypatch.setattr("mykg.llm.config.load_adapter", lambda **kw: MagicMock())
 
     (input_dir / "new_doc.md").write_text("new content")
 
@@ -596,7 +598,7 @@ def test_merge_graphs_creates_merged_session_folder(sessions_root, monkeypatch):
     (sessions_root / "sess-b").mkdir()
 
     fake_run_merge = MagicMock()
-    monkeypatch.setattr(cli_mod, "load_adapter", lambda **kw: MagicMock())
+    monkeypatch.setattr("mykg.llm.config.load_adapter", lambda **kw: MagicMock())
     monkeypatch.setattr(merge_orch_mod, "run_merge_graphs", fake_run_merge)
 
     runner = CliRunner()
@@ -613,7 +615,7 @@ def test_merge_graphs_with_named_output_session(sessions_root, monkeypatch):
     (sessions_root / "sess-b").mkdir()
 
     fake_run_merge = MagicMock()
-    monkeypatch.setattr(cli_mod, "load_adapter", lambda **kw: MagicMock())
+    monkeypatch.setattr("mykg.llm.config.load_adapter", lambda **kw: MagicMock())
     monkeypatch.setattr(merge_orch_mod, "run_merge_graphs", fake_run_merge)
 
     runner = CliRunner()
@@ -634,7 +636,7 @@ def test_approve_schema_via_session_option(sessions_root, monkeypatch):
     import mykg.cli as cli_mod
     import mykg.exporter as exp_mod
 
-    inter = (sessions_root / "my-session" / "intermediate")
+    inter = sessions_root / "my-session" / "intermediate"
     inter.mkdir(parents=True)
     (inter / "schema.json").write_text(json.dumps(_minimal_schema()))
     monkeypatch.setattr(
@@ -654,7 +656,7 @@ def test_approve_schema_generates_ttl_and_flag(sessions_root, monkeypatch):
     import mykg.cli as cli_mod
     import mykg.exporter as exp_mod
 
-    inter = (sessions_root / "gen-session" / "intermediate")
+    inter = sessions_root / "gen-session" / "intermediate"
     inter.mkdir(parents=True)
     (inter / "schema.json").write_text(json.dumps(_minimal_schema()))
     monkeypatch.setattr(

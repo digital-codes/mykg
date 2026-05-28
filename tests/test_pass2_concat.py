@@ -1,8 +1,10 @@
 from mykg.pass2_concat import build_concat_batches, make_virtual_files
 
 # A single ASCII word is roughly 1 token with cl100k_base, so "word " * N ≈ N tokens.
-SMALL = "word " * 20   # ~21 tokens — well below any reasonable target
-LARGE = "word " * 2200  # ~2201 tokens — safely above the 2000-token pass-through threshold used in tests
+SMALL = "word " * 20  # ~21 tokens — well below any reasonable target
+LARGE = (
+    "word " * 2200
+)  # ~2201 tokens — safely above the 2000-token pass-through threshold used in tests
 
 
 # ---------------------------------------------------------------------------
@@ -135,7 +137,9 @@ def test_entry_has_token_metadata():
 def test_make_virtual_files_single_file_unchanged():
     """A single-file concat entry passes content through without any delimiters."""
     fc = {"note.md": "Hello world"}
-    concat_map = {"note.md": {"files": ["note.md"], "file_tokens": {"note.md": 2}, "total_tokens": 2}}
+    concat_map = {
+        "note.md": {"files": ["note.md"], "file_tokens": {"note.md": 2}, "total_tokens": 2}
+    }
     result = make_virtual_files(fc, concat_map)
     assert result == {"note.md": "Hello world"}
 

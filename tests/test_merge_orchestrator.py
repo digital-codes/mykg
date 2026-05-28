@@ -157,7 +157,9 @@ def test_run_merge_deduplicates_same_node(tmp_path):
     }
     _, intermediate_dir = _run(tmp_path, raw_a=raw_a, raw_b=raw_b)
     nodes = json.loads((intermediate_dir / "nodes.json").read_text())
-    alice_nodes = [n for n in nodes if n.get("attributes", {}).get("name", {}).get("value") == "Alice"]
+    alice_nodes = [
+        n for n in nodes if n.get("attributes", {}).get("name", {}).get("value") == "Alice"
+    ]
     assert len(alice_nodes) == 1
 
 

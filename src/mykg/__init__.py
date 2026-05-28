@@ -8,6 +8,7 @@ def __getattr__(name: str):
         import mykg.llm.config as _llm_cfg
         import mykg.orchestrator as _orch
         import mykg.pipeline as _pipe
+
         globals()["load_adapter"] = _llm_cfg.load_adapter
         globals()["PipelineContext"] = _orch.PipelineContext
         globals()["run"] = _orch.run

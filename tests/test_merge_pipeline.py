@@ -84,7 +84,9 @@ def _make_session(sessions_root: Path, name: str, schema: dict, raw: dict) -> Pa
     return session_root
 
 
-def _make_ctx(tmp_path: Path, schema_a=None, schema_b=None, raw_a=None, raw_b=None) -> tuple[MergeContext, Path, Path]:
+def _make_ctx(
+    tmp_path: Path, schema_a=None, schema_b=None, raw_a=None, raw_b=None
+) -> tuple[MergeContext, Path, Path]:
     sessions_root = tmp_path / "sessions"
     _make_session(sessions_root, "sess-a", schema_a or _SCHEMA_A, raw_a or _RAW_A)
     _make_session(sessions_root, "sess-b", schema_b or _SCHEMA_B, raw_b or _RAW_B)
@@ -112,6 +114,7 @@ def _make_ctx(tmp_path: Path, schema_a=None, schema_b=None, raw_a=None, raw_b=No
 # ---------------------------------------------------------------------------
 # Structural tests
 # ---------------------------------------------------------------------------
+
 
 def test_merge_steps_ordered():
     names = [s.name for s in MERGE_STEPS]
@@ -155,6 +158,7 @@ def test_merge_steps_llm_flags():
 # ---------------------------------------------------------------------------
 # Integration tests (run_merge end-to-end with no LLM adapter)
 # ---------------------------------------------------------------------------
+
 
 def test_run_merge_creates_output_files(tmp_path):
     ctx, output_dir, _ = _make_ctx(tmp_path)
@@ -214,12 +218,40 @@ def test_run_merge_manifest_written(tmp_path):
 
 
 def test_run_merge_deduplicates_same_node(tmp_path):
-    raw_a = {"file_a.md": {"nodes": [{"id": "person-alice", "type": "Person", "confidence": 0.9, "attributes": {"name": {"value": "Alice", "confidence": 0.9}}, "source_files": ["file_a.md"]}], "edges": []}}
-    raw_b = {"file_b.md": {"nodes": [{"id": "person-alice", "type": "Person", "confidence": 0.8, "attributes": {"name": {"value": "Alice", "confidence": 0.8}}, "source_files": ["file_b.md"]}], "edges": []}}
+    raw_a = {
+        "file_a.md": {
+            "nodes": [
+                {
+                    "id": "person-alice",
+                    "type": "Person",
+                    "confidence": 0.9,
+                    "attributes": {"name": {"value": "Alice", "confidence": 0.9}},
+                    "source_files": ["file_a.md"],
+                }
+            ],
+            "edges": [],
+        }
+    }
+    raw_b = {
+        "file_b.md": {
+            "nodes": [
+                {
+                    "id": "person-alice",
+                    "type": "Person",
+                    "confidence": 0.8,
+                    "attributes": {"name": {"value": "Alice", "confidence": 0.8}},
+                    "source_files": ["file_b.md"],
+                }
+            ],
+            "edges": [],
+        }
+    }
     ctx, _, intermediate_dir = _make_ctx(tmp_path, raw_a=raw_a, raw_b=raw_b)
     run_merge(ctx)
     nodes = json.loads((intermediate_dir / "nodes.json").read_text())
-    alice_nodes = [n for n in nodes if n.get("attributes", {}).get("name", {}).get("value") == "Alice"]
+    alice_nodes = [
+        n for n in nodes if n.get("attributes", {}).get("name", {}).get("value") == "Alice"
+    ]
     assert len(alice_nodes) == 1
 
 
@@ -238,19 +270,23 @@ def test_run_merge_resumable_skips_done_steps(tmp_path):
     run_merge(ctx)
 
     # Re-build ctx pointing at same dirs and run again
-    ctx2, _, _ = _make_ctx.__wrapped__(tmp_path) if hasattr(_make_ctx, "__wrapped__") else (
-        MergeContext(
-            session_a_name="sess-a",
-            session_b_name="sess-b",
-            sessions_root=tmp_path / "sessions",
-            input_dir=tmp_path / "sessions",
-            output_dir=tmp_path / "merged" / "output",
-            intermediate_dir=tmp_path / "merged" / "intermediate",
-            adapter=None,
-            review=False,
-        ),
-        tmp_path / "merged" / "output",
-        tmp_path / "merged" / "intermediate",
+    ctx2, _, _ = (
+        _make_ctx.__wrapped__(tmp_path)
+        if hasattr(_make_ctx, "__wrapped__")
+        else (
+            MergeContext(
+                session_a_name="sess-a",
+                session_b_name="sess-b",
+                sessions_root=tmp_path / "sessions",
+                input_dir=tmp_path / "sessions",
+                output_dir=tmp_path / "merged" / "output",
+                intermediate_dir=tmp_path / "merged" / "intermediate",
+                adapter=None,
+                review=False,
+            ),
+            tmp_path / "merged" / "output",
+            tmp_path / "merged" / "intermediate",
+        )
     )
     run_merge(ctx2)
 
@@ -261,9 +297,11 @@ def test_run_merge_resumable_skips_done_steps(tmp_path):
         allowed = {"done", "failed"} if step.name in _NON_BLOCKING_STEPS else {"done"}
         assert status in allowed, f"Step {step.name!r} expected status in {allowed}, got {status!r}"
 
+
 # ---------------------------------------------------------------------------
 # chunk_node_index tests
 # ---------------------------------------------------------------------------
+
 
 def _add_chunk_index_shards(sessions_root: Path, session_name: str, shards: list[dict]) -> None:
     """Write chunk_index_shards into a session's intermediate directory."""
@@ -281,12 +319,20 @@ def test_merge_raw_writes_chunk_node_index(tmp_path):
     _make_session(sessions_root, "sess-b", _SCHEMA_B, _RAW_B)
 
     # Add chunk index shards to each session
-    _add_chunk_index_shards(sessions_root, "sess-a", [
-        {"_fname": "file_a.md", "data": {"0": ["person-alice"]}},
-    ])
-    _add_chunk_index_shards(sessions_root, "sess-b", [
-        {"_fname": "file_b.md", "data": {"0": ["person-bob"], "1": ["person-charlie"]}},
-    ])
+    _add_chunk_index_shards(
+        sessions_root,
+        "sess-a",
+        [
+            {"_fname": "file_a.md", "data": {"0": ["person-alice"]}},
+        ],
+    )
+    _add_chunk_index_shards(
+        sessions_root,
+        "sess-b",
+        [
+            {"_fname": "file_b.md", "data": {"0": ["person-bob"], "1": ["person-charlie"]}},
+        ],
+    )
 
     merged_root = tmp_path / "merged"
     output_dir = merged_root / "output"

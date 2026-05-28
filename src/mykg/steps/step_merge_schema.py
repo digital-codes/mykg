@@ -18,8 +18,7 @@ def run_merge_schema(ctx: MergeContext) -> None:
     """
     if ctx.session_a is None or ctx.session_b is None:
         raise RuntimeError(
-            "merge_schema requires session_a and session_b on context — "
-            "run merge_setup first"
+            "merge_schema requires session_a and session_b on context — run merge_setup first"
         )
 
     locked_classes: dict = {}

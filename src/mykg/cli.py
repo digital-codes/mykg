@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 
 def _cfg():
     from mykg import config
+
     return config
 
 
@@ -91,8 +92,14 @@ _PROFILE_META = {
 @cli.command("init")
 @click.option("--force", is_flag=True, help="Overwrite existing mykg_config.yaml")
 @click.option("--profile", default=None, help="LLM profile to activate (skips interactive prompt)")
-@click.option("--model", default=None, help="Model name to set in the active profile (skips interactive prompt)")
-@click.option("--api-key", default=None, help="API key to write to .env.mykg (skips interactive prompt)")
+@click.option(
+    "--model",
+    default=None,
+    help="Model name to set in the active profile (skips interactive prompt)",
+)
+@click.option(
+    "--api-key", default=None, help="API key to write to .env.mykg (skips interactive prompt)"
+)
 def init_config(force: bool, profile: str | None, model: str | None, api_key: str | None) -> None:
     """Create mykg_config.yaml and optionally configure LLM provider, model, and API key."""
     dest = Path.cwd() / "mykg_config.yaml"
@@ -127,7 +134,7 @@ def init_config(force: bool, profile: str | None, model: str | None, api_key: st
     if model is None:
         default_model = meta["default_model"]
         model_input = click.prompt(
-            f"Model name (press Enter for default)",
+            "Model name (press Enter for default)",
             default=default_model,
             show_default=True,
         ).strip()
@@ -135,6 +142,7 @@ def init_config(force: bool, profile: str | None, model: str | None, api_key: st
 
     # --- Write mykg_config.yaml with selected profile and optional model -
     import re
+
     template = Path(__file__).parent / "data" / "mykg_config.yaml"
     content = template.read_text()
     content = re.sub(r"^profile:.*$", f"profile: {profile}", content, count=1, flags=re.MULTILINE)
@@ -157,8 +165,8 @@ def init_config(force: bool, profile: str | None, model: str | None, api_key: st
     existing_key = None
     if env_file.exists():
         for line in env_file.read_text().splitlines():
-            if line.startswith(f"{var}=") and line[len(var) + 1:].strip():
-                existing_key = line[len(var) + 1:].strip()
+            if line.startswith(f"{var}=") and line[len(var) + 1 :].strip():
+                existing_key = line[len(var) + 1 :].strip()
                 break
 
     if existing_key:
@@ -186,6 +194,7 @@ def init_config(force: bool, profile: str | None, model: str | None, api_key: st
 def _patch_profile_model(content: str, profile: str, model: str) -> str:
     """Replace the model: line inside a specific profile block in the YAML text."""
     import re
+
     # Find the profile block start, then replace the first `      model:` line within it.
     # Profile blocks are indented with two spaces; llm.model is indented with six.
     profile_pattern = re.compile(
@@ -216,7 +225,9 @@ def _print_next_steps(profile: str) -> None:
     if profile == "ollama-local":
         click.echo("  (make sure Ollama is running: ollama serve)")
     elif profile == "claude-cli":
-        click.echo("  (make sure the claude CLI is installed: npm install -g @anthropic-ai/claude-code)")
+        click.echo(
+            "  (make sure the claude CLI is installed: npm install -g @anthropic-ai/claude-code)"
+        )
 
 
 @cli.command("extract-graph")
@@ -247,8 +258,8 @@ def _print_next_steps(profile: str) -> None:
     "--from-step",
     default=None,
     help="Force re-run from this step. Use 'orphan_connect_fullsweep' for a full clean "
-         "sweep (deletes prior orphan_connections.json) or 'orphan_connect_incremental' "
-         "to preserve it and only re-send unresolved groups to the LLM.",
+    "sweep (deletes prior orphan_connections.json) or 'orphan_connect_incremental' "
+    "to preserve it and only re-send unresolved groups to the LLM.",
 )
 @click.option(
     "--workers",
@@ -364,11 +375,14 @@ def extract_graph(
 
     if obsidian_vault:
         import mykg.config as _config_mod
+
         _config_mod.OBSIDIAN_ENABLED = True
 
     from mykg.llm.error_gate import ErrorGate
 
-    error_gate = ErrorGate(threshold=_cfg().ERROR_GATE_THRESHOLD) if _cfg().ERROR_GATE_ENABLED else None
+    error_gate = (
+        ErrorGate(threshold=_cfg().ERROR_GATE_THRESHOLD) if _cfg().ERROR_GATE_ENABLED else None
+    )
     adapter = load_adapter(error_gate=error_gate)
     logging.getLogger(__name__).info("LLM endpoint: %s", adapter.endpoint_label())
 
@@ -421,6 +435,7 @@ def extract_graph(
 def approve_schema(intermediate_dir, log_file, verbose, session):
     """Regenerate schema.ttl from schema.json and write the approval flag."""
     from mykg.logging import setup
+
     setup(log_file=log_file, verbose=verbose)
 
     if session and intermediate_dir is not None:
@@ -443,7 +458,9 @@ def approve_schema(intermediate_dir, log_file, verbose, session):
 
     flag = Path(intermediate_dir) / "schema_approved.flag"
     flag.write_text("approved")
-    click.echo("Schema approved. schema.ttl regenerated. Resume with the original extract-graph command.")
+    click.echo(
+        "Schema approved. schema.ttl regenerated. Resume with the original extract-graph command."
+    )
 
 
 @cli.command("walkthrough")
@@ -497,7 +514,7 @@ def walkthrough_cmd(session_name: str, log_file: str | None) -> None:
     "--from-step",
     default=None,
     help="Force re-run from this merge step (e.g. orphan_score, orphan_connect). "
-         "Requires --output-session targeting an existing merged session.",
+    "Requires --output-session targeting an existing merged session.",
 )
 def merge_graphs(
     session_a, session_b, output_session, thesaurus, base_schema, log_file, verbose, from_step
@@ -543,6 +560,7 @@ def merge_graphs(
 
     from mykg.llm.config import load_adapter
     from mykg.logging import setup
+
     setup(log_file=log_file, verbose=verbose)
 
     if from_step:
@@ -592,7 +610,7 @@ def merge_graphs(
 # Aliases for --from-step that encode the orphan-connect sweep mode.
 # Maps alias → (real_step_name, orphan_incremental)
 _FROM_STEP_ALIASES: dict[str, tuple[str, bool]] = {
-    "orphan_connect_fullsweep":   ("orphan_connect", False),
+    "orphan_connect_fullsweep": ("orphan_connect", False),
     "orphan_connect_incremental": ("orphan_connect", True),
 }
 
@@ -662,7 +680,9 @@ def _delete_from_step(
     # obsidian_vault/ is written by validate_graph but not tracked in Step.outputs
     # (it is optional; omitting it prevents _is_done from breaking when disabled).
     # Delete it when re-running from validate_graph or any earlier step.
-    validate_graph_idx = step_names.index("validate_graph") if "validate_graph" in step_names else -1
+    validate_graph_idx = (
+        step_names.index("validate_graph") if "validate_graph" in step_names else -1
+    )
     if validate_graph_idx >= 0 and idx <= validate_graph_idx:
         obsidian_path = output_dir / _cfg().OBSIDIAN_VAULT_DIR
         if obsidian_path.exists():
@@ -702,7 +722,9 @@ def _delete_merge_from_step(
 
     # Shard directories must be cleared when re-running from merge_reextract or
     # earlier, otherwise existing shards are reused and the step is silently skipped.
-    merge_reextract_idx = step_names.index("merge_reextract") if "merge_reextract" in step_names else -1
+    merge_reextract_idx = (
+        step_names.index("merge_reextract") if "merge_reextract" in step_names else -1
+    )
     if merge_reextract_idx >= 0 and idx <= merge_reextract_idx:
         for shard_dir_name in ("raw_extractions_shards", "chunk_index_shards"):
             shard_path = intermediate_dir / shard_dir_name

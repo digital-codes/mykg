@@ -368,7 +368,9 @@ def test_merge_proposals_skips_non_dict_property():
 
 _SESSION_SCHEMAS = [
     {
-        "concepts": [{"type": "Document", "parent": None, "attributes": ["name", "date", "subject"]}],
+        "concepts": [
+            {"type": "Document", "parent": None, "attributes": ["name", "date", "subject"]}
+        ],
         "properties": [],
     },
     {
@@ -379,7 +381,11 @@ _SESSION_SCHEMAS = [
 
 _MERGED_SCHEMA_FOR_MERGE = {
     "concepts": [
-        {"type": "Document", "parent": None, "attributes": ["name", "date", "subject", "document_type"]}
+        {
+            "type": "Document",
+            "parent": None,
+            "attributes": ["name", "date", "subject", "document_type"],
+        }
     ],
     "properties": [],
 }
@@ -494,7 +500,10 @@ def test_review_schema_quality_rejects_drastic_reduction():
     """review_schema_quality must fall back when LLM drops >50% of concepts."""
     adapter = MagicMock()
     # 1 concept out of 4 original is 25% — below the 50% floor
-    tiny = {"concepts": [{"type": "Person", "parent": None, "attributes": ["name"]}], "properties": []}
+    tiny = {
+        "concepts": [{"type": "Person", "parent": None, "attributes": ["name"]}],
+        "properties": [],
+    }
     adapter.complete.return_value = json.dumps(tiny)
     result = review_schema_quality(_MULTI_CONCEPT_SCHEMA, adapter)
     assert result is _MULTI_CONCEPT_SCHEMA
@@ -538,7 +547,10 @@ def test_review_quality_for_merge_rejects_empty_concepts():
 def test_review_quality_for_merge_rejects_drastic_reduction():
     """review_schema_quality_for_merge must fall back when LLM drops >50% of concepts."""
     adapter = MagicMock()
-    tiny = {"concepts": [{"type": "Person", "parent": None, "attributes": ["name"]}], "properties": []}
+    tiny = {
+        "concepts": [{"type": "Person", "parent": None, "attributes": ["name"]}],
+        "properties": [],
+    }
     adapter.complete.return_value = json.dumps(tiny)
     result = review_schema_quality_for_merge(_MULTI_CONCEPT_SCHEMA, adapter)
     assert result is _MULTI_CONCEPT_SCHEMA

@@ -26,9 +26,9 @@ class MergeContext(PipelineContext):
     sessions_root: Path
 
     # Runtime fields populated by merge steps
-    session_a: Any | None = None        # SessionData from merger.load_session
-    session_b: Any | None = None        # SessionData from merger.load_session
-    source_map: dict | None = None      # written by merge_setup
+    session_a: Any | None = None  # SessionData from merger.load_session
+    session_b: Any | None = None  # SessionData from merger.load_session
+    source_map: dict | None = None  # written by merge_setup
     synonym_log: list = Field(default_factory=list)  # written by merge_schema
     schema_delta_a: list = Field(default_factory=list)  # new props absent from session_a
     schema_delta_b: list = Field(default_factory=list)  # new props absent from session_b

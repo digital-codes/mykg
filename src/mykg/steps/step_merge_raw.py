@@ -22,8 +22,7 @@ def run_merge_raw(ctx: MergeContext) -> None:
     """
     if ctx.session_a is None or ctx.session_b is None:
         log.info(
-            "merge_raw — session_a or session_b not on context (cold re-entry); "
-            "reloading from disk"
+            "merge_raw — session_a or session_b not on context (cold re-entry); reloading from disk"
         )
         ctx.session_a = load_session(ctx.session_a_name, ctx.sessions_root)
         ctx.session_b = load_session(ctx.session_b_name, ctx.sessions_root)
@@ -58,7 +57,9 @@ def run_merge_raw(ctx: MergeContext) -> None:
             try:
                 shard = json.loads(shard_file.read_text(encoding="utf-8"))
             except (json.JSONDecodeError, OSError) as exc:
-                log.warning("merge_raw — could not read chunk index shard %s: %s", shard_file.name, exc)
+                log.warning(
+                    "merge_raw — could not read chunk index shard %s: %s", shard_file.name, exc
+                )
                 continue
             fname = shard.get("_fname")
             data = shard.get("data")

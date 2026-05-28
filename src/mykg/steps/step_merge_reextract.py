@@ -27,16 +27,13 @@ def run_merge_reextract(ctx: MergeContext) -> None:
     """
     if ctx.session_a is None or ctx.session_b is None:
         raise RuntimeError(
-            "merge_reextract requires session_a and session_b on context — "
-            "run merge_setup first"
+            "merge_reextract requires session_a and session_b on context — run merge_setup first"
         )
 
     strategy = _cfg.MERGE_GRAPHS_REEXTRACTION_STRATEGY
     log.info("merge_reextract — strategy=%s", strategy)
 
-    merged_schema = json.loads(
-        (ctx.intermediate_dir / "schema.json").read_text(encoding="utf-8")
-    )
+    merged_schema = json.loads((ctx.intermediate_dir / "schema.json").read_text(encoding="utf-8"))
     flattened = json.loads(
         (ctx.intermediate_dir / "flattened_schema.json").read_text(encoding="utf-8")
     )

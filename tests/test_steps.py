@@ -349,7 +349,9 @@ def test_run_validate_graph_does_not_raise_on_tbox_errors(tmp_path):
         "abox_checks": {"errors": []},
     }
 
-    with patch("mykg.steps.step_validate_graph.validate_knowledge_graph_ttl", return_value=tbox_result):
+    with patch(
+        "mykg.steps.step_validate_graph.validate_knowledge_graph_ttl", return_value=tbox_result
+    ):
         # Should not raise
         run_validate_graph(ctx)
 
@@ -358,8 +360,9 @@ def test_run_validate_graph_does_not_raise_on_tbox_errors(tmp_path):
 
 def test_run_validate_graph_calls_export_obsidian_when_enabled(tmp_path, monkeypatch):
     """run_validate_graph calls export_obsidian when OBSIDIAN_ENABLED is True."""
-    import mykg.config as cfg_mod
     from unittest.mock import patch
+
+    import mykg.config as cfg_mod
 
     monkeypatch.setattr(cfg_mod, "OBSIDIAN_ENABLED", True)
     monkeypatch.setattr(cfg_mod, "OBSIDIAN_VAULT_DIR", "obsidian_vault")
@@ -387,8 +390,9 @@ def test_run_validate_graph_calls_export_obsidian_when_enabled(tmp_path, monkeyp
 
 def test_run_validate_graph_skips_export_obsidian_when_disabled(tmp_path, monkeypatch):
     """run_validate_graph does not call export_obsidian when OBSIDIAN_ENABLED is False."""
-    import mykg.config as cfg_mod
     from unittest.mock import patch
+
+    import mykg.config as cfg_mod
 
     monkeypatch.setattr(cfg_mod, "OBSIDIAN_ENABLED", False)
 

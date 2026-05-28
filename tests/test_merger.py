@@ -161,9 +161,7 @@ def test_merge_schemas_deduplicates_same_concept():
 def test_delta_identifies_new_properties():
     original = {
         "concepts": [],
-        "properties": [
-            {"name": "works_at", "domain": "P", "range": "O", "attributes": []}
-        ],
+        "properties": [{"name": "works_at", "domain": "P", "range": "O", "attributes": []}],
     }
     merged = {
         "concepts": [],
@@ -192,9 +190,7 @@ def test_delta_empty_when_no_new_properties():
 
 def test_reextract_none_returns_unchanged(tmp_path):
     raw = {"session_a/f.md": {"nodes": [], "edges": []}}
-    result = reextract_for_merge(
-        "session_a", tmp_path, raw, {}, {}, tmp_path, None, {}, "none"
-    )
+    result = reextract_for_merge("session_a", tmp_path, raw, {}, {}, tmp_path, None, {}, "none")
     assert result is raw
 
 
@@ -204,11 +200,22 @@ def test_reextract_invalid_strategy_raises(tmp_path):
 
 
 def test_reextract_surgical_no_delta_returns_unchanged(tmp_path):
-    original = {"concepts": [], "properties": [{"name": "p", "domain": "A", "range": "B", "attributes": []}]}
+    original = {
+        "concepts": [],
+        "properties": [{"name": "p", "domain": "A", "range": "B", "attributes": []}],
+    }
     merged = original  # identical → delta is empty
     raw = {"session_a/f.md": {"nodes": [], "edges": []}}
     result = reextract_for_merge(
-        "session_a", tmp_path, raw, merged, {}, tmp_path, None, {}, "surgical",
+        "session_a",
+        tmp_path,
+        raw,
+        merged,
+        {},
+        tmp_path,
+        None,
+        {},
+        "surgical",
         original_schema=original,
     )
     assert result is raw
@@ -228,14 +235,14 @@ def test_reextract_surgical_with_delta_calls_pass2(tmp_path):
     shard_dir.mkdir(parents=True)
     prior_data = {"nodes": [{"id": "person-alice"}], "edges": []}
     shard_content = {"_fname": "session_x/notes.md", "data": prior_data}
-    (shard_dir / "session_x_notes_md.json").write_text(
-        json.dumps(shard_content), encoding="utf-8"
-    )
+    (shard_dir / "session_x_notes_md.json").write_text(json.dumps(shard_content), encoding="utf-8")
 
     original_schema = {"concepts": [], "properties": []}
     merged_schema = {
         "concepts": [],
-        "properties": [{"name": "works_at", "domain": "Person", "range": "Organization", "attributes": []}],
+        "properties": [
+            {"name": "works_at", "domain": "Person", "range": "Organization", "attributes": []}
+        ],
     }
     raw_ns = {"session_x/notes.md": {"nodes": [], "edges": []}}
 
@@ -250,11 +257,22 @@ def test_reextract_surgical_with_delta_calls_pass2(tmp_path):
     new_chunk_result = {}
     failed_result = []
 
-    with patch("mykg.merger.run_pass2", return_value=(new_raw_result, new_chunk_result, failed_result)) as mock_pass2, \
-         patch("mykg.merger.chunk_file", return_value=[MagicMock()]) as _mock_chunk:
+    with (
+        patch(
+            "mykg.merger.run_pass2", return_value=(new_raw_result, new_chunk_result, failed_result)
+        ) as mock_pass2,
+        patch("mykg.merger.chunk_file", return_value=[MagicMock()]) as _mock_chunk,
+    ):
         result = reextract_for_merge(
-            "session_x", session_path, raw_ns, merged_schema, {}, intermediate_dir,
-            mock_adapter, {}, "surgical",
+            "session_x",
+            session_path,
+            raw_ns,
+            merged_schema,
+            {},
+            intermediate_dir,
+            mock_adapter,
+            {},
+            "surgical",
             original_schema=original_schema,
         )
 
@@ -311,7 +329,10 @@ def test_load_session_happy_path(tmp_path):
     sessions_root = tmp_path / "sessions"
     intermediate = sessions_root / "my-session" / "intermediate"
     intermediate.mkdir(parents=True)
-    schema = {"concepts": [{"type": "Person", "parent": None, "attributes": ["name"]}], "properties": []}
+    schema = {
+        "concepts": [{"type": "Person", "parent": None, "attributes": ["name"]}],
+        "properties": [],
+    }
     (intermediate / "schema.json").write_text(json.dumps(schema), encoding="utf-8")
     raw = {"file_a.md": {"nodes": [], "edges": []}}
     (intermediate / "raw_extractions.json").write_text(json.dumps(raw), encoding="utf-8")
@@ -359,10 +380,15 @@ def test_harmonize_merged_schema_uses_merge_specific_functions():
     schema = {"concepts": [], "properties": []}
     proposals = [schema, schema]
     adapter = MagicMock()
-    harmonized = {"concepts": [{"type": "Person", "parent": None, "attributes": ["name"]}], "properties": []}
+    harmonized = {
+        "concepts": [{"type": "Person", "parent": None, "attributes": ["name"]}],
+        "properties": [],
+    }
 
-    with patch("mykg.merger.harmonize_schema_for_merge", return_value=harmonized) as mock_harm, \
-         patch("mykg.merger.review_schema_quality_for_merge", return_value=harmonized) as mock_qual:
+    with (
+        patch("mykg.merger.harmonize_schema_for_merge", return_value=harmonized) as mock_harm,
+        patch("mykg.merger.review_schema_quality_for_merge", return_value=harmonized) as mock_qual,
+    ):
         result = harmonize_merged_schema(schema, proposals, adapter)
 
     mock_harm.assert_called_once_with(schema, proposals, adapter)
@@ -372,8 +398,10 @@ def test_harmonize_merged_schema_uses_merge_specific_functions():
 
 def test_harmonize_merged_schema_skips_llm_when_no_adapter():
     schema = {"concepts": [], "properties": []}
-    with patch("mykg.merger.harmonize_schema_for_merge") as mock_harm, \
-         patch("mykg.merger.review_schema_quality_for_merge") as mock_qual:
+    with (
+        patch("mykg.merger.harmonize_schema_for_merge") as mock_harm,
+        patch("mykg.merger.review_schema_quality_for_merge") as mock_qual,
+    ):
         result = harmonize_merged_schema(schema, [], None)
 
     mock_harm.assert_not_called()
@@ -388,7 +416,9 @@ def test_build_source_map_same_filename(tmp_path):
         intermediate = sessions_root / name / "intermediate"
         intermediate.mkdir(parents=True)
         (intermediate / "schema.json").write_text(json.dumps({"concepts": [], "properties": []}))
-        (intermediate / "raw_extractions.json").write_text(json.dumps({"notes.md": {"nodes": [], "edges": []}}))
+        (intermediate / "raw_extractions.json").write_text(
+            json.dumps({"notes.md": {"nodes": [], "edges": []}})
+        )
         return load_session(name, sessions_root)
 
     sa = _make("sess-a")
@@ -440,18 +470,14 @@ def test_read_prep_mode_active_profile_takes_precedence(tmp_path):
 
 def test_read_prep_mode_key_missing_returns_unknown(tmp_path):
     """When mykg_config.yaml exists but prep_mode key is absent, return 'unknown'."""
-    (tmp_path / "mykg_config.yaml").write_text(
-        "pipeline:\n  pass2: {}\n", encoding="utf-8"
-    )
+    (tmp_path / "mykg_config.yaml").write_text("pipeline:\n  pass2: {}\n", encoding="utf-8")
     result = _read_prep_mode(tmp_path)
     assert result == "unknown"
 
 
 def test_read_prep_mode_invalid_yaml_returns_unknown(tmp_path):
     """When YAML is unparseable, return 'unknown' without raising."""
-    (tmp_path / "mykg_config.yaml").write_text(
-        ":\n  bad: [unterminated\n", encoding="utf-8"
-    )
+    (tmp_path / "mykg_config.yaml").write_text(":\n  bad: [unterminated\n", encoding="utf-8")
     result = _read_prep_mode(tmp_path)
     assert result == "unknown"
 
@@ -494,9 +520,7 @@ def test_load_session_corrupt_manifest_skipped_gracefully(tmp_path):
     """A corrupt file_manifest.json is skipped; manifest stays empty dict."""
     sessions_root = tmp_path / "sessions"
     _, intermediate = _make_minimal_session(sessions_root, "my-session")
-    (intermediate / "file_manifest.json").write_text(
-        "TOTALLY BAD JSON ][", encoding="utf-8"
-    )
+    (intermediate / "file_manifest.json").write_text("TOTALLY BAD JSON ][", encoding="utf-8")
     session = load_session("my-session", sessions_root)
     assert session.manifest == {}
 
@@ -529,9 +553,7 @@ def test_copy_shard_dir_skips_corrupt_shard_continues(tmp_path):
     dst = tmp_path / "dst_shards"
     src.mkdir()
     (src / "bad.json").write_text("NOT JSON {{", encoding="utf-8")
-    (src / "good.json").write_text(
-        json.dumps({"_fname": "good.md", "data": {}}), encoding="utf-8"
-    )
+    (src / "good.json").write_text(json.dumps({"_fname": "good.md", "data": {}}), encoding="utf-8")
 
     _copy_shard_dir(src, dst, "session_a")
 
@@ -562,7 +584,7 @@ def test_copy_shard_dir_long_filename_uses_sha1_hash(tmp_path):
     # Verify it follows the sha1 pattern: session_a_<16hex chars>.json
     assert filename.startswith("session_a_")
     assert filename.endswith(".json")
-    hex_part = filename[len("session_a_"):-len(".json")]
+    hex_part = filename[len("session_a_") : -len(".json")]
     assert len(hex_part) == 16
     assert all(c in "0123456789abcdef" for c in hex_part)
 
@@ -580,9 +602,7 @@ def test_copy_shard_dir_creates_dst_dir(tmp_path):
     src = tmp_path / "src_shards"
     dst = tmp_path / "deep" / "nested" / "dst_shards"
     src.mkdir()
-    (src / "shard.json").write_text(
-        json.dumps({"_fname": "f.md", "data": {}}), encoding="utf-8"
-    )
+    (src / "shard.json").write_text(json.dumps({"_fname": "f.md", "data": {}}), encoding="utf-8")
     _copy_shard_dir(src, dst, "session_a")
     assert dst.is_dir()
 
@@ -633,9 +653,7 @@ def test_namespace_shards_processes_both_subdirs(tmp_path):
     for subdir in ("raw_extractions_shards", "chunk_index_shards"):
         d = tmp_path / subdir
         d.mkdir()
-        (d / "shard.json").write_text(
-            json.dumps({"_fname": "f.md", "data": {}}), encoding="utf-8"
-        )
+        (d / "shard.json").write_text(json.dumps({"_fname": "f.md", "data": {}}), encoding="utf-8")
 
     _namespace_shards(tmp_path, "session_b")
 
@@ -676,7 +694,9 @@ def test_build_targeted_top_k_zero_returns_empty_dict():
         merged_schema=_make_schema_with_props(
             [{"name": "works_at", "domain": "Person", "range": "Organization", "attributes": []}]
         ),
-        prior_extractions={"f.md": {"nodes": [{"id": "person-alice", "type": "Person"}], "edges": []}},
+        prior_extractions={
+            "f.md": {"nodes": [{"id": "person-alice", "type": "Person"}], "edges": []}
+        },
         prior_chunk_index=prior_chunk_index,
         top_k=0,
     )
@@ -727,7 +747,7 @@ def test_build_targeted_normal_selects_top_k_chunks():
     }
     prior_chunk_index = {
         "f.md": {
-            "1": ["person-alice"],       # score=1 for works_at
+            "1": ["person-alice"],  # score=1 for works_at
             "2": ["person-alice", "org-acme"],  # score=2 for works_at — top chunk
         }
     }
@@ -787,15 +807,19 @@ def test_build_targeted_multiple_new_properties_union_chunks():
     }
     prior_chunk_index = {
         "f.md": {
-            "1": ["person-c"],        # relevant for works_at (Person domain)
-            "2": ["place-e"],         # relevant for located_in (Place domain)
-            "3": ["org-d"],           # relevant for works_at (Organization range) + located_in (Organization range)
+            "1": ["person-c"],  # relevant for works_at (Person domain)
+            "2": ["place-e"],  # relevant for located_in (Place domain)
+            "3": [
+                "org-d"
+            ],  # relevant for works_at (Organization range) + located_in (Organization range)
         }
     }
-    merged_schema = _make_schema_with_props([
-        {"name": "works_at", "domain": "Person", "range": "Organization", "attributes": []},
-        {"name": "located_in", "domain": "Place", "range": "Organization", "attributes": []},
-    ])
+    merged_schema = _make_schema_with_props(
+        [
+            {"name": "works_at", "domain": "Person", "range": "Organization", "attributes": []},
+            {"name": "located_in", "domain": "Place", "range": "Organization", "attributes": []},
+        ]
+    )
     result = _build_targeted_reextract_chunks(
         delta={"works_at", "located_in"},
         merged_schema=merged_schema,
@@ -813,9 +837,7 @@ def test_build_targeted_multiple_new_properties_union_chunks():
 
 def test_build_targeted_chunk_idx_non_numeric_skipped():
     """Non-numeric chunk index keys in prior_chunk_index are silently skipped."""
-    prior_extractions = {
-        "f.md": {"nodes": [{"id": "person-x", "type": "Person"}], "edges": []}
-    }
+    prior_extractions = {"f.md": {"nodes": [{"id": "person-x", "type": "Person"}], "edges": []}}
     prior_chunk_index = {
         "f.md": {
             "not_a_number": ["person-x"],

@@ -70,18 +70,21 @@ def run_orphan_connect(ctx: PipelineContext) -> None:
         already_connected.add(edge["to"])
 
     unresolved_groups = [
-        g for g in groups
-        if not all(oid in already_connected for oid in g.orphan_ids)
+        g for g in groups if not all(oid in already_connected for oid in g.orphan_ids)
     ]
     skipped_groups = len(groups) - len(unresolved_groups)
     if skipped_groups:
         log.info(
             "Step orphan_connect — %d group(s) already resolved; passing %d unresolved group(s) to LLM",
-            skipped_groups, len(unresolved_groups),
+            skipped_groups,
+            len(unresolved_groups),
         )
 
     confirmed, rejections = confirm_orphan_chunk_groups(
-        unresolved_groups, nodes, schema, ctx.adapter,
+        unresolved_groups,
+        nodes,
+        schema,
+        ctx.adapter,
         chunk_texts=chunk_texts,
         error_gate=ctx.error_gate,
     )
@@ -129,14 +132,16 @@ def run_orphan_connect(ctx: PipelineContext) -> None:
     new_edge_ids = {_edge_id(e) for e in confirmed}
     for eid, edge in prior_connections.items():
         if eid not in new_edge_ids:
-            orphan_log.append({
-                "event": "orphan_edge_retained",
-                "id": eid,
-                "type": edge["type"],
-                "from": edge["from"],
-                "to": edge["to"],
-                "confidence": edge["confidence"],
-            })
+            orphan_log.append(
+                {
+                    "event": "orphan_edge_retained",
+                    "id": eid,
+                    "type": edge["type"],
+                    "from": edge["from"],
+                    "to": edge["to"],
+                    "confidence": edge["confidence"],
+                }
+            )
 
     edge_metadata_path = ctx.intermediate_dir / "edge_metadata.json"
     edge_metadata = json.loads(edge_metadata_path.read_text())

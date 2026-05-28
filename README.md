@@ -2,8 +2,8 @@
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-669%20passing-brightgreen.svg)](tests/)
-[![Coverage](https://img.shields.io/badge/coverage-89%25-brightgreen.svg)](htmlcov/index.html)
+[![Tests](https://img.shields.io/badge/tests-687%20passing-brightgreen.svg)](tests/)
+[![Coverage](https://img.shields.io/badge/coverage-87%25-brightgreen.svg)](htmlcov/index.html)
 [![Providers](https://img.shields.io/badge/LLM-Anthropic%20%7C%20OpenAI%20%7C%20Ollama%20%7C%20OpenRouter-orange.svg)](#configuration)
 [![PyPI version](https://img.shields.io/pypi/v/mykg.svg)](https://pypi.org/project/mykg/)
 [![PyPI Downloads](https://img.shields.io/pypi/dm/mykg.svg)](https://clickpy.clickhouse.com/dashboard/mykg)
@@ -14,7 +14,7 @@
 
 **myKG** automatically generates a confidence-scored knowledge graph from a directory of Markdown files, grounded in an induced RDFS/OWL ontology schema.
 
-It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema from your document corpus; Pass 2 extracts typed entity and relationship instances per file against that schema. The result is exported to multiple formats: JSONL for property-graph consumers such as Neo4j, Turtle RDF for OWL toolchains, and seven NetworkX formats for graph analysis and visualization.
+It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema from your document corpus; Pass 2 extracts typed entity and relationship instances per file against that schema. The result is exported to multiple formats: JSONL for property-graph consumers such as Neo4j, Turtle RDF for OWL toolchains, seven NetworkX formats for graph analysis and visualization, and an **Obsidian vault** — a second brain of wikilinked Markdown notes your AI coding assistant (Claude Code, Cursor, Copilot) can read and reason over directly.
 
 ## Command line
 
@@ -32,6 +32,11 @@ sessions/2026-05-17T18-31-07/
     knowledge_graph.ttl            ← RDFS/OWL TBox + RDF ABox (Protégé, SPARQL)
     networkx_output/               ← GML, GraphML, GEXF, Pajek, JSON node-link,
                                       knowledge_graph.html (interactive vis)
+    obsidian_vault/                ← Obsidian-ready linked Markdown notes
+      index.md                     ←   overview table with links to every entity
+      Person/                      ←   one .md note per entity, grouped by type
+      Organization/
+      ...
   walkthrough.md                   ← per-run report: schema, stats, timing
 ```
 
@@ -57,6 +62,7 @@ sessions/2026-05-17T18-31-07/
   - [Append Mode](#append-mode)
   - [Merging Sessions](#merging-sessions)
   - [Walkthrough Report](#walkthrough-report)
+  - [Obsidian Vault Export](#obsidian-vault-export)
 - [Development](#development)
 - [Roadmap](#roadmap)
 - [Design](#design)
@@ -72,6 +78,7 @@ sessions/2026-05-17T18-31-07/
 - **Human-in-the-loop ontology design** — run with `--review` to pause after schema induction; inspect and edit `schema.json` (or load `schema.ttl` in Protégé, modify, and save back) before a single entity is extracted; resume with `mykg approve-schema`
 - **Incremental updates** — run with `--append` on an existing session to add new or modified Markdown files without re-running Pass 1; the schema is reused and only the new files go through Pass 2
 - **AI coding assistant friendly** — designed for smooth use alongside AI coding assistants such as [Claude Code](https://claude.ai/code); run extractions, inspect outputs, and iterate on your knowledge graph without leaving your coding environment; see [Using with Claude Code](#using-with-claude-code)
+- **Second brain for AI coding assistants** — the Obsidian vault output turns your extracted knowledge graph into a directory of wikilinked Markdown notes that any AI coding assistant can read as project context; point Claude Code, Cursor, or Copilot at `output/obsidian_vault/` and ask questions, trace relationships, and get answers grounded in your own documents
 
 ### Input
 
@@ -81,7 +88,8 @@ sessions/2026-05-17T18-31-07/
 ### Graph & Output
 
 - **Provider-agnostic** — works with Anthropic (Claude), OpenAI (GPT-4o), Ollama (local), OpenRouter, or the `claude` CLI with no API key
-- **Three output families** — JSONL for Neo4j/NetworkX/RAG, Turtle RDF for OWL toolchains, NetworkX multi-format for graph analysis
+- **Four output families** — JSONL for Neo4j/NetworkX/RAG, Turtle RDF for OWL toolchains, NetworkX multi-format for graph analysis, and Obsidian vault for linked personal knowledge management
+- **Obsidian vault — second brain for AI coding assistants** — every extracted entity becomes a wikilinked Markdown note in `output/obsidian_vault/`; open it in [Obsidian](https://obsidian.md) to navigate the graph with backlinks and Graph View, or point your AI coding assistant (Claude Code, Cursor, Copilot) at the vault folder so it can answer questions, trace relationships, and reason over your knowledge base in natural language
 - **Interactive HTML graph** — node/edge filtering, search, hover popups; opens directly in a browser
 - **Confidence scoring** — every extracted attribute, node, and edge carries a `0.0–1.0` confidence score
 - **Name normalization** — surface-form variants ("Acme Corp", "ACME", "Acme Corporation") resolved to a single canonical node with aliases
@@ -254,6 +262,8 @@ Switch provider by setting `profile:` at the top of [`mykg_config.yaml`](mykg_co
 | `pipeline.orphan_pass.enabled` | `true` | Run the orphan-connection pass |
 | `pipeline.orphan_pass.schema_max_restarts` | `1` | Max automated Pass 2 restarts from schema-gap recovery |
 | `pipeline.export.networkx_enabled` | `true` | Write NetworkX formats to `output/networkx_output/` |
+| `pipeline.export.obsidian_enabled` | `true` | Write Obsidian vault to `output/obsidian_vault/` |
+| `pipeline.export.obsidian_vault_dir` | `obsidian_vault` | Subdirectory name for the Obsidian vault inside `output/` |
 | `pipeline.error_gate.enabled` | `true` | Pause all workers on repeated API errors |
 
 Run `context-calculator --context <N> --max-output <M>` to compute correct `window_tokens` and `batch_token_target` for a different model's context window.
@@ -283,6 +293,7 @@ mykg extract-graph <input_dir> [OPTIONS]
 | `--confidence-agg mean\|max` | Confidence aggregation when deduplicating |
 | `--base-schema PATH` | Locked TBox TTL file (locked classes/properties cannot be changed by the LLM) |
 | `--thesaurus PATH` | SKOS TTL thesaurus for synonym resolution in schema merge |
+| `--obsidian-vault` | Force Obsidian vault export for this run (overrides config) |
 | `--log-file PATH` | Write logs here (relative paths placed inside the session folder) |
 | `--verbose / -v` | Enable DEBUG-level logging |
 
@@ -342,7 +353,7 @@ The pipeline runs 11 steps in sequence. All intermediate state is written to dis
 | 8 | `assemble` | — | `edge_metadata.json`, `nodes.json`, `merge_log.json` |
 | 9 | `orphan_score` | — | `orphan_candidates.json` |
 | 10 | `orphan_connect` | ✓ | `orphan_connections.json`, `orphan_log.json` |
-| 11 | `validate_graph` | — | `nodes.jsonl`, `edges.jsonl`, `knowledge_graph.ttl`, `knowledge_graph.html`, `networkx_output/` |
+| 11 | `validate_graph` | — | `nodes.jsonl`, `edges.jsonl`, `knowledge_graph.ttl`, `knowledge_graph.html`, `networkx_output/`, `obsidian_vault/` |
 
 Pass 1 internally runs four sequential stages: parallel batch induction → algorithmic merge → harmonization LLM call → quality review LLM call.
 
@@ -426,6 +437,12 @@ Load in Protégé, query with SPARQL (Fuseki, GraphDB), or reason with HermiT/Pe
 | `adjacency.txt` | Adjacency list | Topology consumers |
 
 Node/edge attributes are exported as `attr_<name>_value` / `attr_<name>_confidence` scalar pairs for GML compatibility.
+
+### Obsidian Vault (`obsidian_vault/`)
+
+One `.md` note per extracted entity, grouped into subdirectories by concept type. Each note has YAML frontmatter (id, type, confidence, sources), an attributes section, outgoing and incoming wikilink relationship sections, and a source files list. An `index.md` at the vault root summarizes node counts per type with links to every entity.
+
+Open `output/obsidian_vault/` as a vault in [Obsidian](https://obsidian.md) to get Graph View, backlink navigation, and full-text search across the extracted entities.
 
 ### Re-running from a Specific Step
 
@@ -553,6 +570,65 @@ Configure the re-extraction strategy:
 merge_graphs:
   reextraction_strategy: surgical   # none | surgical | full
 ```
+
+### Obsidian Vault Export
+
+Every run writes a linked Markdown vault to `output/obsidian_vault/` by default. Open that folder in [Obsidian](https://obsidian.md) to explore the extracted knowledge graph with Graph View and backlinks.
+
+**Vault structure:**
+
+```
+output/obsidian_vault/
+  index.md                  ← overview: node count per type, links to every entity
+  Person/
+    person-alice-smith.md   ← one note per entity
+    person-bob-jones.md
+  Organization/
+    organization-acme-corp.md
+  ...
+```
+
+**Each entity note contains:**
+
+```markdown
+---
+id: person-alice-smith
+type: Person
+confidence: 0.94
+sources:
+  - team.md
+---
+
+# Alice Smith
+
+## Attributes
+- **role**: Engineer (0.91)
+- **email**: alice@acme.com (1.0)
+
+## Relationships
+
+### Outgoing
+- [[Acme Corp]] — works_at (0.96)
+
+### Incoming
+- [[Bob Jones]] — manages (0.88)
+
+## Source Files
+- team.md
+```
+
+Wikilinks (`[[...]]`) are Obsidian-native — clicking them in the app navigates to the linked entity note, and the Graph View shows the full relationship network automatically.
+
+**Config:**
+
+```yaml
+pipeline:
+  export:
+    obsidian_enabled: true          # default — set false to skip vault export
+    obsidian_vault_dir: obsidian_vault   # subfolder name inside output/
+```
+
+Or use `--obsidian-vault` on the command line for a one-off run without editing config.
 
 ### Walkthrough Report
 
