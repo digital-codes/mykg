@@ -22,20 +22,21 @@ In auto mode the script:
 
 import argparse
 import math
-import os
 from pathlib import Path
 
-
-SYSTEM_PROMPT_OVERHEAD = 1000   # approximate tokens consumed by system prompt + JSON scaffolding
-OVERLAP_RATIO          = 0.10   # overlap_tokens = window_tokens * this
-SAFETY_MARGIN_RATIO    = 0.05   # batch_token_target = input_headroom * (1 - this); remainder = feedback reserve
-DEFAULT_CHUNK_DIVISOR  = 12     # window_tokens = batch_token_target / this
-CHARS_PER_TOKEN        = 4      # character-to-token ratio for JSON/prose (used to derive max_file_chars)
+SYSTEM_PROMPT_OVERHEAD = 1000  # approximate tokens consumed by system prompt + JSON scaffolding
+OVERLAP_RATIO = 0.10  # overlap_tokens = window_tokens * this
+SAFETY_MARGIN_RATIO = (
+    0.05  # batch_token_target = input_headroom * (1 - this); remainder = feedback reserve
+)
+DEFAULT_CHUNK_DIVISOR = 12  # window_tokens = batch_token_target / this
+CHARS_PER_TOKEN = 4  # character-to-token ratio for JSON/prose (used to derive max_file_chars)
 
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 def round_to_nice(n: int) -> int:
     """Round down to the nearest 'nice' number (multiple of 1000, 500, or 100)."""
@@ -65,6 +66,7 @@ def load_mykg_config() -> tuple[dict, Path]:
                 if profile_name not in profiles:
                     raise KeyError(f"Profile '{profile_name}' not found in mykg_config.yaml")
                 import copy
+
                 result = copy.deepcopy(raw)
                 profile = profiles[profile_name]
                 for key in ("provider", "pipeline", "llm", "llm_retry"):
@@ -81,6 +83,7 @@ def load_mykg_config() -> tuple[dict, Path]:
 def count_corpus_tokens(input_dir: Path, encoding_name: str) -> int:
     """Count total tokens across all .md files in input_dir (recursive)."""
     import tiktoken
+
     enc = tiktoken.get_encoding(encoding_name)
     total = 0
     files = list(input_dir.rglob("*.md"))
@@ -105,6 +108,7 @@ def count_chunks(total_tokens: int, window_tokens: int, overlap_tokens: int) -> 
 # ---------------------------------------------------------------------------
 # Core calculation
 # ---------------------------------------------------------------------------
+
 
 def calculate(
     context_window: int,
@@ -136,14 +140,14 @@ def calculate(
     max_file_chars = feedback_token_reserve * CHARS_PER_TOKEN
 
     return {
-        "context_window":         context_window,
-        "max_output_tokens":      max_output_tokens,
-        "input_headroom":         input_headroom,
-        "batch_token_target":     batch_token_target,
+        "context_window": context_window,
+        "max_output_tokens": max_output_tokens,
+        "input_headroom": input_headroom,
+        "batch_token_target": batch_token_target,
         "feedback_token_reserve": feedback_token_reserve,
-        "max_file_chars":         max_file_chars,
-        "window_tokens":          window_tokens,
-        "overlap_tokens":         overlap_tokens,
+        "max_file_chars": max_file_chars,
+        "window_tokens": window_tokens,
+        "overlap_tokens": overlap_tokens,
     }
 
 
@@ -183,6 +187,7 @@ def suggest_chunk_divisor(
 # Output
 # ---------------------------------------------------------------------------
 
+
 def write_candidate_config(config_path: "Path", profile_name: str, result: dict) -> "Path":
     """Write a candidate mykg_config.yaml next to the original with suggested token-budget values.
 
@@ -196,12 +201,12 @@ def write_candidate_config(config_path: "Path", profile_name: str, result: dict)
     lines = text.splitlines(keepends=True)
 
     patch_map = {
-        "context_window":          result["context_window"],
-        "max_output_tokens":       result["max_output_tokens"],
-        "batch_token_target":      result["batch_token_target"],
-        "window_tokens":           result["window_tokens"],
-        "overlap_tokens":          result["overlap_tokens"],
-        "max_file_chars":          result["max_file_chars"],
+        "context_window": result["context_window"],
+        "max_output_tokens": result["max_output_tokens"],
+        "batch_token_target": result["batch_token_target"],
+        "window_tokens": result["window_tokens"],
+        "overlap_tokens": result["overlap_tokens"],
+        "max_file_chars": result["max_file_chars"],
         "concat_batch_token_target": result["batch_token_target"],
     }
 
@@ -230,22 +235,24 @@ def write_candidate_config(config_path: "Path", profile_name: str, result: dict)
 
         new_lines.append(line)
 
-    stem = config_path.stem          # "mykg_config"
-    suffix = config_path.suffix      # ".yaml"
+    stem = config_path.stem  # "mykg_config"
+    suffix = config_path.suffix  # ".yaml"
     out_path = config_path.with_name(f"{stem}_candidate{suffix}")
     out_path.write_text("".join(new_lines))
     return out_path
 
 
-def print_report(result: dict, model: str, chunk_divisor: int, corpus_info: dict | None = None) -> None:
-    cw  = result["context_window"]
+def print_report(
+    result: dict, model: str, chunk_divisor: int, corpus_info: dict | None = None
+) -> None:
+    cw = result["context_window"]
     mot = result["max_output_tokens"]
-    ih  = result["input_headroom"]
+    ih = result["input_headroom"]
     btt = result["batch_token_target"]
     ftr = result["feedback_token_reserve"]
     mfc = result["max_file_chars"]
-    wt  = result["window_tokens"]
-    ot  = result["overlap_tokens"]
+    wt = result["window_tokens"]
+    ot = result["overlap_tokens"]
 
     print()
     print("=" * 60)
@@ -262,42 +269,61 @@ def print_report(result: dict, model: str, chunk_divisor: int, corpus_info: dict
         print("  CORPUS")
         print(f"    files               = {corpus_info['file_count']:>8,}")
         print(f"    total tokens        = {corpus_info['total_tokens']:>8,}")
-        print(f"    chunk count         = {corpus_info['chunk_count']:>8,}   at window={wt}, overlap={ot}")
-        print(f"    suggested divisor   = {chunk_divisor:>8}   (window_tokens = batch_token_target ÷ this)")
+        print(
+            f"    chunk count         = {corpus_info['chunk_count']:>8,}   at window={wt}, overlap={ot}"
+        )
+        print(
+            f"    suggested divisor   = {chunk_divisor:>8}   (window_tokens = batch_token_target ÷ this)"
+        )
 
     print()
     print("  DERIVED PARAMETERS")
-    print(f"    batch_token_target  = {btt:>8,}   = input_headroom × {1 - SAFETY_MARGIN_RATIO:.0%}  (safety margin)")
-    print(f"    feedback_reserve    = {ftr:>8,}   = input_headroom - batch_token_target  (safety margin remainder)")
-    print(f"    max_file_chars      = {mfc:>8,}   = feedback_reserve × {CHARS_PER_TOKEN} chars/token")
-    print(f"    window_tokens       = {wt:>8,}   = batch_token_target ÷ {chunk_divisor}  (chunk size)")
+    print(
+        f"    batch_token_target  = {btt:>8,}   = input_headroom × {1 - SAFETY_MARGIN_RATIO:.0%}  (safety margin)"
+    )
+    print(
+        f"    feedback_reserve    = {ftr:>8,}   = input_headroom - batch_token_target  (safety margin remainder)"
+    )
+    print(
+        f"    max_file_chars      = {mfc:>8,}   = feedback_reserve × {CHARS_PER_TOKEN} chars/token"
+    )
+    print(
+        f"    window_tokens       = {wt:>8,}   = batch_token_target ÷ {chunk_divisor}  (chunk size)"
+    )
     print(f"    overlap_tokens      = {ot:>8,}   = window_tokens × {OVERLAP_RATIO:.0%}")
     print()
     print("  VALIDATION")
     ok = mot + ih == cw
-    print(f"    max_output + input_headroom = {mot + ih:,}  {'✓ = context_window' if ok else f'✗ ≠ context_window ({cw:,})'}")
+    print(
+        f"    max_output + input_headroom = {mot + ih:,}  {'✓ = context_window' if ok else f'✗ ≠ context_window ({cw:,})'}"
+    )
     fits = btt <= ih
-    print(f"    batch_token_target ≤ input_headroom: {'✓' if fits else '✗ EXCEEDS — API will return context-length errors'}")
+    print(
+        f"    batch_token_target ≤ input_headroom: {'✓' if fits else '✗ EXCEEDS — API will return context-length errors'}"
+    )
     print()
     print("  YAML SNIPPET — paste into the active profile in mykg_config.yaml")
     print("  " + "-" * 56)
-    print(f"    llm:")
+    print("    llm:")
     print(f"      context_window: {cw}  # model total context limit")
     print(f"      max_output_tokens: {mot}  # ① output cap; input_headroom = {ih}")
-    print(f"    pipeline:")
-    print(f"      chunking:")
+    print("    pipeline:")
+    print("      chunking:")
     print(f"        window_tokens: {wt}  # = batch_token_target ÷ {chunk_divisor}")
     print(f"        overlap_tokens: {ot}  # = window_tokens × {OVERLAP_RATIO:.0%}")
-    print(f"      pass1:")
+    print("      pass1:")
     print(f"        batch_token_target: {btt}  # = input_headroom × {1 - SAFETY_MARGIN_RATIO:.0%}")
-    print(f"      feedback:")
-    print(f"        max_file_chars: {mfc}  # = safety margin remainder × {CHARS_PER_TOKEN} chars/token ({ftr:,} tokens)")
+    print("      feedback:")
+    print(
+        f"        max_file_chars: {mfc}  # = safety margin remainder × {CHARS_PER_TOKEN} chars/token ({ftr:,} tokens)"
+    )
     print()
 
 
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(
@@ -315,16 +341,36 @@ Examples:
   python context_calculator.py --context 128000 --input-headroom 96000 --chunk-divisor 8
         """,
     )
-    parser.add_argument("--from-config",    action="store_true",
-                        help="Read context_window and max_output_tokens from mykg_config.yaml active profile")
-    parser.add_argument("--input-dir",      type=Path, default=None,
-                        help="Directory of .md input files to measure (default: ./input_files or ./_input_files)")
-    parser.add_argument("--model",          default=None,   help="Model name label (manual mode only)")
-    parser.add_argument("--context",        type=int, default=None,   help="Model context window in tokens (manual mode)")
-    parser.add_argument("--max-output",     type=int, default=None,   help="Model max output tokens (manual mode)")
-    parser.add_argument("--input-headroom", type=int, default=None,   help="Desired input headroom in tokens (manual mode)")
-    parser.add_argument("--chunk-divisor",  type=int, default=None,
-                        help=f"window_tokens = batch_token_target ÷ this (default: auto-suggested from corpus, or {DEFAULT_CHUNK_DIVISOR})")
+    parser.add_argument(
+        "--from-config",
+        action="store_true",
+        help="Read context_window and max_output_tokens from mykg_config.yaml active profile",
+    )
+    parser.add_argument(
+        "--input-dir",
+        type=Path,
+        default=None,
+        help="Directory of .md input files to measure (default: ./input_files or ./_input_files)",
+    )
+    parser.add_argument("--model", default=None, help="Model name label (manual mode only)")
+    parser.add_argument(
+        "--context", type=int, default=None, help="Model context window in tokens (manual mode)"
+    )
+    parser.add_argument(
+        "--max-output", type=int, default=None, help="Model max output tokens (manual mode)"
+    )
+    parser.add_argument(
+        "--input-headroom",
+        type=int,
+        default=None,
+        help="Desired input headroom in tokens (manual mode)",
+    )
+    parser.add_argument(
+        "--chunk-divisor",
+        type=int,
+        default=None,
+        help=f"window_tokens = batch_token_target ÷ this (default: auto-suggested from corpus, or {DEFAULT_CHUNK_DIVISOR})",
+    )
     args = parser.parse_args()
 
     corpus_info = None
@@ -359,7 +405,7 @@ Examples:
                     break
         if input_dir is None or not input_dir.exists():
             parser.error(
-                f"Could not find input directory. Pass --input-dir <path> or create ./input_files/."
+                "Could not find input directory. Pass --input-dir <path> or create ./input_files/."
             )
 
         print(f"\n  Counting tokens in {input_dir} …", end="", flush=True)
@@ -371,7 +417,15 @@ Examples:
         # Auto-suggest chunk divisor from corpus unless user supplied one
         if args.chunk_divisor is not None:
             chunk_divisor = args.chunk_divisor
-            wt = max(round_to_nice(int(round_to_nice(int(input_headroom * (1 - SAFETY_MARGIN_RATIO))) / chunk_divisor)), 100)
+            wt = max(
+                round_to_nice(
+                    int(
+                        round_to_nice(int(input_headroom * (1 - SAFETY_MARGIN_RATIO)))
+                        / chunk_divisor
+                    )
+                ),
+                100,
+            )
             ot = max(round_to_nice(int(wt * OVERLAP_RATIO)), 10)
             chunk_count = count_chunks(total_tokens, wt, ot)
         else:
@@ -395,7 +449,9 @@ Examples:
     else:
         # Manual mode
         if args.context is None:
-            parser.error("Manual mode requires --context (or use --from-config to read from mykg_config.yaml)")
+            parser.error(
+                "Manual mode requires --context (or use --from-config to read from mykg_config.yaml)"
+            )
         model_label = args.model or "custom-model"
         chunk_divisor = args.chunk_divisor or DEFAULT_CHUNK_DIVISOR
         result = calculate(
@@ -410,7 +466,7 @@ Examples:
     if args.from_config:
         out_path = write_candidate_config(config_path, profile_name, result)
         print(f"  ✓  Candidate written to: {out_path}")
-        print(f"     Review, then rename to mykg_config.yaml when satisfied.")
+        print("     Review, then rename to mykg_config.yaml when satisfied.")
         print()
 
 

@@ -28,43 +28,52 @@ from mykg.utility.context_calculator import (
     write_candidate_config,
 )
 
-
 # ---------------------------------------------------------------------------
 # round_to_nice
 # ---------------------------------------------------------------------------
 
-@pytest.mark.parametrize("n,expected", [
-    (10000, 10000),
-    (15000, 10000),
-    (19999, 10000),
-    (20000, 20000),
-    (100000, 100000),
-])
+
+@pytest.mark.parametrize(
+    "n,expected",
+    [
+        (10000, 10000),
+        (15000, 10000),
+        (19999, 10000),
+        (20000, 20000),
+        (100000, 100000),
+    ],
+)
 def test_round_to_nice_multiples_of_10000(n, expected):
     assert round_to_nice(n) == expected
 
 
-@pytest.mark.parametrize("n,expected", [
-    (1000, 1000),
-    (1500, 1000),
-    (1999, 1000),
-    # 3000 // 2000 = 1 → returns 2000 (2000 step fires before 1000)
-    (3000, 2000),
-    # 9999 // 5000 = 1 → returns 5000 (5000 step fires before 1000)
-    (9999, 5000),
-])
+@pytest.mark.parametrize(
+    "n,expected",
+    [
+        (1000, 1000),
+        (1500, 1000),
+        (1999, 1000),
+        # 3000 // 2000 = 1 → returns 2000 (2000 step fires before 1000)
+        (3000, 2000),
+        # 9999 // 5000 = 1 → returns 5000 (5000 step fires before 1000)
+        (9999, 5000),
+    ],
+)
 def test_round_to_nice_multiples_of_1000(n, expected):
     assert round_to_nice(n) == expected
 
 
-@pytest.mark.parametrize("n,expected", [
-    (100, 100),
-    (150, 100),
-    (199, 100),
-    (250, 200),
-    (350, 200),
-    (450, 400),
-])
+@pytest.mark.parametrize(
+    "n,expected",
+    [
+        (100, 100),
+        (150, 100),
+        (199, 100),
+        (250, 200),
+        (350, 200),
+        (450, 400),
+    ],
+)
 def test_round_to_nice_multiples_of_100(n, expected):
     assert round_to_nice(n) == expected
 
@@ -83,6 +92,7 @@ def test_round_to_nice_zero():
 # ---------------------------------------------------------------------------
 # count_chunks
 # ---------------------------------------------------------------------------
+
 
 def test_count_chunks_fits_in_one_window():
     assert count_chunks(500, 1000, 100) == 1
@@ -106,6 +116,7 @@ def test_count_chunks_zero_step_returns_one():
 # ---------------------------------------------------------------------------
 # calculate
 # ---------------------------------------------------------------------------
+
 
 def test_calculate_derives_from_max_output():
     result = calculate(
@@ -184,7 +195,7 @@ def test_calculate_both_supplied_prints_warning(capsys):
     assert result["context_window"] == 32000
 
     # Both values inconsistent — should print a warning
-    result2 = calculate(
+    calculate(
         context_window=32000,
         max_output_tokens=8000,
         input_headroom=20000,  # 8000 + 20000 != 32000
@@ -198,13 +209,16 @@ def test_calculate_both_supplied_prints_warning(capsys):
 # suggest_chunk_divisor
 # ---------------------------------------------------------------------------
 
+
 def test_suggest_chunk_divisor_sweet_spot():
     # Large corpus — should find a divisor whose chunk count falls in 50-500
     total_tokens = 500_000
     window_tokens = 2000
     overlap_tokens = 200
     input_headroom = 20_000
-    divisor, chunks = suggest_chunk_divisor(input_headroom, total_tokens, window_tokens, overlap_tokens)
+    divisor, chunks = suggest_chunk_divisor(
+        input_headroom, total_tokens, window_tokens, overlap_tokens
+    )
     assert 4 <= divisor <= 31
     # The sweet-spot break should fire, giving a chunk count in the right range
     assert 50 <= chunks <= 500
@@ -216,7 +230,9 @@ def test_suggest_chunk_divisor_falls_back_to_closest_to_200():
     window_tokens = 2000
     overlap_tokens = 200
     input_headroom = 20_000
-    divisor, chunks = suggest_chunk_divisor(input_headroom, total_tokens, window_tokens, overlap_tokens)
+    divisor, chunks = suggest_chunk_divisor(
+        input_headroom, total_tokens, window_tokens, overlap_tokens
+    )
     # Should still return a valid divisor
     assert 4 <= divisor <= 31
 
@@ -227,7 +243,9 @@ def test_suggest_chunk_divisor_small_corpus():
     window_tokens = 2000
     overlap_tokens = 200
     input_headroom = 20_000
-    divisor, chunks = suggest_chunk_divisor(input_headroom, total_tokens, window_tokens, overlap_tokens)
+    divisor, chunks = suggest_chunk_divisor(
+        input_headroom, total_tokens, window_tokens, overlap_tokens
+    )
     assert chunks >= 1
     assert divisor >= 4
 
@@ -235,6 +253,7 @@ def test_suggest_chunk_divisor_small_corpus():
 # ---------------------------------------------------------------------------
 # count_corpus_tokens — patch tiktoken so tests don't need the real encoder
 # ---------------------------------------------------------------------------
+
 
 def test_count_corpus_tokens_sums_all_md_files(tmp_path):
     (tmp_path / "a.md").write_text("hello world")
@@ -251,6 +270,7 @@ def test_count_corpus_tokens_sums_all_md_files(tmp_path):
 
     with patch.dict(sys.modules, {"tiktoken": mock_tiktoken}):
         from mykg.utility.context_calculator import count_corpus_tokens as _cct
+
         total, file_count = _cct(tmp_path, "cl100k_base")
 
     assert file_count == 3
@@ -267,6 +287,7 @@ def test_count_corpus_tokens_no_md_files_raises(tmp_path):
 
     with patch.dict(sys.modules, {"tiktoken": mock_tiktoken}):
         from mykg.utility.context_calculator import count_corpus_tokens as _cct
+
         with pytest.raises(FileNotFoundError, match="No .md files"):
             _cct(tmp_path, "cl100k_base")
 
@@ -497,12 +518,15 @@ def test_print_report_validation_mismatch(capsys):
 # main() — argparse entry point
 # ---------------------------------------------------------------------------
 
+
 def test_main_manual_mode_with_context_and_max_output(monkeypatch, capsys):
     monkeypatch.setattr(
-        sys, "argv",
+        sys,
+        "argv",
         ["context_calculator.py", "--context", "32000", "--max-output", "8000"],
     )
     from mykg.utility.context_calculator import main
+
     main()
     out = capsys.readouterr().out
     assert "32000" in out
@@ -511,10 +535,12 @@ def test_main_manual_mode_with_context_and_max_output(monkeypatch, capsys):
 
 def test_main_manual_mode_errors_without_context(monkeypatch, capsys):
     monkeypatch.setattr(
-        sys, "argv",
+        sys,
+        "argv",
         ["context_calculator.py", "--max-output", "8000"],
     )
     from mykg.utility.context_calculator import main
+
     with pytest.raises(SystemExit) as exc_info:
         main()
     assert exc_info.value.code != 0
@@ -549,7 +575,8 @@ profiles:
     monkeypatch.chdir(tmp_path)
 
     monkeypatch.setattr(
-        sys, "argv",
+        sys,
+        "argv",
         ["context_calculator.py", "--from-config", "--input-dir", str(input_dir)],
     )
 
@@ -561,6 +588,7 @@ profiles:
 
     with patch.dict(sys.modules, {"tiktoken": mock_tiktoken}):
         from mykg.utility.context_calculator import main
+
         main()
 
     out = capsys.readouterr().out

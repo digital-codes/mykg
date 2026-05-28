@@ -185,9 +185,7 @@ def _reject_empty_schema(improved: dict, original: dict, label: str) -> dict | N
     concepts = improved.get("concepts") or []
     original_concepts = original.get("concepts") or []
     if len(concepts) < 1:
-        _log.warning(
-            "%s — LLM returned empty schema (0 concepts); keeping original", label
-        )
+        _log.warning("%s — LLM returned empty schema (0 concepts); keeping original", label)
         return original
     if original_concepts and len(concepts) < 0.5 * len(original_concepts):
         _log.warning(

@@ -72,7 +72,11 @@ def _load_manifest(manifest_path) -> dict[str, dict]:
     for filename, value in raw.items():
         if isinstance(value, str):
             content = value
-            result[filename] = {"content": content, "sha256": _sha256(content), "token_count": _token_count(content)}
+            result[filename] = {
+                "content": content,
+                "sha256": _sha256(content),
+                "token_count": _token_count(content),
+            }
             migrated = True
         else:
             if "token_count" not in value:
@@ -146,11 +150,19 @@ def _run_append_ingest(ctx: PipelineContext) -> None:
         if filename not in manifest:
             new_files.append(filename)
             changed.add(filename)
-            manifest[filename] = {"content": content, "sha256": sha, "token_count": _token_count(content)}
+            manifest[filename] = {
+                "content": content,
+                "sha256": sha,
+                "token_count": _token_count(content),
+            }
         elif manifest[filename]["sha256"] != sha:
             modified_files.append(filename)
             changed.add(filename)
-            manifest[filename] = {"content": content, "sha256": sha, "token_count": _token_count(content)}
+            manifest[filename] = {
+                "content": content,
+                "sha256": sha,
+                "token_count": _token_count(content),
+            }
 
     manifest_path.write_text(json.dumps(manifest, indent=_cfg.JSON_INDENT))
 

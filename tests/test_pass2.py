@@ -468,7 +468,15 @@ def test_normalize_scalars_tolerates_null_items_in_nodes():
     from mykg.pass2 import _normalize_scalars
 
     extraction = {
-        "nodes": [None, {"id": "person-alice", "type": "Person", "confidence": 1.0, "attributes": {"name": "Alice"}}],
+        "nodes": [
+            None,
+            {
+                "id": "person-alice",
+                "type": "Person",
+                "confidence": 1.0,
+                "attributes": {"name": "Alice"},
+            },
+        ],
         "edges": [],
     }
     result = _normalize_scalars(extraction)
@@ -496,7 +504,10 @@ def test_backfill_tolerates_null_items_in_nodes():
     from mykg.pass2 import _backfill_extraction
 
     extraction = {
-        "nodes": [None, {"id": "org-acme", "type": "Organization", "confidence": 0.9, "attributes": {}}],
+        "nodes": [
+            None,
+            {"id": "org-acme", "type": "Organization", "confidence": 0.9, "attributes": {}},
+        ],
         "edges": [],
     }
     result = _backfill_extraction(extraction, SCHEMA, FLAT_SCHEMA)
@@ -539,7 +550,9 @@ def test_extract_chunk_filters_nulls_via_run_pass2():
         "edges": VALID_EXTRACTION["edges"],
     }
     adapter = MockAdapter(json.dumps(extraction_with_nulls))
-    results, _, _failed = run_pass2({"test.md": "Alice works at Acme."}, SCHEMA, FLAT_SCHEMA, adapter)
+    results, _, _failed = run_pass2(
+        {"test.md": "Alice works at Acme."}, SCHEMA, FLAT_SCHEMA, adapter
+    )
     assert "test.md" in results
     for node in results["test.md"]["nodes"]:
         assert node is not None

@@ -148,8 +148,9 @@ def test_extract_creates_session_dir(tmp_path, input_dir, monkeypatch):
 
 def test_extract_graph_help_contains_obsidian_vault():
     """--help output for extract-graph must advertise --obsidian-vault."""
-    import mykg.cli as cli_mod
     from click.testing import CliRunner
+
+    import mykg.cli as cli_mod
 
     runner = CliRunner()
     result = runner.invoke(cli_mod.cli, ["extract-graph", "--help"])

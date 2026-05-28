@@ -31,15 +31,9 @@ _MERGE_REENTRY_HINTS: dict[str, str] = {
     "merge_reextract": (
         "mykg merge-graphs <A> <B> --output-session <name> --from-step merge_reextract"
     ),
-    "merge_raw": (
-        "mykg merge-graphs <A> <B> --output-session <name> --from-step merge_raw"
-    ),
-    "assemble": (
-        "mykg merge-graphs <A> <B> --output-session <name> --from-step assemble"
-    ),
-    "orphan_score": (
-        "mykg merge-graphs <A> <B> --output-session <name> --from-step orphan_score"
-    ),
+    "merge_raw": ("mykg merge-graphs <A> <B> --output-session <name> --from-step merge_raw"),
+    "assemble": ("mykg merge-graphs <A> <B> --output-session <name> --from-step assemble"),
+    "orphan_score": ("mykg merge-graphs <A> <B> --output-session <name> --from-step orphan_score"),
     "orphan_connect": (
         "mykg merge-graphs <A> <B> --output-session <name> --from-step orphan_connect"
     ),

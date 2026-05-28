@@ -86,7 +86,12 @@ MERGE_STEPS: list[Step] = [
     Step(
         name="validate_graph",
         fn=run_validate_graph,
-        outputs=["nodes.jsonl", "edges.jsonl", "knowledge_graph.ttl", "knowledge_graph_validation.json"],
+        outputs=[
+            "nodes.jsonl",
+            "edges.jsonl",
+            "knowledge_graph.ttl",
+            "knowledge_graph_validation.json",
+        ],
         blocking=False,
         output_location="output",
     ),

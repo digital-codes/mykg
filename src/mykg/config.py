@@ -223,6 +223,4 @@ MERGE_GRAPHS_HUMAN_REVIEW: bool = bool(_get_opt("merge_graphs", "human_review", 
 MERGE_SURGICAL_TOP_K_CHUNKS_PER_PROPERTY: int = _get_opt(
     "merge_graphs", "surgical_top_k_chunks_per_property", 0
 )
-MERGE_ORPHAN_SCHEMA_MAX_RESTARTS: int = _get_opt(
-    "merge_graphs", "orphan_pass_max_restarts", 1
-)
+MERGE_ORPHAN_SCHEMA_MAX_RESTARTS: int = _get_opt("merge_graphs", "orphan_pass_max_restarts", 1)

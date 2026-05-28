@@ -124,9 +124,7 @@ def load_session(session_name: str, sessions_root: Path) -> SessionData:
                 session_name,
                 exc,
             )
-    log.debug(
-        "merger: manifest has %d file(s) for session %s", len(manifest), session_name
-    )
+    log.debug("merger: manifest has %d file(s) for session %s", len(manifest), session_name)
 
     # Optional: prep_mode from mykg_config.yaml snapshot
     prep_mode = _read_prep_mode(session_path)
@@ -155,9 +153,7 @@ def _read_prep_mode(session_path: Path) -> str:
     try:
         raw = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
     except Exception as exc:
-        log.warning(
-            "merger: could not parse mykg_config.yaml at %s — %s", session_path, exc
-        )
+        log.warning("merger: could not parse mykg_config.yaml at %s — %s", session_path, exc)
         return "unknown"
 
     profile_name = raw.get("profile")
@@ -284,9 +280,7 @@ def _copy_shard_dir(src_dir: Path, dst_dir: Path, alias: str) -> None:
             h = hashlib.sha1(candidate.encode()).hexdigest()[:16]
             candidate = f"{alias}_{h}.json"
         dst_file = dst_dir / candidate
-        dst_file.write_text(
-            json.dumps(shard_data, indent=_cfg.JSON_INDENT), encoding="utf-8"
-        )
+        dst_file.write_text(json.dumps(shard_data, indent=_cfg.JSON_INDENT), encoding="utf-8")
         log.debug(
             "merger: shard %s → %s (_fname=%s)",
             shard_file.name,
@@ -689,9 +683,7 @@ def reextract_for_merge(
                     if namespaced_fname.startswith(f"{session_alias}/"):
                         prior_chunk_index[plain] = sd.get("data", {})
                 except (json.JSONDecodeError, OSError) as exc:
-                    log.warning(
-                        "reextract_for_merge: could not read chunk shard %s — %s", sf, exc
-                    )
+                    log.warning("reextract_for_merge: could not read chunk shard %s — %s", sf, exc)
 
         # Load file contents from the session's input directory.
         input_dir = session_path / "input"
@@ -759,9 +751,7 @@ def reextract_for_merge(
         # Critical: run_pass2 re-extracts ALL chunks of any file in `files` that
         # has no entry in reextract_chunks (target_chunks=None path in pass2).
         file_contents = {
-            fname: content
-            for fname, content in file_contents.items()
-            if fname in reextract_chunks
+            fname: content for fname, content in file_contents.items() if fname in reextract_chunks
         }
 
         total_targeted = sum(len(v) for v in reextract_chunks.values())
@@ -816,7 +806,9 @@ def reextract_for_merge(
     file_contents: dict[str, str] = {}
     for namespaced_key in raw_extractions_namespaced:
         # Strip the "session_a/" or "session_b/" prefix
-        original_fname = namespaced_key.split("/", 1)[1] if "/" in namespaced_key else namespaced_key
+        original_fname = (
+            namespaced_key.split("/", 1)[1] if "/" in namespaced_key else namespaced_key
+        )
         file_path = input_dir / original_fname
         if file_path.exists():
             file_contents[original_fname] = file_path.read_text(encoding="utf-8")

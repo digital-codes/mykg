@@ -68,7 +68,9 @@ def sessions_root(tmp_path, monkeypatch):
 _SHARD_DIRS = ("raw_extractions_shards", "chunk_index_shards")
 
 
-def _populate_step_files(steps, intermediate_dir: Path, output_dir: Path, *, extras: list[str] | None = None) -> None:
+def _populate_step_files(
+    steps, intermediate_dir: Path, output_dir: Path, *, extras: list[str] | None = None
+) -> None:
     """Write a placeholder file for every step output, create shard dirs, and write the approval flag.
 
     extras: additional filenames written into intermediate_dir (e.g. pass2_concat_map.json).
@@ -85,7 +87,7 @@ def _populate_step_files(steps, intermediate_dir: Path, output_dir: Path, *, ext
 
     (intermediate_dir / "schema_approved.flag").write_text("approved")
 
-    for fname in (extras or []):
+    for fname in extras or []:
         (intermediate_dir / fname).write_text("{}")
 
 
@@ -634,7 +636,7 @@ def test_approve_schema_via_session_option(sessions_root, monkeypatch):
     import mykg.cli as cli_mod
     import mykg.exporter as exp_mod
 
-    inter = (sessions_root / "my-session" / "intermediate")
+    inter = sessions_root / "my-session" / "intermediate"
     inter.mkdir(parents=True)
     (inter / "schema.json").write_text(json.dumps(_minimal_schema()))
     monkeypatch.setattr(
@@ -654,7 +656,7 @@ def test_approve_schema_generates_ttl_and_flag(sessions_root, monkeypatch):
     import mykg.cli as cli_mod
     import mykg.exporter as exp_mod
 
-    inter = (sessions_root / "gen-session" / "intermediate")
+    inter = sessions_root / "gen-session" / "intermediate"
     inter.mkdir(parents=True)
     (inter / "schema.json").write_text(json.dumps(_minimal_schema()))
     monkeypatch.setattr(
