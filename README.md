@@ -201,11 +201,18 @@ profiles:
 All configuration lives in a single `pipeline_config.yaml` file discovered automatically from the working directory (or any parent). There are no hardcoded defaults in the code — the YAML is the sole source of truth.
 
 ```bash
-mykg init           # interactive setup: choose provider, paste API key,
+mykg init           # interactive: choose provider, model, paste API key
                     # writes pipeline_config.yaml and .env in one step
 mykg init --force   # overwrite an existing config
-mykg init --profile openrouter-free --api-key sk-or-...   # non-interactive
+mykg init --profile openrouter-free --model google/llama-4-maverick --api-key sk-or-...  # non-interactive
 ```
+
+The wizard walks you through three prompts:
+
+1. **Profile** — choose your LLM provider (OpenRouter, Anthropic, OpenAI, Ollama, Claude CLI)
+2. **Model** — accept the default or type any model slug for that provider
+3. **API key** — paste your key (skipped for Ollama and Claude CLI)
+
 
 ### API Keys
 
