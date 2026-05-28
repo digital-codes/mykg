@@ -10,11 +10,10 @@ from pathlib import Path
 import click
 from dotenv import load_dotenv
 
-from mykg import config as _cfg
-from mykg.llm.config import load_adapter
-from mykg.logging import setup
-from mykg.orchestrator import PipelineContext, run
-from mykg.pipeline import STEPS
+
+def _cfg():
+    from mykg import config
+    return config
 
 
 @click.group()
@@ -24,7 +23,7 @@ def cli():
 
 
 def _sessions_root() -> Path:
-    return Path(getattr(_cfg, "SESSIONS_DIR", "sessions"))
+    return Path(getattr(_cfg(), "SESSIONS_DIR", "sessions"))
 
 
 def _make_session_dirs(sessions_root: Path) -> tuple[str, Path, Path]:
@@ -47,7 +46,7 @@ def _copy_input_files(input_dir: Path, session_root: Path, copy_config: bool = T
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(f, target)
     if copy_config:
-        shutil.copy2(_cfg.CONFIG_PATH, session_root / "pipeline_config.yaml")
+        shutil.copy2(_cfg().CONFIG_PATH, session_root / "pipeline_config.yaml")
 
 
 @cli.command("init")
@@ -96,14 +95,14 @@ def init_config(force: bool) -> None:
 )
 @click.option(
     "--workers",
-    default=lambda: _cfg.PASS2_MAX_WORKERS,
+    default=lambda: _cfg().PASS2_MAX_WORKERS,
     type=int,
     show_default=True,
     help="Number of parallel workers for Pass 2",
 )
 @click.option(
     "--confidence-agg",
-    default=lambda: _cfg.ASSEMBLY_CONFIDENCE_AGG,
+    default=lambda: _cfg().ASSEMBLY_CONFIDENCE_AGG,
     type=click.Choice(["mean", "max"]),
     show_default=True,
     help="How to aggregate confidence scores when deduplicating",
@@ -134,6 +133,11 @@ def extract_graph(
     session,
 ):
     """Extract a knowledge graph from a directory of Markdown files."""
+    from mykg.llm.config import load_adapter
+    from mykg.logging import setup
+    from mykg.orchestrator import PipelineContext, run
+    from mykg.pipeline import STEPS
+
     sessions_root = _sessions_root()
 
     if session and (output_dir is not None or intermediate_dir is not None):
@@ -173,8 +177,8 @@ def extract_graph(
         click.echo(f"Session: {session_name}")
     else:
         session_root = None
-        output_dir = output_dir or Path(_cfg.OUTPUT_DIR)
-        intermediate_dir = intermediate_dir or Path(_cfg.INTERMEDIATE_DIR)
+        output_dir = output_dir or Path(_cfg().OUTPUT_DIR)
+        intermediate_dir = intermediate_dir or Path(_cfg().INTERMEDIATE_DIR)
 
     # Route log file into the session folder (absolute paths are kept as-is).
     if session_root is not None:
@@ -196,7 +200,7 @@ def extract_graph(
 
     from mykg.llm.error_gate import ErrorGate
 
-    error_gate = ErrorGate(threshold=_cfg.ERROR_GATE_THRESHOLD) if _cfg.ERROR_GATE_ENABLED else None
+    error_gate = ErrorGate(threshold=_cfg().ERROR_GATE_THRESHOLD) if _cfg().ERROR_GATE_ENABLED else None
     adapter = load_adapter(error_gate=error_gate)
     logging.getLogger(__name__).info("LLM endpoint: %s", adapter.endpoint_label())
 
@@ -232,7 +236,7 @@ def extract_graph(
 
     run(STEPS, ctx)
 
-    if _cfg.REPORT_ENABLED and session_root is not None:
+    if _cfg().REPORT_ENABLED and session_root is not None:
         from mykg.steps.step_walkthrough import run_walkthrough
 
         run_walkthrough(
@@ -248,6 +252,7 @@ def extract_graph(
 @click.option("--session", default=None, help="Session name to find intermediate-dir in")
 def approve_schema(intermediate_dir, log_file, verbose, session):
     """Regenerate schema.ttl from schema.json and write the approval flag."""
+    from mykg.logging import setup
     setup(log_file=log_file, verbose=verbose)
 
     if session and intermediate_dir is not None:
@@ -255,7 +260,7 @@ def approve_schema(intermediate_dir, log_file, verbose, session):
     if session:
         intermediate_dir = _sessions_root() / session / "intermediate"
     else:
-        intermediate_dir = intermediate_dir or Path(_cfg.INTERMEDIATE_DIR)
+        intermediate_dir = intermediate_dir or Path(_cfg().INTERMEDIATE_DIR)
 
     schema_path = Path(intermediate_dir) / "schema.json"
     if not schema_path.exists():
@@ -368,6 +373,8 @@ def merge_graphs(
     elif not Path(log_file).is_absolute():
         log_file = merged_session_root / Path(log_file).name
 
+    from mykg.llm.config import load_adapter
+    from mykg.logging import setup
     setup(log_file=log_file, verbose=verbose)
 
     if from_step:
@@ -403,7 +410,7 @@ def merge_graphs(
         sessions_root=sessions_root,
     )
 
-    if _cfg.REPORT_ENABLED:
+    if _cfg().REPORT_ENABLED:
         from mykg.steps.step_walkthrough import run_walkthrough
 
         run_walkthrough(
