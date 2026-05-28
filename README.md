@@ -88,7 +88,7 @@ sessions/2026-05-17T18-31-07/
 
 - **Provider-agnostic** — works with Anthropic (Claude), OpenAI (GPT-4o), Ollama (local), OpenRouter, or the `claude` CLI with no API key
 - **Four output families** — JSONL for Neo4j/NetworkX/RAG, Turtle RDF for OWL toolchains, NetworkX multi-format for graph analysis, and Obsidian vault for linked personal knowledge management
-- **Obsidian vault export** — automatically writes one linked Markdown note per entity to `output/obsidian_vault/`; open the folder directly in [Obsidian](https://obsidian.md) to explore the graph with backlinks and Graph View
+- **Obsidian vault — second brain for AI coding assistants** — every extracted entity becomes a wikilinked Markdown note in `output/obsidian_vault/`; open it in [Obsidian](https://obsidian.md) to navigate the graph with backlinks and Graph View, or point your AI coding assistant (Claude Code, Cursor, Copilot) at the vault folder so it can answer questions, trace relationships, and reason over your knowledge base in natural language
 - **Interactive HTML graph** — node/edge filtering, search, hover popups; opens directly in a browser
 - **Confidence scoring** — every extracted attribute, node, and edge carries a `0.0–1.0` confidence score
 - **Name normalization** — surface-form variants ("Acme Corp", "ACME", "Acme Corporation") resolved to a single canonical node with aliases
