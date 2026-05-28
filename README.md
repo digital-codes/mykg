@@ -14,7 +14,7 @@
 
 **myKG** automatically generates a confidence-scored knowledge graph from a directory of Markdown files, grounded in an induced RDFS/OWL ontology schema.
 
-It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema from your document corpus; Pass 2 extracts typed entity and relationship instances per file against that schema. The result is exported to multiple formats: JSONL for property-graph consumers such as Neo4j, Turtle RDF for OWL toolchains, seven NetworkX formats for graph analysis and visualization, and an Obsidian vault — a second brain of wikilinked Markdown notes your AI coding assistant (Claude Code, Cursor, Copilot) can read and reason over directly.
+It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema from your document corpus; Pass 2 extracts typed entity and relationship instances per file against that schema. The result is exported to multiple formats: JSONL for property-graph consumers such as Neo4j, Turtle RDF for OWL toolchains, seven NetworkX formats for graph analysis and visualization, and an **Obsidian vault** — a second brain of wikilinked Markdown notes your AI coding assistant (Claude Code, Cursor, Copilot) can read and reason over directly.
 
 ## Command line
 
@@ -69,26 +69,35 @@ sessions/2026-05-17T18-31-07/
 
 ## Features
 
-### Extraction
-- **Schema-first** — Pass 1 induces an RDFS/OWL schema; Pass 2 extracts entities and relationships against it
-- **Bring your own ontology** — lock classes/properties with `--base-schema`; the LLM can only extend, not contradict
-- **SKOS thesaurus** — `--thesaurus` resolves synonyms during schema merge
-- **Human review gate** — `--review` pauses after schema induction so you can edit before extraction begins
-- **Incremental** — `--append` adds new files without re-running Pass 1
+### Ontology-Guided Extraction
 
-### Output
-- **Obsidian vault — second brain for AI coding assistants** — one wikilinked Markdown note per entity in `output/obsidian_vault/`; open in [Obsidian](https://obsidian.md) or point Claude Code, Cursor, or Copilot at the folder to query your knowledge base in natural language
-- **JSONL** — `nodes.jsonl` + `edges.jsonl` for Neo4j, Kuzu, NetworkX, and RAG pipelines
-- **Turtle RDF** — RDFS/OWL TBox + ABox for Protégé, SPARQL endpoints, and OWL reasoners
-- **NetworkX formats** — GML, GraphML, GEXF, Pajek, JSON node-link, and interactive HTML graph
-- **Confidence scoring** — every attribute, node, and edge carries a `0.0–1.0` score
+- **Schema-guided knowledge graph generation** — the extracted graph is always grounded in a formal RDFS/OWL schema: concept types, property names, domain/range constraints, and the is-a hierarchy are explicit and inspectable before any entity is extracted
+- **Bring your own ontology** — supply a `--base-schema` TTL file to lock in classes and properties from an existing formal ontology; the LLM expands it with domain-specific concepts but cannot rename, remove, or contradict your authoritative vocabulary
+- **SKOS thesaurus support** — pass `--thesaurus` to load a SKOS vocabulary; `skos:exactMatch` terms are collapsed silently, `skos:closeMatch` terms trigger a warning — giving the schema merger richer synonym awareness than string matching alone
+- **Verifiable TTL ontology** — after Pass 1, the induced schema is exported as a valid RDFS/OWL Turtle file (`intermediate/schema.ttl`) that can be opened directly in ontology editors such as [Protégé](https://protege.stanford.edu/). The TTL is validated by rdflib (syntax + semantic checks: domain/range refer to declared classes, no conflicting ranges) before any extraction begins
+- **Human-in-the-loop ontology design** — run with `--review` to pause after schema induction; inspect and edit `schema.json` (or load `schema.ttl` in Protégé, modify, and save back) before a single entity is extracted; resume with `mykg approve-schema`
+- **Incremental updates** — run with `--append` on an existing session to add new or modified Markdown files without re-running Pass 1; the schema is reused and only the new files go through Pass 2
+- **AI coding assistant friendly** — designed for smooth use alongside AI coding assistants such as [Claude Code](https://claude.ai/code); run extractions, inspect outputs, and iterate on your knowledge graph without leaving your coding environment; see [Using with Claude Code](#using-with-claude-code)
+- **Second brain for AI coding assistants** — the Obsidian vault output turns your extracted knowledge graph into a directory of wikilinked Markdown notes that any AI coding assistant can read as project context; point Claude Code, Cursor, or Copilot at `output/obsidian_vault/` and ask questions, trace relationships, and get answers grounded in your own documents
 
-### Pipeline
-- **Name normalization** — surface-form variants merged to a single canonical node with aliases
-- **Orphan-connection pass** — co-occurrence heuristic + LLM reconnects isolated nodes
-- **Cross-session merge** — combine two sessions into one unified graph
-- **Resumable** — re-enter at any step after a crash or edit; work already done is never repeated
-- **Provider-agnostic** — Anthropic, OpenAI, Ollama, OpenRouter, or the `claude` CLI (no API key needed)
+### Input
+
+- **Markdown files** — any directory of `.md` files; subdirectory structure is preserved; YAML/TOML frontmatter, headings, lists, and code blocks are all treated as structural signals
+- **Other formats** — convert PDFs, Word docs, HTML, and other formats to Markdown first using a document parser such as [MinerU](https://github.com/opendatalab/mineru), then point myKG at the output directory
+
+### Graph & Output
+
+- **Provider-agnostic** — works with Anthropic (Claude), OpenAI (GPT-4o), Ollama (local), OpenRouter, or the `claude` CLI with no API key
+- **Four output families** — JSONL for Neo4j/NetworkX/RAG, Turtle RDF for OWL toolchains, NetworkX multi-format for graph analysis, and Obsidian vault for linked personal knowledge management
+- **Obsidian vault — second brain for AI coding assistants** — every extracted entity becomes a wikilinked Markdown note in `output/obsidian_vault/`; open it in [Obsidian](https://obsidian.md) to navigate the graph with backlinks and Graph View, or point your AI coding assistant (Claude Code, Cursor, Copilot) at the vault folder so it can answer questions, trace relationships, and reason over your knowledge base in natural language
+- **Interactive HTML graph** — node/edge filtering, search, hover popups; opens directly in a browser
+- **Confidence scoring** — every extracted attribute, node, and edge carries a `0.0–1.0` confidence score
+- **Name normalization** — surface-form variants ("Acme Corp", "ACME", "Acme Corporation") resolved to a single canonical node with aliases
+- **Orphan-connection pass** — reconnects isolated nodes via co-occurrence heuristic + LLM confirmation
+- **Cross-session merge** — combine two independently-produced graphs into one unified knowledge graph
+- **Resumable pipeline** — every stage persists intermediate state; re-enter at any step after a crash or edit
+- **Session isolation** — each run is fully self-contained; inputs, intermediate state, outputs, and logs co-located
+- **Query knowledge graph** — natural-language and structured queries directly against the extracted graph via AI coding assistants such as [Claude Code](https://claude.ai/code), SPARQL endpoints, or graph traversal APIs
 
 ## Quick Start
 
