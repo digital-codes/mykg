@@ -19,7 +19,7 @@ def _cfg():
 @click.group()
 def cli():
     """mykg — Markdown-to-knowledge-graph extractor."""
-    load_dotenv()
+    load_dotenv(".env.mykg")
 
 
 def _sessions_root() -> Path:
@@ -92,7 +92,7 @@ _PROFILE_META = {
 @click.option("--force", is_flag=True, help="Overwrite existing mykg_config.yaml")
 @click.option("--profile", default=None, help="LLM profile to activate (skips interactive prompt)")
 @click.option("--model", default=None, help="Model name to set in the active profile (skips interactive prompt)")
-@click.option("--api-key", default=None, help="API key to write to .env (skips interactive prompt)")
+@click.option("--api-key", default=None, help="API key to write to .env.mykg (skips interactive prompt)")
 def init_config(force: bool, profile: str | None, model: str | None, api_key: str | None) -> None:
     """Create mykg_config.yaml and optionally configure LLM provider, model, and API key."""
     dest = Path.cwd() / "mykg_config.yaml"
@@ -150,7 +150,7 @@ def init_config(force: bool, profile: str | None, model: str | None, api_key: st
         _print_next_steps(profile)
         return
 
-    env_file = Path.cwd() / ".env"
+    env_file = Path.cwd() / ".env.mykg"
     var = meta["key_var"]
 
     # Check if key is already set
@@ -162,7 +162,7 @@ def init_config(force: bool, profile: str | None, model: str | None, api_key: st
                 break
 
     if existing_key:
-        click.echo(f"\n{var} is already set in .env.")
+        click.echo(f"\n{var} is already set in .env.mykg.")
     else:
         if api_key is None:
             click.echo(f"\nYou need an API key for {profile}.")
@@ -176,9 +176,9 @@ def init_config(force: bool, profile: str | None, model: str | None, api_key: st
 
         if api_key:
             _write_env_key(env_file, var, api_key)
-            click.echo(f"Written {var} to .env")
+            click.echo(f"Written {var} to .env.mykg")
         else:
-            click.echo(f"Skipped — set {var} in .env before running.")
+            click.echo(f"Skipped — set {var} in .env.mykg before running.")
 
     _print_next_steps(profile)
 
@@ -197,7 +197,7 @@ def _patch_profile_model(content: str, profile: str, model: str) -> str:
 
 
 def _write_env_key(env_file: Path, var: str, value: str) -> None:
-    """Write or update a single key in .env, preserving other lines."""
+    """Write or update a single key in .env.mykg, preserving other lines."""
     lines = env_file.read_text().splitlines() if env_file.exists() else []
     updated = False
     for i, line in enumerate(lines):

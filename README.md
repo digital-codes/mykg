@@ -96,7 +96,7 @@ Requires Python 3.11+ and one of: an Anthropic/OpenAI/OpenRouter API key, Ollama
 
 ### Install from PyPI
 
-Install mykg, then run the interactive setup wizard — it asks for your provider, model, and API key and writes `mykg_config.yaml` and `.env` in one step.
+Install mykg, then run the interactive setup wizard — it asks for your provider, model, and API key and writes `mykg_config.yaml` and `.env.mykg` in one step.
 
 ```bash
 pip install mykg
@@ -187,7 +187,7 @@ All configuration lives in a single `mykg_config.yaml` file discovered automatic
 
 ```bash
 mykg init           # interactive: choose provider, model, paste API key
-                    # writes mykg_config.yaml and .env in one step
+                    # writes mykg_config.yaml and .env.mykg in one step
 mykg init --force   # overwrite an existing config
 mykg init --profile openrouter-free --model google/llama-4-maverick --api-key sk-or-...  # non-interactive
 ```
@@ -201,7 +201,7 @@ The wizard walks you through three prompts:
 
 ### API Keys
 
-myKG reads API keys from environment variables. Set them by exporting directly or by creating a `.env` file in your project directory (loaded automatically on startup).
+myKG reads API keys from environment variables. Set them by exporting directly or by creating a `.env.mykg` file in your project directory (loaded automatically on startup).
 
 **Option A — export in your shell:**
 
@@ -209,10 +209,10 @@ myKG reads API keys from environment variables. Set them by exporting directly o
 export ANTHROPIC_API_KEY=sk-ant-...
 ```
 
-**Option B — create a `.env` file:**
+**Option B — create a `.env.mykg` file:**
 
 ```bash
-# .env
+# .env.mykg
 ANTHROPIC_API_KEY=sk-ant-...
 ```
 
@@ -224,7 +224,7 @@ ANTHROPIC_API_KEY=sk-ant-...
 | *(none required)* | `claude-cli` | Billing via Claude Pro/Max subscription |
 | *(none required)* | `ollama-local` | Local inference, no account needed |
 
-For source installs you can also copy [`sample.env`](sample.env) to `.env` as a starting template.
+For source installs you can also copy [`sample.env.mykg`](sample.env.mykg) to `.env.mykg` as a starting template.
 
 ### LLM Providers
 
@@ -582,7 +582,7 @@ uv sync
 uv run pytest -m "not live" -v
 
 # All tests including live API integration tests
-# Requires OPENROUTER_API_KEY in environment or .env (see sample.env)
+# Requires OPENROUTER_API_KEY in environment or .env.mykg (see sample.env.mykg)
 uv run pytest -m live -v
 
 # Single file

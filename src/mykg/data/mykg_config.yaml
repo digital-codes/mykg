@@ -14,7 +14,7 @@ profiles:
   openrouter-free:
   # OpenRouter free tier — conservative settings for 32K-context free models.
   # Change llm.model to target a specific model (openrouter.ai/models).
-  # Requires OPENROUTER_API_KEY in env / .env
+  # Requires OPENROUTER_API_KEY in env / .env.mykg
   #
   # Token budget chain (use context-calculator to recompute when switching models):
   #   ① context_window    = 200000
@@ -233,7 +233,7 @@ profiles:
 
   # ---------------------------------------------------------------------------
   openai:
-  # OpenAI GPT-4o — direct API, requires OPENAI_API_KEY in env / .env
+  # OpenAI GPT-4o — direct API, requires OPENAI_API_KEY in env / .env.mykg
   # Optional: set llm.base_url to use Azure OpenAI or any OpenAI-compatible endpoint.
   #
   # Token budget chain (use context-calculator to recompute when switching models):

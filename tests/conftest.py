@@ -7,7 +7,7 @@ import pytest
 def _load_key(env_var: str) -> str | None:
     key = os.environ.get(env_var, "").strip()
     if not key:
-        env_file = Path(__file__).parent.parent / ".env"
+        env_file = Path(__file__).parent.parent / ".env.mykg"
         if env_file.exists():
             for line in env_file.read_text().splitlines():
                 if line.startswith(env_var + "="):
