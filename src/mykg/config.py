@@ -1,7 +1,7 @@
 """
 Central configuration for the mykg pipeline.
 
-All values are loaded from ``pipeline_config.yaml`` (searched upward from cwd).
+All values are loaded from ``mykg_config.yaml`` (searched upward from cwd).
 This module exposes named constants that the rest of the codebase imports.
 There are no hardcoded fallback values here — every constant is set from the YAML file.
 
@@ -16,18 +16,18 @@ from pathlib import Path
 import yaml
 
 # ---------------------------------------------------------------------------
-# Locate and load pipeline_config.yaml
+# Locate and load mykg_config.yaml
 # ---------------------------------------------------------------------------
 
 
 def _find_config() -> Path:
     here = Path.cwd()
     for directory in [here, *here.parents]:
-        candidate = directory / "pipeline_config.yaml"
+        candidate = directory / "mykg_config.yaml"
         if candidate.exists():
             return candidate
     raise FileNotFoundError(
-        "pipeline_config.yaml not found. "
+        "mykg_config.yaml not found. "
         "Run 'mykg init' in your project directory to create one from the default template."
     )
 
@@ -51,7 +51,7 @@ def _apply_profile(raw: dict) -> dict:
     profiles = raw.get("profiles", {})
     if profile_name not in profiles:
         raise KeyError(
-            f"Profile '{profile_name}' not found in pipeline_config.yaml. "
+            f"Profile '{profile_name}' not found in mykg_config.yaml. "
             f"Available profiles: {list(profiles.keys())}"
         )
     import copy

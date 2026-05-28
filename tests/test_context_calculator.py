@@ -5,8 +5,8 @@ Coverage target: ~90%
 
 Key design notes:
 - yaml and tiktoken are imported *inside* function bodies; patch via sys.modules.
-- load_pipeline_config searches upward from cwd — use monkeypatch.chdir(tmp_path)
-  and write a real pipeline_config.yaml file there.
+- load_mykg_config searches upward from cwd — use monkeypatch.chdir(tmp_path)
+  and write a real mykg_config.yaml file there.
 - main() uses argparse — patch sys.argv via monkeypatch.setattr.
 """
 
@@ -21,7 +21,7 @@ from mykg.utility.context_calculator import (
     SAFETY_MARGIN_RATIO,
     calculate,
     count_chunks,
-    load_pipeline_config,
+    load_mykg_config,
     print_report,
     round_to_nice,
     suggest_chunk_divisor,
@@ -272,7 +272,7 @@ def test_count_corpus_tokens_no_md_files_raises(tmp_path):
 
 
 # ---------------------------------------------------------------------------
-# load_pipeline_config
+# load_mykg_config
 # ---------------------------------------------------------------------------
 
 MINIMAL_CONFIG = """\
@@ -295,34 +295,34 @@ llm:
 """
 
 
-def test_load_pipeline_config_finds_yaml_in_cwd(tmp_path, monkeypatch):
-    (tmp_path / "pipeline_config.yaml").write_text(MINIMAL_CONFIG)
+def test_load_mykg_config_finds_yaml_in_cwd(tmp_path, monkeypatch):
+    (tmp_path / "mykg_config.yaml").write_text(MINIMAL_CONFIG)
     monkeypatch.chdir(tmp_path)
 
-    cfg, config_path = load_pipeline_config()
-    assert config_path == tmp_path / "pipeline_config.yaml"
+    cfg, config_path = load_mykg_config()
+    assert config_path == tmp_path / "mykg_config.yaml"
 
 
-def test_load_pipeline_config_resolves_active_profile(tmp_path, monkeypatch):
-    (tmp_path / "pipeline_config.yaml").write_text(MINIMAL_CONFIG)
+def test_load_mykg_config_resolves_active_profile(tmp_path, monkeypatch):
+    (tmp_path / "mykg_config.yaml").write_text(MINIMAL_CONFIG)
     monkeypatch.chdir(tmp_path)
 
-    cfg, config_path = load_pipeline_config()
+    cfg, config_path = load_mykg_config()
     assert cfg["_active_profile"] == "myprofile"
     assert cfg["llm"]["context_window"] == 32000
     assert cfg["llm"]["max_output_tokens"] == 8000
 
 
-def test_load_pipeline_config_no_profile_uses_defaults(tmp_path, monkeypatch):
-    (tmp_path / "pipeline_config.yaml").write_text(MINIMAL_CONFIG_NO_PROFILE)
+def test_load_mykg_config_no_profile_uses_defaults(tmp_path, monkeypatch):
+    (tmp_path / "mykg_config.yaml").write_text(MINIMAL_CONFIG_NO_PROFILE)
     monkeypatch.chdir(tmp_path)
 
-    cfg, config_path = load_pipeline_config()
+    cfg, config_path = load_mykg_config()
     assert cfg["_active_profile"] == "(default)"
     assert cfg["llm"]["context_window"] == 16000
 
 
-def test_load_pipeline_config_raises_when_profile_missing(tmp_path, monkeypatch):
+def test_load_mykg_config_raises_when_profile_missing(tmp_path, monkeypatch):
     bad_config = """\
 profile: nonexistent_profile
 profiles:
@@ -330,14 +330,14 @@ profiles:
     llm:
       context_window: 32000
 """
-    (tmp_path / "pipeline_config.yaml").write_text(bad_config)
+    (tmp_path / "mykg_config.yaml").write_text(bad_config)
     monkeypatch.chdir(tmp_path)
 
     with pytest.raises(KeyError, match="nonexistent_profile"):
-        load_pipeline_config()
+        load_mykg_config()
 
 
-def test_load_pipeline_config_raises_when_no_file_found(tmp_path, monkeypatch):
+def test_load_mykg_config_raises_when_no_file_found(tmp_path, monkeypatch):
     # Patch Path.cwd to return a directory with no parents and no config file.
     # This avoids the search reaching the real repo root where a config exists.
     fake_cwd = MagicMock()
@@ -348,8 +348,8 @@ def test_load_pipeline_config_raises_when_no_file_found(tmp_path, monkeypatch):
 
     with patch("mykg.utility.context_calculator.Path") as mock_path_cls:
         mock_path_cls.cwd.return_value = fake_cwd
-        with pytest.raises(FileNotFoundError, match="pipeline_config.yaml not found"):
-            load_pipeline_config()
+        with pytest.raises(FileNotFoundError, match="mykg_config.yaml not found"):
+            load_mykg_config()
 
 
 # ---------------------------------------------------------------------------
@@ -387,7 +387,7 @@ SAMPLE_RESULT = {
 
 
 def test_write_candidate_config_patches_token_keys(tmp_path):
-    config_path = tmp_path / "pipeline_config.yaml"
+    config_path = tmp_path / "mykg_config.yaml"
     config_path.write_text(SAMPLE_PIPELINE_CONFIG)
 
     out_path = write_candidate_config(config_path, "testprofile", SAMPLE_RESULT)
@@ -403,16 +403,16 @@ def test_write_candidate_config_patches_token_keys(tmp_path):
 
 
 def test_write_candidate_config_correct_output_filename(tmp_path):
-    config_path = tmp_path / "pipeline_config.yaml"
+    config_path = tmp_path / "mykg_config.yaml"
     config_path.write_text(SAMPLE_PIPELINE_CONFIG)
 
     out_path = write_candidate_config(config_path, "testprofile", SAMPLE_RESULT)
-    assert out_path.name == "pipeline_config_candidate.yaml"
+    assert out_path.name == "mykg_config_candidate.yaml"
     assert out_path.parent == tmp_path
 
 
 def test_write_candidate_config_preserves_other_content(tmp_path):
-    config_path = tmp_path / "pipeline_config.yaml"
+    config_path = tmp_path / "mykg_config.yaml"
     config_path.write_text(SAMPLE_PIPELINE_CONFIG)
 
     out_path = write_candidate_config(config_path, "testprofile", SAMPLE_RESULT)
@@ -526,7 +526,7 @@ def test_main_from_config_mode_runs(tmp_path, monkeypatch, capsys):
     input_dir.mkdir()
     (input_dir / "doc.md").write_text("Hello world test document")
 
-    # Write a minimal pipeline_config.yaml
+    # Write a minimal mykg_config.yaml
     config_text = """\
 profile: testprofile
 profiles:
@@ -545,7 +545,7 @@ profiles:
         max_file_chars: 16000
         concat_batch_token_target: 20000
 """
-    (tmp_path / "pipeline_config.yaml").write_text(config_text)
+    (tmp_path / "mykg_config.yaml").write_text(config_text)
     monkeypatch.chdir(tmp_path)
 
     monkeypatch.setattr(

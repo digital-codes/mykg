@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-context_calculator.py — suggest mykg pipeline_config.yaml token-budget parameters.
+context_calculator.py — suggest mykg mykg_config.yaml token-budget parameters.
 
 Two modes:
 
   1. Manual mode — supply model parameters on the command line:
        python context_calculator.py --context 32000 --max-output 16384
 
-  2. Auto mode — read the active profile from pipeline_config.yaml and measure
+  2. Auto mode — read the active profile from mykg_config.yaml and measure
      the actual input corpus to suggest an optimal chunk divisor:
        python context_calculator.py --from-config
        python context_calculator.py --from-config --input-dir ./input_files
@@ -46,8 +46,8 @@ def round_to_nice(n: int) -> int:
     return n
 
 
-def load_pipeline_config() -> tuple[dict, Path]:
-    """Find and load pipeline_config.yaml, resolving the active profile.
+def load_mykg_config() -> tuple[dict, Path]:
+    """Find and load mykg_config.yaml, resolving the active profile.
 
     Returns (config_dict, config_path).
     """
@@ -55,7 +55,7 @@ def load_pipeline_config() -> tuple[dict, Path]:
 
     here = Path.cwd()
     for directory in [here, *here.parents]:
-        config_path = directory / "pipeline_config.yaml"
+        config_path = directory / "mykg_config.yaml"
         if config_path.exists():
             with open(config_path) as f:
                 raw = yaml.safe_load(f)
@@ -63,7 +63,7 @@ def load_pipeline_config() -> tuple[dict, Path]:
             if profile_name:
                 profiles = raw.get("profiles", {})
                 if profile_name not in profiles:
-                    raise KeyError(f"Profile '{profile_name}' not found in pipeline_config.yaml")
+                    raise KeyError(f"Profile '{profile_name}' not found in mykg_config.yaml")
                 import copy
                 result = copy.deepcopy(raw)
                 profile = profiles[profile_name]
@@ -75,7 +75,7 @@ def load_pipeline_config() -> tuple[dict, Path]:
                 result = raw
                 result["_active_profile"] = "(default)"
             return result, config_path
-    raise FileNotFoundError("pipeline_config.yaml not found")
+    raise FileNotFoundError("mykg_config.yaml not found")
 
 
 def count_corpus_tokens(input_dir: Path, encoding_name: str) -> int:
@@ -131,7 +131,7 @@ def calculate(
     overlap_tokens = max(round_to_nice(int(window_tokens * OVERLAP_RATIO)), 10)
 
     # The safety margin IS the feedback reserve — tokens not consumed by batch_token_target.
-    # Convert to characters so the value maps directly to pipeline_config feedback.max_file_chars.
+    # Convert to characters so the value maps directly to mykg_config feedback.max_file_chars.
     feedback_token_reserve = input_headroom - batch_token_target
     max_file_chars = feedback_token_reserve * CHARS_PER_TOKEN
 
@@ -184,7 +184,7 @@ def suggest_chunk_divisor(
 # ---------------------------------------------------------------------------
 
 def write_candidate_config(config_path: "Path", profile_name: str, result: dict) -> "Path":
-    """Write a candidate pipeline_config.yaml next to the original with suggested token-budget values.
+    """Write a candidate mykg_config.yaml next to the original with suggested token-budget values.
 
     Copies the source file verbatim and patches the token-budget keys
     in the active profile, preserving all comments and formatting.
@@ -230,7 +230,7 @@ def write_candidate_config(config_path: "Path", profile_name: str, result: dict)
 
         new_lines.append(line)
 
-    stem = config_path.stem          # "pipeline_config"
+    stem = config_path.stem          # "mykg_config"
     suffix = config_path.suffix      # ".yaml"
     out_path = config_path.with_name(f"{stem}_candidate{suffix}")
     out_path.write_text("".join(new_lines))
@@ -279,7 +279,7 @@ def print_report(result: dict, model: str, chunk_divisor: int, corpus_info: dict
     fits = btt <= ih
     print(f"    batch_token_target ≤ input_headroom: {'✓' if fits else '✗ EXCEEDS — API will return context-length errors'}")
     print()
-    print("  YAML SNIPPET — paste into the active profile in pipeline_config.yaml")
+    print("  YAML SNIPPET — paste into the active profile in mykg_config.yaml")
     print("  " + "-" * 56)
     print(f"    llm:")
     print(f"      context_window: {cw}  # model total context limit")
@@ -305,7 +305,7 @@ def main() -> None:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Auto mode — read active profile from pipeline_config.yaml, measure input corpus:
+  # Auto mode — read active profile from mykg_config.yaml, measure input corpus:
   python context_calculator.py --from-config
   python context_calculator.py --from-config --input-dir ./input_files/my_corpus
 
@@ -316,7 +316,7 @@ Examples:
         """,
     )
     parser.add_argument("--from-config",    action="store_true",
-                        help="Read context_window and max_output_tokens from pipeline_config.yaml active profile")
+                        help="Read context_window and max_output_tokens from mykg_config.yaml active profile")
     parser.add_argument("--input-dir",      type=Path, default=None,
                         help="Directory of .md input files to measure (default: ./input_files or ./_input_files)")
     parser.add_argument("--model",          default=None,   help="Model name label (manual mode only)")
@@ -330,7 +330,7 @@ Examples:
     corpus_info = None
 
     if args.from_config:
-        cfg, config_path = load_pipeline_config()
+        cfg, config_path = load_mykg_config()
         profile_name = cfg.get("_active_profile", "?")
         llm = cfg.get("llm", {})
         pipeline = cfg.get("pipeline", {})
@@ -340,7 +340,7 @@ Examples:
         max_output_tokens = llm.get("max_output_tokens")
         if context_window is None or max_output_tokens is None:
             parser.error(
-                "pipeline_config.yaml active profile must have llm.context_window and "
+                "mykg_config.yaml active profile must have llm.context_window and "
                 "llm.max_output_tokens set. Run the manual mode (--context, --max-output) instead."
             )
 
@@ -395,7 +395,7 @@ Examples:
     else:
         # Manual mode
         if args.context is None:
-            parser.error("Manual mode requires --context (or use --from-config to read from pipeline_config.yaml)")
+            parser.error("Manual mode requires --context (or use --from-config to read from mykg_config.yaml)")
         model_label = args.model or "custom-model"
         chunk_divisor = args.chunk_divisor or DEFAULT_CHUNK_DIVISOR
         result = calculate(
@@ -410,7 +410,7 @@ Examples:
     if args.from_config:
         out_path = write_candidate_config(config_path, profile_name, result)
         print(f"  ✓  Candidate written to: {out_path}")
-        print(f"     Review, then rename to pipeline_config.yaml when satisfied.")
+        print(f"     Review, then rename to mykg_config.yaml when satisfied.")
         print()
 
 

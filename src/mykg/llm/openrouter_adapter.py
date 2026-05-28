@@ -41,7 +41,7 @@ class OpenRouterAdapter(LLMAdapter):
         if not api_key:
             raise ValueError(
                 "OPENROUTER_AUTH_TOKEN (or OPENROUTER_API_KEY) is required — "
-                "set it in your environment or supply api_key in pipeline_config.yaml"
+                "set it in your environment or supply api_key in mykg_config.yaml"
             )
 
         self._timeout = timeout

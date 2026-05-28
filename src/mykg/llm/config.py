@@ -11,15 +11,15 @@ if TYPE_CHECKING:
 
 
 def load_adapter(_raw: dict | None = None, error_gate: ErrorGate | None = None) -> LLMAdapter:
-    """Build an LLM adapter from pipeline_config.yaml.
+    """Build an LLM adapter from mykg_config.yaml.
 
-    pipeline_config.yaml is loaded by mykg.config at import time via auto-discovery.
+    mykg_config.yaml is loaded by mykg.config at import time via auto-discovery.
     _raw is an escape hatch for tests that need to supply a custom config dict.
     """
     cfg = _raw if _raw is not None else _cfg.RAW
     provider = cfg.get("provider", "")
     if not provider:
-        raise ValueError('pipeline_config.yaml must set "provider"')
+        raise ValueError('mykg_config.yaml must set "provider"')
 
     # llm: is a flat block for the active provider (inside the active profile).
     section = cfg.get("llm", {})
@@ -99,4 +99,4 @@ def load_adapter(_raw: dict | None = None, error_gate: ErrorGate | None = None) 
             error_gate=error_gate,
         )
 
-    raise ValueError(f"Unknown provider in pipeline_config.yaml: {provider!r}")
+    raise ValueError(f"Unknown provider in mykg_config.yaml: {provider!r}")

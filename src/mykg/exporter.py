@@ -6,7 +6,7 @@ Primary outputs (export_nodes_jsonl / export_edges_jsonl / export_ttl):
   output/edges.jsonl           — one flat JSON record per edge, from sidecar (D13)
   output/knowledge_graph.ttl   — RDFS TBox + RDF ABox, no edge metadata (D14)
 
-NetworkX outputs (export_networkx, toggled via pipeline_config.yaml
+NetworkX outputs (export_networkx, toggled via mykg_config.yaml
 export.networkx_enabled; written to output/networkx_output/):
   knowledge_graph.gml          — GML, human-readable
   knowledge_graph.graphml      — GraphML, full attributes (yEd, Gephi, Cytoscape)

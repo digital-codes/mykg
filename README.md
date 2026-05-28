@@ -100,7 +100,7 @@ Requires Python 3.11+ and one of: an Anthropic/OpenAI/OpenRouter API key, Ollama
 pip install mykg
 
 mykg init            # interactive setup: choose provider, paste API key
-                     # writes pipeline_config.yaml and .env in one step
+                     # writes mykg_config.yaml and .env in one step
 
 # Run
 mykg extract-graph my_notes/
@@ -129,7 +129,7 @@ For Ollama (no API key needed):
 
 ```bash
 ollama pull llama3.3
-# set profile: ollama-local in pipeline_config.yaml
+# set profile: ollama-local in mykg_config.yaml
 mykg extract-graph my_notes/
 ```
 
@@ -160,7 +160,7 @@ The `claude-cli` provider calls `claude -p` as a subprocess for every LLM step (
 **Key constraints of the `claude-cli` profile:**
 - `max_workers` must be `1` — the `claude` CLI is serial by design; parallel workers will queue
 - No API key required — billing goes through your Claude Pro/Max subscription
-- The `effort` and `model` fields in `pipeline_config.yaml` map directly to `--effort` and `--model` flags passed to `claude -p`
+- The `effort` and `model` fields in `mykg_config.yaml` map directly to `--effort` and `--model` flags passed to `claude -p`
 
 ### Using myKG from inside Claude Code
 
@@ -177,7 +177,7 @@ mykg extract-graph ./docs/ --session my-docs-kg
 
 Claude Code can then read `nodes.jsonl` or `edges.jsonl` directly to answer questions about the extracted graph, or load `knowledge_graph.ttl` into a SPARQL tool for structured queries.
 
-### Recommended `pipeline_config.yaml` settings for Claude Code
+### Recommended `mykg_config.yaml` settings for Claude Code
 
 ```yaml
 profile: claude-cli
@@ -198,11 +198,11 @@ profiles:
 
 ## Configuration
 
-All configuration lives in a single `pipeline_config.yaml` file discovered automatically from the working directory (or any parent). There are no hardcoded defaults in the code — the YAML is the sole source of truth.
+All configuration lives in a single `mykg_config.yaml` file discovered automatically from the working directory (or any parent). There are no hardcoded defaults in the code — the YAML is the sole source of truth.
 
 ```bash
 mykg init           # interactive: choose provider, model, paste API key
-                    # writes pipeline_config.yaml and .env in one step
+                    # writes mykg_config.yaml and .env in one step
 mykg init --force   # overwrite an existing config
 mykg init --profile openrouter-free --model google/llama-4-maverick --api-key sk-or-...  # non-interactive
 ```
@@ -251,7 +251,7 @@ For source installs you can also copy [`sample.env`](sample.env) to `.env` as a 
 | OpenRouter | `openrouter-free` | `OPENROUTER_API_KEY` | Access many models via one key |
 | Claude CLI | `claude-cli` | — | Uses `claude -p` subprocess; billing via Claude Pro/Max; serial only |
 
-Switch provider by setting `profile:` at the top of [`pipeline_config.yaml`](pipeline_config.yaml).
+Switch provider by setting `profile:` at the top of [`mykg_config.yaml`](mykg_config.yaml).
 
 ### Key Pipeline Parameters
 
@@ -483,7 +483,7 @@ After assembly, nodes with zero edges are "orphans" — present in the graph but
 
 Unconnectable orphans (no resolvable source chunk) are logged as `orphan_unconnectable` advisory events in `orphan_log.json`.
 
-Configure via `pipeline.orphan_pass.*` in `pipeline_config.yaml`. Disable entirely with `pipeline.orphan_pass.enabled: false`.
+Configure via `pipeline.orphan_pass.*` in `mykg_config.yaml`. Disable entirely with `pipeline.orphan_pass.enabled: false`.
 
 ## Advanced Options
 

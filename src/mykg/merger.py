@@ -41,7 +41,7 @@ class SessionData(BaseModel):
     raw_extractions: dict  # parsed raw_extractions.json content (file-keyed)
     shards: dict[str, dict]  # filename -> shard data from raw_extractions_shards/
     manifest: dict  # parsed file_manifest.json (may be empty dict if missing)
-    prep_mode: str  # pass2.prep_mode from the session's pipeline_config.yaml snapshot
+    prep_mode: str  # pass2.prep_mode from the session's mykg_config.yaml snapshot
 
 
 # ---------------------------------------------------------------------------
@@ -128,7 +128,7 @@ def load_session(session_name: str, sessions_root: Path) -> SessionData:
         "merger: manifest has %d file(s) for session %s", len(manifest), session_name
     )
 
-    # Optional: prep_mode from pipeline_config.yaml snapshot
+    # Optional: prep_mode from mykg_config.yaml snapshot
     prep_mode = _read_prep_mode(session_path)
     log.debug("merger: prep_mode=%s for session %s", prep_mode, session_name)
 
@@ -144,19 +144,19 @@ def load_session(session_name: str, sessions_root: Path) -> SessionData:
 
 
 def _read_prep_mode(session_path: Path) -> str:
-    """Extract pass2.prep_mode from the session's pipeline_config.yaml snapshot.
+    """Extract pass2.prep_mode from the session's mykg_config.yaml snapshot.
 
     Tries the active profile first, then top-level pipeline block. Returns
     ``"unknown"`` when the file is absent or the key is missing.
     """
-    config_path = session_path / "pipeline_config.yaml"
+    config_path = session_path / "mykg_config.yaml"
     if not config_path.exists():
         return "unknown"
     try:
         raw = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
     except Exception as exc:
         log.warning(
-            "merger: could not parse pipeline_config.yaml at %s — %s", session_path, exc
+            "merger: could not parse mykg_config.yaml at %s — %s", session_path, exc
         )
         return "unknown"
 

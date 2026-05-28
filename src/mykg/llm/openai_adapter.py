@@ -37,7 +37,7 @@ class OpenAIAdapter(LLMAdapter):
         if not api_key:
             raise ValueError(
                 "OPENAI_API_KEY is required — set OPENAI_API_KEY in your environment "
-                "or supply api_key in pipeline_config.yaml"
+                "or supply api_key in mykg_config.yaml"
             )
 
         self._timeout = timeout

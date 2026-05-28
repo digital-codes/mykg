@@ -80,7 +80,7 @@ def _make_session(sessions_root: Path, name: str, schema: dict, raw: dict) -> Pa
     (session_root / "input").mkdir(exist_ok=True)
     (intermediate / "schema.json").write_text(json.dumps(schema), encoding="utf-8")
     (intermediate / "raw_extractions.json").write_text(json.dumps(raw), encoding="utf-8")
-    (session_root / "pipeline_config.yaml").write_text(_PIPELINE_CFG, encoding="utf-8")
+    (session_root / "mykg_config.yaml").write_text(_PIPELINE_CFG, encoding="utf-8")
     return session_root
 
 

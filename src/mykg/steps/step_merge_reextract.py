@@ -15,7 +15,7 @@ _SENTINEL = "merge_reextract.done"
 def run_merge_reextract(ctx: MergeContext) -> None:
     """Re-extract files from each session whose schema now has new properties.
 
-    Strategy is read from pipeline_config.yaml → merge_graphs.reextraction_strategy:
+    Strategy is read from mykg_config.yaml → merge_graphs.reextraction_strategy:
       none     — skip; use original extractions as-is
       surgical — re-extract only files where new properties are absent
       full     — re-extract all files from both sessions

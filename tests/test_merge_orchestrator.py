@@ -15,8 +15,8 @@ def _make_session(sessions_root: Path, name: str, schema: dict, raw: dict) -> Pa
     (session_root / "input").mkdir(exist_ok=True)
     (intermediate / "schema.json").write_text(json.dumps(schema), encoding="utf-8")
     (intermediate / "raw_extractions.json").write_text(json.dumps(raw), encoding="utf-8")
-    # pipeline_config.yaml snapshot so load_session can read prep_mode
-    (session_root / "pipeline_config.yaml").write_text(
+    # mykg_config.yaml snapshot so load_session can read prep_mode
+    (session_root / "mykg_config.yaml").write_text(
         "profile: test\nprofiles:\n  test:\n    pipeline:\n      pass2:\n        prep_mode: per_file\n      merge_graphs:\n        reextraction_strategy: none\n",
         encoding="utf-8",
     )

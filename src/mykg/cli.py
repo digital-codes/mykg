@@ -46,7 +46,7 @@ def _copy_input_files(input_dir: Path, session_root: Path, copy_config: bool = T
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(f, target)
     if copy_config:
-        shutil.copy2(_cfg().CONFIG_PATH, session_root / "pipeline_config.yaml")
+        shutil.copy2(_cfg().CONFIG_PATH, session_root / "mykg_config.yaml")
 
 
 _PROFILE_META = {
@@ -89,15 +89,15 @@ _PROFILE_META = {
 
 
 @cli.command("init")
-@click.option("--force", is_flag=True, help="Overwrite existing pipeline_config.yaml")
+@click.option("--force", is_flag=True, help="Overwrite existing mykg_config.yaml")
 @click.option("--profile", default=None, help="LLM profile to activate (skips interactive prompt)")
 @click.option("--model", default=None, help="Model name to set in the active profile (skips interactive prompt)")
 @click.option("--api-key", default=None, help="API key to write to .env (skips interactive prompt)")
 def init_config(force: bool, profile: str | None, model: str | None, api_key: str | None) -> None:
-    """Create pipeline_config.yaml and optionally configure LLM provider, model, and API key."""
-    dest = Path.cwd() / "pipeline_config.yaml"
+    """Create mykg_config.yaml and optionally configure LLM provider, model, and API key."""
+    dest = Path.cwd() / "mykg_config.yaml"
     if dest.exists() and not force:
-        click.echo("pipeline_config.yaml already exists. Use --force to overwrite.")
+        click.echo("mykg_config.yaml already exists. Use --force to overwrite.")
         return
 
     # --- Profile selection ---------------------------------------------------
@@ -133,16 +133,16 @@ def init_config(force: bool, profile: str | None, model: str | None, api_key: st
         ).strip()
         model = model_input if model_input != default_model else None
 
-    # --- Write pipeline_config.yaml with selected profile and optional model -
+    # --- Write mykg_config.yaml with selected profile and optional model -
     import re
-    template = Path(__file__).parent / "data" / "pipeline_config.yaml"
+    template = Path(__file__).parent / "data" / "mykg_config.yaml"
     content = template.read_text()
     content = re.sub(r"^profile:.*$", f"profile: {profile}", content, count=1, flags=re.MULTILINE)
     if model:
         content = _patch_profile_model(content, profile, model)
     dest.write_text(content)
     model_note = f", model: {model}" if model else ""
-    click.echo(f"\nCreated pipeline_config.yaml in {Path.cwd()} (profile: {profile}{model_note})")
+    click.echo(f"\nCreated mykg_config.yaml in {Path.cwd()} (profile: {profile}{model_note})")
 
     # --- API key setup -------------------------------------------------------
     if meta["key_var"] is None:
@@ -225,13 +225,13 @@ def _print_next_steps(profile: str) -> None:
     "--output-dir",
     default=None,
     type=click.Path(path_type=Path),
-    help="Directory for final outputs (default: from pipeline_config.yaml)",
+    help="Directory for final outputs (default: from mykg_config.yaml)",
 )
 @click.option(
     "--intermediate-dir",
     default=None,
     type=click.Path(path_type=Path),
-    help="Intermediate pipeline files dir (default: from pipeline_config.yaml)",
+    help="Intermediate pipeline files dir (default: from mykg_config.yaml)",
 )
 @click.option(
     "--log-file",

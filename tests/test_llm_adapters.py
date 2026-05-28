@@ -794,7 +794,7 @@ def test_config_load_adapter_openrouter_passes_retry_429():
 # ---------------------------------------------------------------------------
 # OpenRouterAdapter — timeout / max_tokens forwarding tests
 #
-# These verify that the timeout set in pipeline_config.yaml (e.g. timeout: 45)
+# These verify that the timeout set in mykg_config.yaml (e.g. timeout: 45)
 # reaches chat.completions.create() on every call, and that the per-call
 # override mechanism actually forwards the override value rather than silently
 # falling back to the default.
@@ -828,7 +828,7 @@ def _mock_create_response():
 
 
 def test_openrouter_constructor_timeout_forwarded_to_create():
-    """The timeout from pipeline_config.yaml is used as the wall-clock deadline.
+    """The timeout from mykg_config.yaml is used as the wall-clock deadline.
 
     The adapter enforces the timeout via future.result(timeout=...), not as a
     kwarg to chat.completions.create(). Verify the call completes successfully

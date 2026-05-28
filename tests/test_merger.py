@@ -406,14 +406,14 @@ def test_build_source_map_same_filename(tmp_path):
 
 
 def test_read_prep_mode_no_config_file_returns_unknown(tmp_path):
-    """When pipeline_config.yaml is absent, return 'unknown'."""
+    """When mykg_config.yaml is absent, return 'unknown'."""
     result = _read_prep_mode(tmp_path)
     assert result == "unknown"
 
 
 def test_read_prep_mode_no_profile_reads_top_level(tmp_path):
     """When no active profile, read pipeline.pass2.prep_mode from top-level."""
-    (tmp_path / "pipeline_config.yaml").write_text(
+    (tmp_path / "mykg_config.yaml").write_text(
         "pipeline:\n  pass2:\n    prep_mode: per_file\n", encoding="utf-8"
     )
     result = _read_prep_mode(tmp_path)
@@ -433,14 +433,14 @@ def test_read_prep_mode_active_profile_takes_precedence(tmp_path):
         "      pass2:\n"
         "        prep_mode: concat\n"
     )
-    (tmp_path / "pipeline_config.yaml").write_text(yaml_text, encoding="utf-8")
+    (tmp_path / "mykg_config.yaml").write_text(yaml_text, encoding="utf-8")
     result = _read_prep_mode(tmp_path)
     assert result == "concat"
 
 
 def test_read_prep_mode_key_missing_returns_unknown(tmp_path):
-    """When pipeline_config.yaml exists but prep_mode key is absent, return 'unknown'."""
-    (tmp_path / "pipeline_config.yaml").write_text(
+    """When mykg_config.yaml exists but prep_mode key is absent, return 'unknown'."""
+    (tmp_path / "mykg_config.yaml").write_text(
         "pipeline:\n  pass2: {}\n", encoding="utf-8"
     )
     result = _read_prep_mode(tmp_path)
@@ -449,7 +449,7 @@ def test_read_prep_mode_key_missing_returns_unknown(tmp_path):
 
 def test_read_prep_mode_invalid_yaml_returns_unknown(tmp_path):
     """When YAML is unparseable, return 'unknown' without raising."""
-    (tmp_path / "pipeline_config.yaml").write_text(
+    (tmp_path / "mykg_config.yaml").write_text(
         ":\n  bad: [unterminated\n", encoding="utf-8"
     )
     result = _read_prep_mode(tmp_path)

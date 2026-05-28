@@ -315,7 +315,7 @@ The pipeline is fully decoupled from any specific LLM provider. A single abstrac
 | OpenRouter | Access many models via a single API key |
 | Claude CLI | Uses the `claude -p` subprocess; no API key; billing via Claude Pro/Max plan; serial only |
 
-All provider parameters — model, context window, token limits, timeout, base URL — are set in `pipeline_config.yaml`. There are no hardcoded defaults in adapter code. A 429 rate-limit response is treated as a misconfiguration signal (reduce worker count), not a transient error to silently retry indefinitely.
+All provider parameters — model, context window, token limits, timeout, base URL — are set in `mykg_config.yaml`. There are no hardcoded defaults in adapter code. A 429 rate-limit response is treated as a misconfiguration signal (reduce worker count), not a transient error to silently retry indefinitely.
 
 ---
 
@@ -329,7 +329,7 @@ All provider parameters — model, context window, token limits, timeout, base U
 | **Provider-agnostic LLM** | Single abstract adapter interface; provider swapped at startup via config | Pipeline logic never depends on a specific provider; switching requires only a config change |
 | **Python library primary** | CLI wraps the library, not the other way around | Enables embedding the pipeline in larger programs without going through a subprocess |
 | **Session isolation** | Each run lives in a timestamped folder containing its own inputs, intermediate state, outputs, and logs | Runs never interfere; any run can be resumed or re-entered independently without touching other sessions |
-| **Single config file** | `pipeline_config.yaml` is the sole source of truth for all parameters | No hardcoded literals in pipeline or adapter code; switching provider, model, or tuning parameters requires only a config change |
+| **Single config file** | `mykg_config.yaml` is the sole source of truth for all parameters | No hardcoded literals in pipeline or adapter code; switching provider, model, or tuning parameters requires only a config change |
 | **Pydantic for all data models** | All structured data between pipeline stages uses Pydantic BaseModel | Free JSON serialization, field validation, and type coercion at every pipeline boundary |
 
 ### Schema and Ontology

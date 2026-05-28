@@ -38,7 +38,7 @@ class AnthropicAdapter(LLMAdapter):
             raise ValueError(
                 "ANTHROPIC_API_KEY is required — set ANTHROPIC_API_KEY or "
                 "ANTHROPIC_AUTH_TOKEN in your environment, or supply api_key in "
-                "pipeline_config.yaml"
+                "mykg_config.yaml"
             )
 
         self._timeout = timeout
