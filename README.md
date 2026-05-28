@@ -99,8 +99,6 @@ Requires Python 3.11+ and one of: an Anthropic/OpenAI/OpenRouter API key, Ollama
 ```bash
 pip install mykg
 
-# Create a project directory and generate the default config
-mkdir my-kg-project && cd my-kg-project
 mykg init            # writes pipeline_config.yaml to the current directory
 
 # Add your API key
