@@ -55,30 +55,35 @@ _PROFILE_META = {
         "key_var": "OPENROUTER_API_KEY",
         "key_hint": "sk-or-...",
         "key_url": "https://openrouter.ai/keys",
+        "default_model": "google/gemini-3.5-flash",
     },
     "anthropic-claude": {
         "label": "Anthropic Claude (highest quality)",
         "key_var": "ANTHROPIC_API_KEY",
         "key_hint": "sk-ant-...",
         "key_url": "https://console.anthropic.com/account/keys",
+        "default_model": "claude-sonnet-4-5",
     },
     "openai": {
         "label": "OpenAI (GPT-4o and friends)",
         "key_var": "OPENAI_API_KEY",
         "key_hint": "sk-...",
         "key_url": "https://platform.openai.com/api-keys",
+        "default_model": "gpt-4o",
     },
     "ollama-local": {
         "label": "Ollama (local inference, no API key needed)",
         "key_var": None,
         "key_hint": None,
         "key_url": None,
+        "default_model": "llama3.3",
     },
     "claude-cli": {
         "label": "Claude CLI (uses claude -p, no API key needed)",
         "key_var": None,
         "key_hint": None,
         "key_url": None,
+        "default_model": "sonnet",
     },
 }
 
@@ -86,9 +91,10 @@ _PROFILE_META = {
 @cli.command("init")
 @click.option("--force", is_flag=True, help="Overwrite existing pipeline_config.yaml")
 @click.option("--profile", default=None, help="LLM profile to activate (skips interactive prompt)")
+@click.option("--model", default=None, help="Model name to set in the active profile (skips interactive prompt)")
 @click.option("--api-key", default=None, help="API key to write to .env (skips interactive prompt)")
-def init_config(force: bool, profile: str | None, api_key: str | None) -> None:
-    """Create pipeline_config.yaml and optionally configure LLM provider and API key."""
+def init_config(force: bool, profile: str | None, model: str | None, api_key: str | None) -> None:
+    """Create pipeline_config.yaml and optionally configure LLM provider, model, and API key."""
     dest = Path.cwd() / "pipeline_config.yaml"
     if dest.exists() and not force:
         click.echo("pipeline_config.yaml already exists. Use --force to overwrite.")
@@ -101,11 +107,7 @@ def init_config(force: bool, profile: str | None, api_key: str | None) -> None:
         for i, p in enumerate(profiles, 1):
             marker = " (default)" if p == "openrouter-free" else ""
             click.echo(f"  [{i}] {_PROFILE_META[p]['label']}{marker}")
-        choice = click.prompt(
-            "Enter number",
-            default="1",
-            show_default=True,
-        )
+        choice = click.prompt("Enter number", default="1", show_default=True)
         try:
             idx = int(choice) - 1
             if not 0 <= idx < len(profiles):
@@ -121,14 +123,26 @@ def init_config(force: bool, profile: str | None, api_key: str | None) -> None:
 
     meta = _PROFILE_META[profile]
 
-    # --- Write pipeline_config.yaml with selected profile --------------------
+    # --- Model selection -----------------------------------------------------
+    if model is None:
+        default_model = meta["default_model"]
+        model_input = click.prompt(
+            f"Model name (press Enter for default)",
+            default=default_model,
+            show_default=True,
+        ).strip()
+        model = model_input if model_input != default_model else None
+
+    # --- Write pipeline_config.yaml with selected profile and optional model -
+    import re
     template = Path(__file__).parent / "data" / "pipeline_config.yaml"
     content = template.read_text()
-    # Replace the active profile line
-    import re
     content = re.sub(r"^profile:.*$", f"profile: {profile}", content, count=1, flags=re.MULTILINE)
+    if model:
+        content = _patch_profile_model(content, profile, model)
     dest.write_text(content)
-    click.echo(f"\nCreated pipeline_config.yaml in {Path.cwd()} (profile: {profile})")
+    model_note = f", model: {model}" if model else ""
+    click.echo(f"\nCreated pipeline_config.yaml in {Path.cwd()} (profile: {profile}{model_note})")
 
     # --- API key setup -------------------------------------------------------
     if meta["key_var"] is None:
@@ -167,6 +181,19 @@ def init_config(force: bool, profile: str | None, api_key: str | None) -> None:
             click.echo(f"Skipped — set {var} in .env before running.")
 
     _print_next_steps(profile)
+
+
+def _patch_profile_model(content: str, profile: str, model: str) -> str:
+    """Replace the model: line inside a specific profile block in the YAML text."""
+    import re
+    # Find the profile block start, then replace the first `      model:` line within it.
+    # Profile blocks are indented with two spaces; llm.model is indented with six.
+    profile_pattern = re.compile(
+        rf"(  {re.escape(profile)}:.*?)(\n      model:\s*\S[^\n]*)",
+        re.DOTALL,
+    )
+    result = profile_pattern.sub(rf"\1\n      model: {model}", content, count=1)
+    return result
 
 
 def _write_env_key(env_file: Path, var: str, value: str) -> None:
