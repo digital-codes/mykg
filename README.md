@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="logo.png" alt="myKG — Knowledge Graph Extractor" width="400"/>
-</p>
-
 # myKG — Knowledge Graph Extractor
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
