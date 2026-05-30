@@ -95,7 +95,7 @@ sessions/2026-05-17T18-31-07/
   | PDF, Word, PowerPoint, images | `.pdf .docx .doc .pptx .png .jpg .jpeg` | [MinerU](https://github.com/opendatalab/mineru) in an ephemeral `uv`-managed Python 3.12 venv — nothing is installed into your active environment |
   | HTML | `.html .htm` | [`markdownify`](https://pypi.org/project/markdownify/) in-process; anchors and image tags stripped |
 
-  Anything outside the allowlist (e.g. `.svg`, `.css`, `.php` assets next to an HTML bundle) is logged and skipped, never silently dropped. The allowlist is configurable via `preprocess.extensions` in `mykg_config.yaml`. See the Auto-conversion section below for details.
+  Anything outside the allowlist (e.g. `.svg`, `.css`, `.php` assets next to an HTML bundle) is logged and skipped, never silently dropped. The allowlist is configurable via `preprocess.extensions` in `mykg_config.yaml`.
 - **Structural signals preserved** — YAML/TOML frontmatter, headings, lists, and code blocks all act as extraction hints regardless of the source format; subdirectory structure under the input dir is preserved through the pipeline.
 
 ### Graph & Output
@@ -145,41 +145,6 @@ ollama pull llama3.3
 mykg init
 mykg extract-graph my_notes/
 ```
-
-### Auto-conversion in `extract-graph`
-
-Set `preprocess.enabled: true` under your active profile in `mykg_config.yaml`:
-
-```yaml
-pipeline:
-  preprocess:
-    enabled: true                # convert non-md files before ingest
-    subdir: _preprocessed
-    extra_args: []               # passed through to mineru, e.g. ["--backend", "pipeline"]
-    timeout_seconds: 1800        # mineru run-phase timeout
-    uv_path: uv                  # uv CLI path (core mykg dependency)
-    uv_python_version: "3.12"   # interpreter pinned for the ephemeral venv
-    mineru_spec: mineru[all]     # spec passed to `uv pip install -U`
-    install_timeout_seconds: 1800 # install-phase timeout
-    extensions:                  # one flat allowlist; backend per suffix is decided internally (HTML → markdownify; everything else → MinerU). Remove a line to skip that suffix.
-      - .pdf
-      - .docx
-      - .doc
-      - .pptx
-      - .png
-      - .jpg
-      - .jpeg
-      - .html
-      - .htm
-```
-
-then point `extract-graph` at the mixed directory:
-
-```bash
-mykg extract-graph docs/
-```
-
-Converted Markdown lands in `<session>/input/_preprocessed/`; the existing `ingest` step picks it up automatically. HTML files are converted before the MinerU venv is spawned, so an HTML-only corpus never pays the multi-GB MinerU download cost.
 
 ## Using with Claude Code
 
