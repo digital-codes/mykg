@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import subprocess
+import sys
 from pathlib import Path
 from unittest.mock import patch
 
@@ -63,7 +64,9 @@ def test_preprocess_enabled_calls_parse_docs(tmp_path: Path) -> None:
     ):
         run_preprocess(ctx)
     assert (ctx.intermediate_dir / "preprocess.done").exists()
-    assert captured["cmd"][:2] == ["mykg", "parse-docs"]
+    # Spawn shape: [sys.executable, "-m", "mykg", "parse-docs", ...]
+    # — using the SAME interpreter avoids PATH shadowing by an older system mykg.
+    assert captured["cmd"][:4] == [sys.executable, "-m", "mykg", "parse-docs"]
     assert "--input" in captured["cmd"]
     assert "--output" in captured["cmd"]
 

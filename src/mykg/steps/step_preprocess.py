@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 import time
 from pathlib import Path
 
@@ -52,7 +53,12 @@ def run_preprocess(ctx: PipelineContext) -> None:
     output_dir = ctx.input_dir / _cfg.PREPROCESS_SUBDIR
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    # Use `python -m mykg` so the child runs the SAME interpreter/install as
+    # the parent — bare `mykg` would resolve via PATH and could pick up an
+    # older system-installed mykg (without parse-docs).
     cmd = [
+        sys.executable,
+        "-m",
         "mykg",
         "parse-docs",
         "--input",
