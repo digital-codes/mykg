@@ -58,7 +58,7 @@ profiles:
         uv_python_version: "3.12"    # interpreter version uv pins the ephemeral venv to
         mineru_spec: mineru[all]      # package spec installed via `uv pip install -U <spec>`
         install_timeout_seconds: 1800 # install-phase timeout (30 min); first-run downloads PyTorch/Ray
-        extensions:                   # only these suffixes are routed to MinerU; anything else (e.g. .html) is logged + recorded but left untouched
+        extensions:                   # suffixes the preprocess step may convert (.md is native and never listed). Backend per suffix is hardcoded: HTML → markdownify in-process, everything else → MinerU. Remove a line to skip that suffix.
           - .pdf
           - .docx
           - .doc
@@ -66,6 +66,8 @@ profiles:
           - .png
           - .jpg
           - .jpeg
+          - .html
+          - .htm
       chunking:
         window_tokens: 25000     # = input_headroom / 4 = 25000  (keep small; many chunks batched together in pass1)
         overlap_tokens: 2500     # = window_tokens × 0.10 = 2500  (10% overlap preserves context at boundaries)
@@ -188,7 +190,7 @@ profiles:
         uv_python_version: "3.12"    # interpreter version uv pins the ephemeral venv to
         mineru_spec: mineru[all]      # package spec installed via `uv pip install -U <spec>`
         install_timeout_seconds: 1800 # install-phase timeout (30 min); first-run downloads PyTorch/Ray
-        extensions:                   # only these suffixes are routed to MinerU; anything else (e.g. .html) is logged + recorded but left untouched
+        extensions:                   # suffixes the preprocess step may convert (.md is native and never listed). Backend per suffix is hardcoded: HTML → markdownify in-process, everything else → MinerU. Remove a line to skip that suffix.
           - .pdf
           - .docx
           - .doc
@@ -196,6 +198,8 @@ profiles:
           - .png
           - .jpg
           - .jpeg
+          - .html
+          - .htm
       chunking:
         window_tokens: 2500     # = input_headroom / 4 = 25000  (keep small; many chunks batched together in pass1)
         overlap_tokens: 250     # = window_tokens × 0.10 = 2500  (10% overlap preserves context at boundaries)
@@ -316,7 +320,7 @@ profiles:
         uv_python_version: "3.12"    # interpreter version uv pins the ephemeral venv to
         mineru_spec: mineru[all]      # package spec installed via `uv pip install -U <spec>`
         install_timeout_seconds: 1800 # install-phase timeout (30 min); first-run downloads PyTorch/Ray
-        extensions:                   # only these suffixes are routed to MinerU; anything else (e.g. .html) is logged + recorded but left untouched
+        extensions:                   # suffixes the preprocess step may convert (.md is native and never listed). Backend per suffix is hardcoded: HTML → markdownify in-process, everything else → MinerU. Remove a line to skip that suffix.
           - .pdf
           - .docx
           - .doc
@@ -324,6 +328,8 @@ profiles:
           - .png
           - .jpg
           - .jpeg
+          - .html
+          - .htm
       chunking:
         window_tokens: 28000    # = input_headroom / 4 ≈ 28000
         overlap_tokens: 2800    # = window_tokens × 0.10
@@ -447,7 +453,7 @@ profiles:
         uv_python_version: "3.12"    # interpreter version uv pins the ephemeral venv to
         mineru_spec: mineru[all]      # package spec installed via `uv pip install -U <spec>`
         install_timeout_seconds: 1800 # install-phase timeout (30 min); first-run downloads PyTorch/Ray
-        extensions:                   # only these suffixes are routed to MinerU; anything else (e.g. .html) is logged + recorded but left untouched
+        extensions:                   # suffixes the preprocess step may convert (.md is native and never listed). Backend per suffix is hardcoded: HTML → markdownify in-process, everything else → MinerU. Remove a line to skip that suffix.
           - .pdf
           - .docx
           - .doc
@@ -455,6 +461,8 @@ profiles:
           - .png
           - .jpg
           - .jpeg
+          - .html
+          - .htm
       chunking:
         window_tokens: 6000     # = input_headroom / 4 ≈ 6000
         overlap_tokens: 600     # = window_tokens × 0.10

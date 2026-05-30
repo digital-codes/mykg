@@ -12,6 +12,13 @@ from mykg.orchestrator import PipelineContext
 
 log = get("mykg.steps.preprocess")
 
+# Backend routing: suffixes the markdownify in-process converter owns.
+# Anything else in PREPROCESS_EXTENSIONS goes to MinerU. The mapping is
+# hardcoded because which backend can handle which format is a property of
+# the format, not a user preference — users toggle availability via the
+# preprocess.extensions allowlist in YAML.
+_HTML_BACKEND_SUFFIXES: frozenset[str] = frozenset({".html", ".htm"})
+
 
 def _write_sentinel(intermediate_dir: Path, manifest: dict) -> None:
     intermediate_dir.mkdir(parents=True, exist_ok=True)
@@ -24,15 +31,15 @@ def _write_sentinel(intermediate_dir: Path, manifest: dict) -> None:
 def _discover_non_md_files(
     input_dir: Path,
     subdir: str,
-    mineru_exts: frozenset[str],
-    html_exts: frozenset[str],
+    allowed_exts: frozenset[str],
 ) -> tuple[list[Path], list[Path], list[Path]]:
     """Return (mineru_files, html_files, skipped) non-md files under input_dir.
 
-    Routing per suffix (case-insensitive):
-      * suffix in `mineru_exts` → routed to MinerU via parse-docs
-      * suffix in `html_exts`   → converted inline via markdownify
-      * anything else           → logged + recorded as skipped, untouched on disk
+    A single allowlist `allowed_exts` controls which suffixes the preprocess
+    step is permitted to convert. The backend per allowed suffix is derived
+    internally: suffix in `_HTML_BACKEND_SUFFIXES` → markdownify; otherwise →
+    MinerU. Files whose suffix is not in `allowed_exts` are skipped (logged +
+    recorded, untouched on disk).
     """
     subdir_path = input_dir / subdir
     mineru_files: list[Path] = []
@@ -46,12 +53,13 @@ def _discover_non_md_files(
             continue
         if p == subdir_path or subdir_path in p.parents:
             continue
-        if suffix in mineru_exts:
-            mineru_files.append(p)
-        elif suffix in html_exts:
+        if suffix not in allowed_exts:
+            skipped.append(p)
+            continue
+        if suffix in _HTML_BACKEND_SUFFIXES:
             html_files.append(p)
         else:
-            skipped.append(p)
+            mineru_files.append(p)
     return mineru_files, html_files, skipped
 
 
@@ -101,7 +109,6 @@ def run_preprocess(ctx: PipelineContext) -> None:
         ctx.input_dir,
         _cfg.PREPROCESS_SUBDIR,
         _cfg.PREPROCESS_EXTENSIONS,
-        _cfg.PREPROCESS_HTML_EXTENSIONS,
     )
     skipped_records = [
         {"path": str(p.relative_to(ctx.input_dir)), "ext": p.suffix.lower()} for p in skipped

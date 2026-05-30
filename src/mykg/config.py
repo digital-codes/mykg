@@ -207,23 +207,20 @@ PREPROCESS_MINERU_SPEC: str = _get_opt("preprocess", "mineru_spec", "mineru[all]
 PREPROCESS_INSTALL_TIMEOUT_SECONDS: int = int(
     _get_opt("preprocess", "install_timeout_seconds", 1800)
 )
-# Allowlist of file extensions actually routed to MinerU. Anything not in
-# this set is logged + recorded in preprocess_manifest.json under
-# "skipped_files" and left untouched on disk. Suffixes are matched
-# case-insensitively and must include the leading dot.
+# Allowlist of file extensions the preprocess step is permitted to convert.
+# `.md` is the pipeline's native format and never appears here. Suffixes in
+# this list are routed to the appropriate backend by step_preprocess based on
+# an internal mapping (HTML → markdownify in-process; everything else →
+# MinerU subprocess). Anything outside this list is logged + recorded in
+# preprocess_manifest.json under "skipped_files" and left untouched on disk.
+# Suffixes are matched case-insensitively and must include the leading dot.
 PREPROCESS_EXTENSIONS: frozenset[str] = frozenset(
     str(ext).lower()
     for ext in _get_opt(
         "preprocess",
         "extensions",
-        [".pdf", ".docx", ".doc", ".pptx", ".png", ".jpg", ".jpeg"],
+        [".pdf", ".docx", ".doc", ".pptx", ".png", ".jpg", ".jpeg", ".html", ".htm"],
     )
-)
-# HTML inputs bypass MinerU (which does not natively accept HTML) and go
-# through markdownify in-process. Any suffix listed here is converted
-# inline by step_preprocess.
-PREPROCESS_HTML_EXTENSIONS: frozenset[str] = frozenset(
-    str(ext).lower() for ext in _get_opt("preprocess", "html_extensions", [".html", ".htm"])
 )
 
 # ---------------------------------------------------------------------------

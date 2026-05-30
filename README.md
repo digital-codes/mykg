@@ -178,7 +178,7 @@ pipeline:
     uv_python_version: "3.12"   # interpreter pinned for the ephemeral venv
     mineru_spec: mineru[all]     # spec passed to `uv pip install -U`
     install_timeout_seconds: 1800 # install-phase timeout
-    extensions:                  # suffixes routed to MinerU
+    extensions:                  # one flat allowlist; backend per suffix is decided internally (HTML → markdownify; everything else → MinerU). Remove a line to skip that suffix.
       - .pdf
       - .docx
       - .doc
@@ -186,7 +186,6 @@ pipeline:
       - .png
       - .jpg
       - .jpeg
-    html_extensions:             # suffixes routed to markdownify (in-process)
       - .html
       - .htm
 ```
