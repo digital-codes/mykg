@@ -518,6 +518,13 @@ Re-run the pipeline on new or modified files without re-running Pass 1:
 mykg extract-graph my_notes/ --session <name> --append
 ```
 
+> **Note:** Append mode currently only supports adding or updating `.md` files. Mixed-format inputs (PDF, DOCX, HTML, etc. — i.e. anything requiring the `preprocess` step) are not yet supported. As a workaround, convert non-Markdown files to Markdown manually with `mykg parse-docs` first, pointing `--output` at the same folder you'll pass to `--append`:
+>
+> ```bash
+> mykg parse-docs --input raw_docs/ --output my_notes/
+> mykg extract-graph my_notes/ --session <name> --append
+> ```
+
 ### Merging Sessions
 
 Combine two independently-produced sessions into a unified knowledge graph:
