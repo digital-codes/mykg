@@ -4,6 +4,8 @@
   <img src="https://gcore.jsdelivr.net/gh/SenolIsci/mykg@main/docs/mykg-logo-text.svg" width="400px" style="vertical-align:middle;">
 </p>
 
+<!-- icon -->
+
 # myKG — Knowledge Graph Extractor
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
