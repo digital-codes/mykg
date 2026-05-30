@@ -94,9 +94,7 @@ def ephemeral_mineru_venv(
 
         mineru_bin = _venv_bin(venv_dir, "mineru")
         if not mineru_bin.exists():
-            raise RuntimeError(
-                f"uv_venv — installed {mineru_spec} but {mineru_bin} not found"
-            )
+            raise RuntimeError(f"uv_venv — installed {mineru_spec} but {mineru_bin} not found")
 
         log.info("uv_venv — ready: %s", mineru_bin)
         try:

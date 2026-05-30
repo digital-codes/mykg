@@ -223,8 +223,7 @@ PREPROCESS_EXTENSIONS: frozenset[str] = frozenset(
 # through markdownify in-process. Any suffix listed here is converted
 # inline by step_preprocess.
 PREPROCESS_HTML_EXTENSIONS: frozenset[str] = frozenset(
-    str(ext).lower()
-    for ext in _get_opt("preprocess", "html_extensions", [".html", ".htm"])
+    str(ext).lower() for ext in _get_opt("preprocess", "html_extensions", [".html", ".htm"])
 )
 
 # ---------------------------------------------------------------------------

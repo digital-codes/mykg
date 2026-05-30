@@ -55,9 +55,7 @@ def _discover_non_md_files(
     return mineru_files, html_files, skipped
 
 
-def _convert_html_files(
-    html_files: list[Path], input_dir: Path, output_dir: Path
-) -> list[dict]:
+def _convert_html_files(html_files: list[Path], input_dir: Path, output_dir: Path) -> list[dict]:
     """Convert each HTML file to Markdown via markdownify, writing into output_dir.
 
     Output filename mirrors the source stem: `foo.html` → `foo.md`. Returns
@@ -106,8 +104,7 @@ def run_preprocess(ctx: PipelineContext) -> None:
         _cfg.PREPROCESS_HTML_EXTENSIONS,
     )
     skipped_records = [
-        {"path": str(p.relative_to(ctx.input_dir)), "ext": p.suffix.lower()}
-        for p in skipped
+        {"path": str(p.relative_to(ctx.input_dir)), "ext": p.suffix.lower()} for p in skipped
     ]
     if skipped:
         log.info(
@@ -173,9 +170,7 @@ def run_preprocess(ctx: PipelineContext) -> None:
         mineru_returncode = proc.returncode
 
         if proc.returncode != 0:
-            raise RuntimeError(
-                f"mykg parse-docs failed with exit code {proc.returncode}"
-            )
+            raise RuntimeError(f"mykg parse-docs failed with exit code {proc.returncode}")
 
     total_files = len(mineru_files) + len(html_files)
     log.info(
