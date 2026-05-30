@@ -17,9 +17,9 @@
 [![Visitors](https://visitor-badge.laobi.icu/badge?page_id=SenolIsci.mykg)](https://github.com/SenolIsci/mykg)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-senolisci-0077B5?logo=linkedin)](https://www.linkedin.com/in/senolisci/)
 
-**myKG** automatically generates a confidence-scored knowledge graph from a directory of mixed documents — Markdown, PDF, Word, PowerPoint, HTML, and images — grounded in an induced RDFS/OWL ontology schema.
+**myKG** automatically generates a confidence-scored knowledge graph from a directory of mixed documents — Markdown, PDF, Word, PowerPoint, HTML, and images — grounded in an inferred RDFS/OWL ontology.
 
-It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema from your document corpus; Pass 2 extracts typed entity and relationship instances per file against that schema. Non-Markdown inputs (`.pdf .docx .doc .pptx .png .jpg .jpeg .html .htm`) are converted to Markdown automatically before extraction — MinerU handles PDFs, Office documents, and images via an ephemeral Python 3.12 venv (nothing is installed into your environment); HTML is converted in-process by `markdownify`. Hand-authored Markdown is consumed as-is. The result is exported to multiple formats: JSONL for property-graph consumers such as Neo4j, Turtle RDF for OWL toolchains, seven NetworkX formats for graph analysis and visualization, and an **Obsidian vault** — a second brain of wikilinked Markdown notes your AI coding assistant (Claude Code, Cursor, Copilot) can read and reason over directly.
+It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema from your document corpus; Pass 2 extracts typed entity and relationship instances per file against that schema. Non-Markdown inputs (`.pdf .docx .doc .pptx .png .jpg .jpeg .html .htm`) are converted to Markdown automatically before extraction. The result is exported to multiple formats: JSONL for property-graph consumers such as Neo4j, Turtle RDF for OWL toolchains, seven NetworkX formats for graph analysis and visualization, and an Obsidian vault — a second brain of wikilinked Markdown notes your AI coding assistant (Claude Code, Cursor, Copilot) can read and reason over directly.
 
 ## Command line
 
@@ -95,7 +95,7 @@ sessions/2026-05-17T18-31-07/
   | PDF, Word, PowerPoint, images | `.pdf .docx .doc .pptx .png .jpg .jpeg` | [MinerU](https://github.com/opendatalab/mineru) in an ephemeral `uv`-managed Python 3.12 venv — nothing is installed into your active environment |
   | HTML | `.html .htm` | [`markdownify`](https://pypi.org/project/markdownify/) in-process; anchors and image tags stripped |
 
-  Anything outside the allowlist (e.g. `.svg`, `.css`, `.php` assets next to an HTML bundle) is logged and skipped, never silently dropped. The allowlist is configurable via `preprocess.extensions` in `mykg_config.yaml`. See [Non-Markdown inputs](#non-markdown-inputs-pdf-docx-html-images-) for details.
+  Anything outside the allowlist (e.g. `.svg`, `.css`, `.php` assets next to an HTML bundle) is logged and skipped, never silently dropped. The allowlist is configurable via `preprocess.extensions` in `mykg_config.yaml`. See the Auto-conversion section below for details.
 - **Structural signals preserved** — YAML/TOML frontmatter, headings, lists, and code blocks all act as extraction hints regardless of the source format; subdirectory structure under the input dir is preserved through the pipeline.
 
 ### Graph & Output
@@ -110,7 +110,7 @@ sessions/2026-05-17T18-31-07/
 - **Cross-session merge** — combine two independently-produced graphs into one unified knowledge graph
 - **Resumable pipeline** — every stage persists intermediate state; re-enter at any step after a crash or edit
 - **Session isolation** — each run is fully self-contained; inputs, intermediate state, outputs, and logs co-located
-- **Query knowledge graph** — natural-language and structured queries directly against the extracted graph via AI coding assistants such as [Claude Code](https://claude.ai/code), SPARQL endpoints, or graph traversal APIs
+- **Query knowledge graph** — natural-language queries directly against the extracted graph via AI coding assistants such as [Claude Code](https://claude.ai/code).
 
 ## Quick Start
 
@@ -145,35 +145,6 @@ ollama pull llama3.3
 mykg init
 mykg extract-graph my_notes/
 ```
-
-## Non-Markdown inputs (PDF, DOCX, HTML, images, …)
-
-myKG converts non-Markdown sources to Markdown before ingest. Two backends are wired in, picked per file extension:
-
-| Backend | Extensions | How it runs |
-|---|---|---|
-| **MinerU** (PDF, DOCX, images) | `.pdf .docx .doc .pptx .png .jpg .jpeg` | Ephemeral Python 3.12 venv via `uv` |
-| **markdownify** (HTML) | `.html .htm` | In-process, no venv |
-
-Anything outside both extension lists (e.g. `.php`, `.svg`, `.css` assets sitting next to an HTML page) is **logged and skipped**, not silently dropped and not force-converted. The skipped list is recorded in `intermediate/preprocess_manifest.json` under `skipped_files` so you can audit it after a run.
-
-### MinerU — no extra install step
-
-MinerU is heavy (PyTorch, Ray, OCR backends) and pinned to Python 3.12, so `mykg` no longer installs it into your environment. Instead, every `mykg parse-docs` call creates a fresh, ephemeral Python 3.12 virtualenv via [`uv`](https://docs.astral.sh/uv/) (a core `mykg` dependency), installs `mineru[all]` into it, runs MinerU, and deletes the venv on exit. `uv` automatically downloads Python 3.12 if your system lacks it.
-
-The first call therefore downloads several GB of wheels; subsequent calls do the same (there is no cache by design — sessions stay fully isolated). If that latency matters, run `mykg parse-docs` once on a large batch rather than per file.
-
-Standalone conversion (input and output paths mirror `mineru` itself):
-
-```bash
-mykg parse-docs --input docs/ --output converted/
-```
-
-Extra flags after the required `--input` / `--output` are passed through to mineru unchanged, e.g. `mykg parse-docs --input docs/ --output converted/ --backend pipeline`. `mykg parse-docs` handles MinerU inputs only — HTML files in the input directory are ignored by this subcommand. To convert HTML, use `extract-graph` (which routes HTML through the in-process converter automatically).
-
-### HTML — in-process, no venv
-
-HTML files are converted inside the `extract-graph` pipeline by `step_preprocess` using `markdownify`. The call is `markdownify(html, strip=["img", "a"])` — anchor and image tags are stripped because their `href`/`src` paths wouldn't resolve outside the original page, and images are inert ballast to the LLM. Subdirectory structure under the input dir is preserved; `input/blog/post.html` → `input/_preprocessed/blog/post.md`. Per-file failures are logged and recorded in `preprocess_manifest.json["html_records"]` but do not halt the pipeline.
 
 ### Auto-conversion in `extract-graph`
 
