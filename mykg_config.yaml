@@ -46,6 +46,13 @@ profiles:
       # --- Ingestion & chunking -----------------------------------------------
       ingest:
         max_workers: 8          # parallel file readers; safe to set high — purely I/O-bound
+      # --- Preprocess (optional non-md document conversion via MinerU) ----------
+      preprocess:
+        enabled: false                # set true to convert non-md files (PDF/DOCX/images) via MinerU before ingest
+        subdir: _preprocessed         # converted .md files land in <session>/input/<subdir>/
+        mineru_path: mineru           # path or PATH name of the MinerU CLI
+        extra_args: []                # extra arguments passed through to mineru (e.g. ["--backend", "pipeline"])
+        timeout_seconds: 1800         # per-call mineru subprocess timeout (30 min)
       chunking:
         window_tokens: 25000     # = input_headroom / 4 = 25000  (keep small; many chunks batched together in pass1)
         overlap_tokens: 2500     # = window_tokens × 0.10 = 2500  (10% overlap preserves context at boundaries)
@@ -156,6 +163,13 @@ profiles:
       # --- Ingestion & chunking -----------------------------------------------
       ingest:
         max_workers: 2          # parallel file readers; safe to set high — purely I/O-bound
+      # --- Preprocess (optional non-md document conversion via MinerU) ----------
+      preprocess:
+        enabled: false                # set true to convert non-md files (PDF/DOCX/images) via MinerU before ingest
+        subdir: _preprocessed         # converted .md files land in <session>/input/<subdir>/
+        mineru_path: mineru           # path or PATH name of the MinerU CLI
+        extra_args: []                # extra arguments passed through to mineru (e.g. ["--backend", "pipeline"])
+        timeout_seconds: 1800         # per-call mineru subprocess timeout (30 min)
       chunking:
         window_tokens: 2500     # = input_headroom / 4 = 25000  (keep small; many chunks batched together in pass1)
         overlap_tokens: 250     # = window_tokens × 0.10 = 2500  (10% overlap preserves context at boundaries)
@@ -264,6 +278,13 @@ profiles:
       # --- Ingestion & chunking -----------------------------------------------
       ingest:
         max_workers: 8
+      # --- Preprocess (optional non-md document conversion via MinerU) ----------
+      preprocess:
+        enabled: false                # set true to convert non-md files (PDF/DOCX/images) via MinerU before ingest
+        subdir: _preprocessed         # converted .md files land in <session>/input/<subdir>/
+        mineru_path: mineru           # path or PATH name of the MinerU CLI
+        extra_args: []                # extra arguments passed through to mineru (e.g. ["--backend", "pipeline"])
+        timeout_seconds: 1800         # per-call mineru subprocess timeout (30 min)
       chunking:
         window_tokens: 28000    # = input_headroom / 4 ≈ 28000
         overlap_tokens: 2800    # = window_tokens × 0.10
@@ -375,6 +396,13 @@ profiles:
       # --- Ingestion & chunking -----------------------------------------------
       ingest:
         max_workers: 4            # local inference is CPU/GPU-bound; keep workers modest
+      # --- Preprocess (optional non-md document conversion via MinerU) ----------
+      preprocess:
+        enabled: false                # set true to convert non-md files (PDF/DOCX/images) via MinerU before ingest
+        subdir: _preprocessed         # converted .md files land in <session>/input/<subdir>/
+        mineru_path: mineru           # path or PATH name of the MinerU CLI
+        extra_args: []                # extra arguments passed through to mineru (e.g. ["--backend", "pipeline"])
+        timeout_seconds: 1800         # per-call mineru subprocess timeout (30 min)
       chunking:
         window_tokens: 6000     # = input_headroom / 4 ≈ 6000
         overlap_tokens: 600     # = window_tokens × 0.10

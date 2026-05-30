@@ -192,6 +192,15 @@ LOG_CAPTURE_PROMPTS: bool = bool(_get_opt("logging", "capture_prompts", False))
 LOG_ERROR_OUTPUT_MAX_CHARS: int = int(_get_opt("logging", "error_output_max_chars", 500))
 
 # ---------------------------------------------------------------------------
+# Preprocess — optional document conversion before ingest (D39–D48)
+# ---------------------------------------------------------------------------
+PREPROCESS_ENABLED: bool = bool(_get_opt("preprocess", "enabled", False))
+PREPROCESS_SUBDIR: str = _get_opt("preprocess", "subdir", "_preprocessed")
+PREPROCESS_MINERU_PATH: str = _get_opt("preprocess", "mineru_path", "mineru")
+PREPROCESS_EXTRA_ARGS: list = list(_get_opt("preprocess", "extra_args", []) or [])
+PREPROCESS_TIMEOUT_SECONDS: int = int(_get_opt("preprocess", "timeout_seconds", 1800))
+
+# ---------------------------------------------------------------------------
 # JSON pretty-print (all intermediate files)
 # ---------------------------------------------------------------------------
 JSON_INDENT: int = _get("output", "json_indent")

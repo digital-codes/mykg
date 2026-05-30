@@ -83,7 +83,7 @@ sessions/2026-05-17T18-31-07/
 ### Input
 
 - **Markdown files** — any directory of `.md` files; subdirectory structure is preserved; YAML/TOML frontmatter, headings, lists, and code blocks are all treated as structural signals
-- **Other formats** — convert PDFs, Word docs, HTML, and other formats to Markdown first using a document parser such as [MinerU](https://github.com/opendatalab/mineru), then point myKG at the output directory
+- **Other formats** — convert PDFs, Word docs, images, and more to Markdown with the built-in `mykg parse-docs` wrapper around [MinerU](https://github.com/opendatalab/mineru), or enable it as an automatic preprocess step inside `extract-graph` (see [Non-Markdown inputs](#non-markdown-inputs-pdf-docx-images-) below)
 
 ### Graph & Output
 
@@ -132,6 +132,44 @@ ollama pull llama3.3
 mykg init
 mykg extract-graph my_notes/
 ```
+
+## Non-Markdown inputs (PDF, DOCX, images, …)
+
+myKG ships with `mykg parse-docs`, a thin wrapper around [MinerU](https://github.com/opendatalab/mineru) that converts PDFs, Word docs, PowerPoint, images, and other formats to Markdown so they can be fed into `extract-graph`.
+
+MinerU is heavyweight (pulls in PyTorch and OCR backends), so it lives in an optional extras group:
+
+```bash
+pip install "mykg[mineru]"
+```
+
+Standalone conversion (input and output paths mirror `mineru` itself):
+
+```bash
+mykg parse-docs --input docs/ --output converted/
+```
+
+Extra flags after the required `--input` / `--output` are passed through to mineru unchanged, e.g. `mykg parse-docs --input docs/ --output converted/ --backend pipeline`.
+
+To have `extract-graph` run conversion automatically, set `preprocess.enabled: true` under your active profile in `mykg_config.yaml`:
+
+```yaml
+pipeline:
+  preprocess:
+    enabled: true       # convert non-md files via MinerU before ingest
+    subdir: _preprocessed
+    mineru_path: mineru
+    extra_args: []
+    timeout_seconds: 1800
+```
+
+then point `extract-graph` at the mixed directory:
+
+```bash
+mykg extract-graph docs/
+```
+
+Converted Markdown lands in `<session>/input/_preprocessed/`; the existing `ingest` step picks it up automatically.
 
 ## Using with Claude Code
 
