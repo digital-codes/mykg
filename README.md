@@ -17,14 +17,14 @@
 [![Visitors](https://visitor-badge.laobi.icu/badge?page_id=SenolIsci.mykg)](https://github.com/SenolIsci/mykg)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-senolisci-0077B5?logo=linkedin)](https://www.linkedin.com/in/senolisci/)
 
-**myKG** automatically generates a confidence-scored knowledge graph from a directory of Markdown files, grounded in an induced RDFS/OWL ontology schema.
+**myKG** automatically generates a confidence-scored knowledge graph from a directory of mixed documents — Markdown, PDF, Word, PowerPoint, HTML, and images — grounded in an induced RDFS/OWL ontology schema.
 
-It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema from your document corpus; Pass 2 extracts typed entity and relationship instances per file against that schema. The result is exported to multiple formats: JSONL for property-graph consumers such as Neo4j, Turtle RDF for OWL toolchains, seven NetworkX formats for graph analysis and visualization, and an **Obsidian vault** — a second brain of wikilinked Markdown notes your AI coding assistant (Claude Code, Cursor, Copilot) can read and reason over directly.
+It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema from your document corpus; Pass 2 extracts typed entity and relationship instances per file against that schema. Non-Markdown inputs (`.pdf .docx .doc .pptx .png .jpg .jpeg .html .htm`) are converted to Markdown automatically before extraction — MinerU handles PDFs, Office documents, and images via an ephemeral Python 3.12 venv (nothing is installed into your environment); HTML is converted in-process by `markdownify`. Hand-authored Markdown is consumed as-is. The result is exported to multiple formats: JSONL for property-graph consumers such as Neo4j, Turtle RDF for OWL toolchains, seven NetworkX formats for graph analysis and visualization, and an **Obsidian vault** — a second brain of wikilinked Markdown notes your AI coding assistant (Claude Code, Cursor, Copilot) can read and reason over directly.
 
 ## Command line
 
 ```
-mykg extract-graph my_notes/
+mykg extract-graph my_notes/        # any directory: .md, .pdf, .docx, .html, images
 ```
 
 ## Output
@@ -57,7 +57,7 @@ sessions/2026-05-17T18-31-07/
   - [Running](#running)
   - [Sessions](#sessions)
   - [Pipeline Steps](#pipeline-steps)
-  - [Outputs](#outputs)
+- [Outputs](#outputs)
   - [Re-running from a Specific Step](#re-running-from-a-specific-step)
   - [Orphan-Connection Pass](#orphan-connection-pass)
 - [Advanced Options](#advanced-options)
@@ -87,9 +87,16 @@ sessions/2026-05-17T18-31-07/
 
 ### Input
 
-- **Markdown files** — any directory of `.md` files; subdirectory structure is preserved; YAML/TOML frontmatter, headings, lists, and code blocks are all treated as structural signals
-- **Other formats** — convert PDFs, Word docs, PowerPoint, and images to Markdown with the built-in `mykg parse-docs` wrapper around [MinerU](https://github.com/opendatalab/mineru); MinerU runs inside an ephemeral Python 3.12 venv created and deleted by `mykg` itself — nothing is installed into your active environment (see [Non-Markdown inputs](#non-markdown-inputs-pdf-docx-html-images-) below)
-- **HTML** — converted in-process with [`markdownify`](https://pypi.org/project/markdownify/); no MinerU venv involved. Anchors and image tags are stripped (their `href`/`src` paths wouldn't resolve outside the original page anyway)
+- **Mixed-format corpora** — point `mykg extract-graph` at any directory; supported extensions are converted to Markdown automatically before ingest:
+
+  | Format | Extensions | Backend |
+  |---|---|---|
+  | Markdown | `.md` | passthrough (consumed as-is) |
+  | PDF, Word, PowerPoint, images | `.pdf .docx .doc .pptx .png .jpg .jpeg` | [MinerU](https://github.com/opendatalab/mineru) in an ephemeral `uv`-managed Python 3.12 venv — nothing is installed into your active environment |
+  | HTML | `.html .htm` | [`markdownify`](https://pypi.org/project/markdownify/) in-process; anchors and image tags stripped |
+
+  Anything outside the allowlist (e.g. `.svg`, `.css`, `.php` assets next to an HTML bundle) is logged and skipped, never silently dropped. The allowlist is configurable via `preprocess.extensions` in `mykg_config.yaml`. See [Non-Markdown inputs](#non-markdown-inputs-pdf-docx-html-images-) for details.
+- **Structural signals preserved** — YAML/TOML frontmatter, headings, lists, and code blocks all act as extraction hints regardless of the source format; subdirectory structure under the input dir is preserved through the pipeline.
 
 ### Graph & Output
 
@@ -340,7 +347,7 @@ Run `context-calculator --context <N> --max-output <M>` to compute correct `wind
 
 ## Extract Pipeline
 
-Reads a directory of `.md` files and produces a typed knowledge graph in three output formats. The pipeline runs 11 sequential steps; all intermediate state is persisted so any step can be re-entered without repeating upstream work.
+Reads a directory of `.md` files and produces a typed knowledge graph in three output formats. The pipeline runs 12 sequential steps; all intermediate state is persisted so any step can be re-entered without repeating upstream work.
 
 ### Running
 
@@ -413,7 +420,7 @@ The pipeline runs 12 steps in sequence. All intermediate state is written to dis
 
 | # | Step | LLM | Key outputs |
 |---|---|---|---|
-| 1 | `preprocess` | — | `preprocess.done`, `preprocess_manifest.json`, files under `input/_preprocessed/` *(no-op if `preprocess.enabled: false` or no non-md inputs)* |
+| 1 | `preprocess` | — | `preprocess.done`, `preprocess_manifest.json`, files under `input/_preprocessed/` *(routes non-md inputs to MinerU or markdownify; no-op for pure Markdown corpora)* |
 | 2 | `ingest` | — | `file_manifest.json` |
 | 3 | `pass1` | ✓ (3 calls) | `schema.json`, `schema.ttl`, `schema_history/` |
 | 4 | `schema_validate` | — | `schema_validate.done` |
