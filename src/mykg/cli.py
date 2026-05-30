@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import logging
 import shutil
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -607,6 +608,48 @@ def merge_graphs(
     click.echo(f"Merged session written to: {merged_session_root}")
 
 
+@cli.command(
+    "parse-docs",
+    context_settings={"ignore_unknown_options": True},
+)
+@click.option(
+    "--input",
+    "input_path",
+    required=True,
+    type=click.Path(exists=True, path_type=Path),
+    help="Input file or directory of non-Markdown documents to convert.",
+)
+@click.option(
+    "--output",
+    "output_path",
+    required=True,
+    type=click.Path(path_type=Path),
+    help="Output directory (will be created) to receive converted Markdown.",
+)
+@click.argument("extra_args", nargs=-1, type=click.UNPROCESSED)
+def parse_docs(input_path: Path, output_path: Path, extra_args: tuple[str, ...]) -> None:
+    """Convert non-Markdown documents (PDF, DOCX, images, etc.) to Markdown using MinerU.
+
+    Wraps `mineru -p -i INPUT -o OUTPUT`. Requires `pip install "mykg[mineru]"`.
+    Extra arguments are passed through to mineru.
+    """
+    if shutil.which("mineru") is None:
+        raise click.ClickException(
+            'mineru CLI not found on PATH. Install with: pip install "mykg[mineru]"'
+        )
+
+    output_path.mkdir(parents=True, exist_ok=True)
+
+    cmd = ["mineru", "-p", "-i", str(input_path), "-o", str(output_path)] + list(extra_args)
+    click.echo(f"Running: {' '.join(cmd)}")
+
+    proc = subprocess.run(cmd, check=False)
+    if proc.returncode != 0:
+        raise click.ClickException(f"mineru exited with code {proc.returncode}")
+
+    click.echo(f"Done. Output written to: {output_path}")
+
+
 # Aliases for --from-step that encode the orphan-connect sweep mode.
 # Maps alias → (real_step_name, orphan_incremental)
 _FROM_STEP_ALIASES: dict[str, tuple[str, bool]] = {
@@ -637,7 +680,7 @@ def _delete_from_step(
     from mykg.pipeline import STEPS
 
     step_names = [s.name for s in STEPS]
-    valid_names = [s.name for s in STEPS if s.name != "ingest"]
+    valid_names = [s.name for s in STEPS if s.name not in ("ingest", "preprocess")]
 
     if step_name not in valid_names:
         valid = ", ".join(list(valid_names) + list(_FROM_STEP_ALIASES))

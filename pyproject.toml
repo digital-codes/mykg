@@ -35,6 +35,9 @@ dependencies = [
 mykg = "mykg.cli:main"
 context-calculator = "mykg.utility.context_calculator:main"
 
+[project.optional-dependencies]
+mineru = ["mineru[all]>=2.0"]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
