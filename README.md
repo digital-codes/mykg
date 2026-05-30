@@ -101,7 +101,7 @@ sessions/2026-05-17T18-31-07/
 
 ### Graph & Output
 
-- **Provider-agnostic** — works with Anthropic (Claude), OpenAI (GPT-4o), Ollama (local), OpenRouter, or the `claude` CLI with no API key
+- **Provider-agnostic** — works with Anthropic (Claude), OpenAI (GPT), Ollama (local), OpenRouter, or the `claude` CLI with no API key
 - **Four output families** — JSONL for Neo4j/NetworkX/RAG, Turtle RDF for OWL toolchains, NetworkX multi-format for graph analysis, and Obsidian vault for linked personal knowledge management
 - **Obsidian vault — second brain for AI coding assistants** — every extracted entity becomes a wikilinked Markdown note in `output/obsidian_vault/`; open it in [Obsidian](https://obsidian.md) to navigate the graph with backlinks and Graph View, or point your AI coding assistant (Claude Code, Cursor, Copilot) at the vault folder so it can answer questions, trace relationships, and reason over your knowledge base in natural language
 - **Interactive HTML graph** — node/edge filtering, search, hover popups; opens directly in a browser
