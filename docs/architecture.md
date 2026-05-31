@@ -37,71 +37,11 @@ This document explains how **myKG** works at a conceptual level: the pipelines, 
 
 Both pipelines run as a sequence of named steps. All intermediate state is written to disk after every step, so any step can be re-entered without repeating upstream work.
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│  INPUT                                                               │
-│  A directory of Markdown plus optional non-md sources                │
-│  (PDF, DOCX, PPTX, images, HTML)                                     │
-└──────────────────────────────┬──────────────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│  PREPROCESS  (optional; opt-in via preprocess.enabled)               │
-│                                                                      │
-│  Routing by file extension:                                          │
-│    PDF / DOCX / PPTX / images → MinerU (ephemeral uv venv)          │
-│    HTML / HTM                  → markdownify (in-process)           │
-│    everything else             → logged + skipped                    │
-│                                                                      │
-│  Converted .md lands under input/_preprocessed/                      │
-└──────────────────────────────┬──────────────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│  PASS 1 — Schema Induction                                           │
-│                                                                      │
-│  Parallel LLM batches → Algorithmic merge → Harmonize → Quality      │
-│                                                                      │
-│  Output: a formal RDFS/OWL schema (concept types + relationships)    │
-│          ── optional human review gate ──                            │
-└──────────────────────────────┬──────────────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│  PASS 2 — Instance Extraction  (parallel across files)               │
-│                                                                      │
-│  For each file chunk → LLM extracts nodes[] + edges[]               │
-│  Results written to per-file shards immediately (resumable)          │
-└──────────────────────────────┬──────────────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│  ASSEMBLY                                                            │
-│                                                                      │
-│  Name normalization → Stable ID assignment → Deduplication          │
-│  Edge metadata sidecar written                                       │
-└──────────────────────────────┬──────────────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│  ORPHAN-CONNECTION PASS                                              │
-│                                                                      │
-│  Stage 1: Co-occurrence scoring (no LLM)                            │
-│  Stage 2: LLM confirmation per chunk group                           │
-│  ── schema-gap escalation triggers surgical Pass 2 restart ──        │
-└──────────────────────────────┬──────────────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│  EXPORT                                                              │
-│                                                                      │
-│  nodes.jsonl + edges.jsonl      → Neo4j, NetworkX, RAG              │
-│  knowledge_graph.ttl            → Protégé, SPARQL, OWL reasoners    │
-│  networkx_output/ (7 formats)   → Gephi, D3.js, yEd, …             │
-│  knowledge_graph.html           → Interactive browser visualization  │
-│  obsidian_vault/                → Obsidian-ready linked notes        │
-└─────────────────────────────────────────────────────────────────────┘
-```
+<p align="center">
+  <img src="diagrams/system-overview.png" width="900px" style="vertical-align:middle;">
+</p>
+
+*Mixed input enters at the top; preprocessing routes non-Markdown files to MinerU or markdownify; Pass 1 induces a schema, Pass 2 extracts instances against it; the assembly stage deduplicates and writes the edge metadata sidecar; the orphan-connection pass reconnects isolated nodes and can escalate to a surgical Pass 2 restart when the schema is incomplete (dashed loop on the right); five output families are written from the same in-memory data.*
 
 ---
 
@@ -229,6 +169,12 @@ All merge decisions are logged to `intermediate/merge_log.json` for review and a
 ### Orphan-Connection Pass
 
 After assembly, some nodes may have no edges — they were extracted but left isolated. The orphan-connection pass attempts to reconnect them in two stages.
+
+<p align="center">
+  <img src="diagrams/orphan-pass.png" width="900px" style="vertical-align:middle;">
+</p>
+
+*Stage 1 deterministically maps each orphan to its source chunk via `chunk_node_index.json`, producing one candidate group per chunk. Stage 2 makes a single LLM call per group with the full chunk text; the result splits three ways — confirmed edges are merged into the sidecar tagged `orphan_inferred`, dead-end orphans are logged as advisory `unconnectable` events, and orphans the LLM thinks should connect but cannot under the current schema escalate to a surgical Pass 2 restart with new properties.*
 
 **Stage 1 — Co-occurrence scoring (no LLM).** For each orphan node, the pipeline looks up which source chunk it came from using the chunk node index. It then finds all other nodes that appear in the same chunk. These co-occurring nodes become candidates for a relationship with the orphan. This stage produces one group record per source chunk containing at least one orphan.
 

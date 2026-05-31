@@ -15,9 +15,17 @@ Two modes:
 In auto mode the script:
   - Loads context_window and max_output_tokens from the active profile's llm: block
   - Counts tokens in every .md file under --input-dir using the profile's tiktoken_encoding
+    (rglob — picks up converted Markdown under input/_preprocessed/ when pointed at
+    a session's input/ dir; pure non-md sources like raw .pdf/.docx count as 0 until
+    they have been converted by the preprocess step)
+  - Reads pass2.prep_mode and reports which Pass 2 budget the run will actually use
+    (concat_batch_token_target for prep_mode=concat; batch_token_target for batch_chunks)
   - Computes how many chunks the corpus produces at the current window_tokens / overlap_tokens
   - Derives the optimal chunk_divisor so batch_token_target fits the corpus well
-  - Prints a ready-to-paste YAML snippet for the active profile
+  - Prints a ready-to-paste YAML snippet for the active profile and writes a
+    mykg_config_candidate.yaml that patches: llm.context_window, llm.max_output_tokens,
+    chunking.window_tokens, chunking.overlap_tokens, pass1.batch_token_target,
+    pass2.batch_token_target, pass2.concat_batch_token_target, and feedback.max_file_chars
 """
 
 import argparse
@@ -200,6 +208,10 @@ def write_candidate_config(config_path: "Path", profile_name: str, result: dict)
     text = config_path.read_text()
     lines = text.splitlines(keepends=True)
 
+    # `batch_token_target` appears under both pass1 and pass2 with the same
+    # ≤ input_headroom constraint, so the same value satisfies both.
+    # `concat_batch_token_target` is the pass2 budget for prep_mode=concat —
+    # same constraint, same value.
     patch_map = {
         "context_window": result["context_window"],
         "max_output_tokens": result["max_output_tokens"],
@@ -243,7 +255,11 @@ def write_candidate_config(config_path: "Path", profile_name: str, result: dict)
 
 
 def print_report(
-    result: dict, model: str, chunk_divisor: int, corpus_info: dict | None = None
+    result: dict,
+    model: str,
+    chunk_divisor: int,
+    corpus_info: dict | None = None,
+    prep_mode: str | None = None,
 ) -> None:
     cw = result["context_window"]
     mot = result["max_output_tokens"]
@@ -302,6 +318,17 @@ def print_report(
         f"    batch_token_target ≤ input_headroom: {'✓' if fits else '✗ EXCEEDS — API will return context-length errors'}"
     )
     print()
+    if prep_mode:
+        print()
+        print("  ACTIVE PASS 2 PREP MODE")
+        if prep_mode == "concat":
+            print(f"    prep_mode = concat       → concat_batch_token_target = {btt:,} drives Pass 2")
+        elif prep_mode == "batch_chunks":
+            print(f"    prep_mode = batch_chunks → pass2.batch_token_target = {btt:,} drives Pass 2")
+        else:
+            print(f"    prep_mode = {prep_mode:<13} → per-file chunking; pass2 budgets unused")
+
+    print()
     print("  YAML SNIPPET — paste into the active profile in mykg_config.yaml")
     print("  " + "-" * 56)
     print("    llm:")
@@ -313,6 +340,9 @@ def print_report(
     print(f"        overlap_tokens: {ot}  # = window_tokens × {OVERLAP_RATIO:.0%}")
     print("      pass1:")
     print(f"        batch_token_target: {btt}  # = input_headroom × {1 - SAFETY_MARGIN_RATIO:.0%}")
+    print("      pass2:")
+    print(f"        batch_token_target: {btt}        # used when prep_mode=batch_chunks")
+    print(f"        concat_batch_token_target: {btt}  # used when prep_mode=concat")
     print("      feedback:")
     print(
         f"        max_file_chars: {mfc}  # = safety margin remainder × {CHARS_PER_TOKEN} chars/token ({ftr:,} tokens)"
@@ -350,7 +380,11 @@ Examples:
         "--input-dir",
         type=Path,
         default=None,
-        help="Directory of .md input files to measure (default: ./input_files or ./_input_files)",
+        help=(
+            "Directory of .md input files to measure, walked recursively "
+            "(default: ./input_files or ./_input_files). Point at a session's "
+            "input/ dir to include converted Markdown under input/_preprocessed/."
+        ),
     )
     parser.add_argument("--model", default=None, help="Model name label (manual mode only)")
     parser.add_argument(
@@ -393,6 +427,7 @@ Examples:
         encoding_name = chunking.get("tiktoken_encoding", "cl100k_base")
         current_window = chunking.get("window_tokens", 1000)
         current_overlap = chunking.get("overlap_tokens", 100)
+        prep_mode = pipeline.get("pass2", {}).get("prep_mode")
         model_label = args.model or f"profile: {profile_name}"
 
         # Find input directory
@@ -454,6 +489,7 @@ Examples:
             )
         model_label = args.model or "custom-model"
         chunk_divisor = args.chunk_divisor or DEFAULT_CHUNK_DIVISOR
+        prep_mode = None
         result = calculate(
             context_window=args.context,
             max_output_tokens=args.max_output,
@@ -461,7 +497,13 @@ Examples:
             chunk_divisor=chunk_divisor,
         )
 
-    print_report(result, model=model_label, chunk_divisor=chunk_divisor, corpus_info=corpus_info)
+    print_report(
+        result,
+        model=model_label,
+        chunk_divisor=chunk_divisor,
+        corpus_info=corpus_info,
+        prep_mode=prep_mode,
+    )
 
     if args.from_config:
         out_path = write_candidate_config(config_path, profile_name, result)

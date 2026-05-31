@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>myKG · System Overview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #f5f5f5;
+      --color-ink:     #2d3142;
+      --color-muted:   #4f5d75;
+      --color-accent:  #6366f1;
+      --color-link:    #06b6d4;
+      --font-sans:     'Geist', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', serif;
+      --font-mono:     'Geist Mono', ui-monospace, monospace;
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+    .frame { max-width: 1200px; width: 100%; }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+    svg { width: 100%; min-width: 900px; display: block; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Architecture · myKG · Extract pipeline</p>
+    <h1>End-to-end: mixed input through preprocessing, two passes, orphan recovery, and export</h1>
+
+    <svg viewBox="0 0 1000 760" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/>
+        </marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#6366f1"/>
+        </marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#06b6d4"/>
+        </marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#f5f5f5"/>
+
+      <!-- ─── Vertical trunk arrows ─── -->
+      <!-- Input → Preprocess -->
+      <line x1="500" y1="116" x2="500" y2="144" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- Preprocess → Pass 1 -->
+      <line x1="500" y1="232" x2="500" y2="260" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- Pass 1 → Pass 2 -->
+      <line x1="500" y1="348" x2="500" y2="376" stroke="#6366f1" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+      <!-- Pass 2 → Assembly -->
+      <line x1="500" y1="464" x2="500" y2="492" stroke="#6366f1" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+      <!-- Assembly → Orphan -->
+      <line x1="500" y1="556" x2="500" y2="584" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- Orphan → Export -->
+      <line x1="500" y1="660" x2="500" y2="688" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+      <!-- Schema-gap loop-back arrow (Orphan → Pass 2) — dashed, on the right -->
+      <path d="M 660,620 Q 820,620 820,420 Q 820,400 660,400" fill="none" stroke="#4f5d75" stroke-width="1.0" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+      <rect x="780" y="496" width="80" height="14" rx="2" fill="#f5f5f5"/>
+      <text x="820" y="506" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SCHEMA GAP</text>
+
+      <!-- Arrow labels for trunk -->
+      <rect x="464" y="232" width="72" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="500" y="242" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">.MD CORPUS</text>
+
+      <rect x="464" y="348" width="72" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="500" y="358" fill="#6366f1" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SCHEMA</text>
+
+      <rect x="464" y="464" width="72" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="500" y="474" fill="#6366f1" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">NODES·EDGES</text>
+
+      <rect x="464" y="556" width="72" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="500" y="566" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">UNIFIED</text>
+
+      <rect x="464" y="660" width="72" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="500" y="670" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">RECONNECTED</text>
+
+      <!-- ─── Input ─── -->
+      <rect x="332" y="52" width="336" height="64" rx="6" fill="#f5f5f5"/>
+      <rect x="332" y="52" width="336" height="64" rx="6" fill="rgba(79,93,117,0.10)" stroke="#7a8399" stroke-width="1"/>
+      <rect x="340" y="60" width="40" height="12" rx="2" fill="transparent" stroke="rgba(122,131,153,0.40)" stroke-width="0.8"/>
+      <text x="360" y="69" fill="#7a8399" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">INPUT</text>
+      <text x="500" y="88" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Mixed corpus directory</text>
+      <text x="500" y="104" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">.md  ·  .pdf  ·  .docx  ·  .pptx  ·  .png  ·  .html</text>
+
+      <!-- ─── Preprocess ─── -->
+      <rect x="332" y="144" width="336" height="88" rx="6" fill="#f5f5f5"/>
+      <rect x="332" y="144" width="336" height="88" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <rect x="340" y="152" width="40" height="12" rx="2" fill="transparent" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"/>
+      <text x="360" y="161" fill="#2d3142" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">PREP</text>
+      <text x="500" y="180" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Preprocess</text>
+      <!-- Two inline backend pills -->
+      <rect x="360" y="196" width="128" height="24" rx="4" fill="rgba(45,49,66,0.03)" stroke="rgba(45,49,66,0.30)" stroke-width="0.8"/>
+      <text x="424" y="211" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">mineru · uv venv</text>
+      <rect x="512" y="196" width="128" height="24" rx="4" fill="rgba(45,49,66,0.03)" stroke="rgba(45,49,66,0.30)" stroke-width="0.8"/>
+      <text x="576" y="211" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">markdownify · html</text>
+
+      <!-- ─── Pass 1 (focal accent) ─── -->
+      <rect x="332" y="260" width="336" height="88" rx="6" fill="#f5f5f5"/>
+      <rect x="332" y="260" width="336" height="88" rx="6" fill="rgba(99,102,241,0.08)" stroke="#6366f1" stroke-width="1"/>
+      <rect x="340" y="268" width="56" height="12" rx="2" fill="transparent" stroke="rgba(99,102,241,0.50)" stroke-width="0.8"/>
+      <text x="368" y="277" fill="#6366f1" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">LLM · PASS 1</text>
+      <text x="652" y="344" fill="rgba(99,102,241,0.12)" font-size="32" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="end">01</text>
+      <text x="500" y="296" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Schema Induction</text>
+      <text x="500" y="316" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">parallel batches → merge → harmonize → quality</text>
+      <text x="500" y="332" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">→ optional human review gate (--review)</text>
+
+      <!-- ─── Pass 2 (focal accent) ─── -->
+      <rect x="332" y="376" width="336" height="88" rx="6" fill="#f5f5f5"/>
+      <rect x="332" y="376" width="336" height="88" rx="6" fill="rgba(99,102,241,0.08)" stroke="#6366f1" stroke-width="1"/>
+      <rect x="340" y="384" width="56" height="12" rx="2" fill="transparent" stroke="rgba(99,102,241,0.50)" stroke-width="0.8"/>
+      <text x="368" y="393" fill="#6366f1" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">LLM · PASS 2</text>
+      <text x="652" y="460" fill="rgba(99,102,241,0.12)" font-size="32" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="end">02</text>
+      <text x="500" y="412" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Instance Extraction</text>
+      <text x="500" y="432" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">parallel across files · per-file shards</text>
+      <text x="500" y="448" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">stateful chunks · validate against schema</text>
+
+      <!-- ─── Assembly ─── -->
+      <rect x="332" y="492" width="336" height="64" rx="6" fill="#f5f5f5"/>
+      <rect x="332" y="492" width="336" height="64" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <rect x="340" y="500" width="40" height="12" rx="2" fill="transparent" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"/>
+      <text x="360" y="509" fill="#2d3142" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">ASSY</text>
+      <text x="500" y="528" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Assembly</text>
+      <text x="500" y="544" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">normalize names · stable IDs · dedup · sidecar</text>
+
+      <!-- ─── Orphan-connection pass ─── -->
+      <rect x="332" y="584" width="336" height="76" rx="6" fill="#f5f5f5"/>
+      <rect x="332" y="584" width="336" height="76" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <rect x="340" y="592" width="64" height="12" rx="2" fill="transparent" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"/>
+      <text x="372" y="601" fill="#2d3142" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">ORPHAN PASS</text>
+      <text x="500" y="620" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Orphan-Connection</text>
+      <text x="500" y="636" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">Stage 1: co-occurrence score   ·   Stage 2: LLM confirm</text>
+      <text x="500" y="652" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">— escalates to schema-gap restart of Pass 2 →</text>
+
+      <!-- ─── Export ─── -->
+      <rect x="332" y="688" width="336" height="64" rx="6" fill="#f5f5f5"/>
+      <rect x="332" y="688" width="336" height="64" rx="6" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
+      <rect x="340" y="696" width="36" height="12" rx="2" fill="transparent" stroke="rgba(79,93,117,0.50)" stroke-width="0.8"/>
+      <text x="358" y="705" fill="#4f5d75" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">OUT</text>
+      <text x="500" y="724" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Export — five parallel output families</text>
+      <text x="500" y="740" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">jsonl  ·  ttl  ·  networkx  ·  html  ·  obsidian vault</text>
+    </svg>
+  </div>
+</body>
+</html>
