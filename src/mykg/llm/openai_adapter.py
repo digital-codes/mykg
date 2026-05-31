@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import os
 import time
 from typing import TYPE_CHECKING
@@ -12,6 +13,18 @@ from mykg.logging import record_llm_call
 
 if TYPE_CHECKING:
     from mykg.llm.error_gate import ErrorGate
+
+_log = logging.getLogger(__name__)
+
+# Model-name prefixes that require `max_completion_tokens` instead of `max_tokens`
+# on the Chat Completions endpoint. Older families (gpt-4o, gpt-4-turbo, gpt-3.5)
+# still use `max_tokens`. Sending the wrong key returns a 400 unsupported_parameter.
+_NEW_TOKEN_PARAM_PREFIXES = ("gpt-5", "gpt-4.1", "o1", "o3", "o4", "chatgpt-")
+
+
+def _uses_max_completion_tokens(model: str) -> bool:
+    name = model.lower()
+    return any(name.startswith(p) for p in _NEW_TOKEN_PARAM_PREFIXES)
 
 
 class OpenAIAdapter(LLMAdapter):
@@ -43,10 +56,32 @@ class OpenAIAdapter(LLMAdapter):
         self._timeout = timeout
         self._base_url = base_url
         self._client = openai.OpenAI(api_key=api_key, base_url=base_url, timeout=timeout)
+        self._use_max_completion_tokens = _uses_max_completion_tokens(model)
+        self._fallback_warned = False
 
     def endpoint_label(self) -> str:
         url = self._base_url or "https://api.openai.com"
         return f"openai / {self._model} @ {url}"
+
+    def _create_with_token_param(
+        self,
+        system: str,
+        user: str,
+        effective_max_tokens: int,
+        effective_timeout: int,
+        use_completion_key: bool,
+    ):
+        token_key = "max_completion_tokens" if use_completion_key else "max_tokens"
+        kwargs = {
+            "model": self._model,
+            "messages": [
+                {"role": "system", "content": system},
+                {"role": "user", "content": user},
+            ],
+            "timeout": effective_timeout,
+            token_key: effective_max_tokens,
+        }
+        return self._client.chat.completions.create(**kwargs)
 
     def complete(
         self,
@@ -61,15 +96,40 @@ class OpenAIAdapter(LLMAdapter):
 
         def _call() -> str:
             t0 = time.monotonic()
-            resp = self._client.chat.completions.create(
-                model=self._model,
-                max_tokens=effective_max_tokens,
-                messages=[
-                    {"role": "system", "content": system},
-                    {"role": "user", "content": user},
-                ],
-                timeout=effective_timeout,
-            )
+            try:
+                resp = self._create_with_token_param(
+                    system,
+                    user,
+                    effective_max_tokens,
+                    effective_timeout,
+                    use_completion_key=self._use_max_completion_tokens,
+                )
+            except openai.BadRequestError as exc:
+                # Defensive fallback: an unknown future model family may also reject
+                # max_tokens. If the API explicitly says so, swap once and remember.
+                msg = str(getattr(exc, "message", "") or exc)
+                if (
+                    not self._use_max_completion_tokens
+                    and "max_tokens" in msg
+                    and "max_completion_tokens" in msg
+                ):
+                    if not self._fallback_warned:
+                        _log.warning(
+                            "OpenAI model %r rejected max_tokens; "
+                            "switching to max_completion_tokens for this adapter.",
+                            self._model,
+                        )
+                        self._fallback_warned = True
+                    self._use_max_completion_tokens = True
+                    resp = self._create_with_token_param(
+                        system,
+                        user,
+                        effective_max_tokens,
+                        effective_timeout,
+                        use_completion_key=True,
+                    )
+                else:
+                    raise
             usage = resp.usage
             raw = resp.choices[0].message.content or "" if resp.choices else ""
             record_llm_call(

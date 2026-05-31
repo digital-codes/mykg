@@ -414,8 +414,15 @@ profiles:
 
   # ---------------------------------------------------------------------------
   openai:
-  # OpenAI GPT-4o — direct API, requires OPENAI_API_KEY in env / .env.mykg
+  # OpenAI — direct API, requires OPENAI_API_KEY in env / .env.mykg
   # Optional: set llm.base_url to use Azure OpenAI or any OpenAI-compatible endpoint.
+  #
+  # The adapter auto-routes `max_output_tokens` to the right OpenAI parameter
+  # based on the configured model:
+  #   • Legacy (gpt-4o, gpt-4-turbo, gpt-3.5)            → max_tokens
+  #   • New families (gpt-5*, gpt-4.1*, o1/o3/o4*, chatgpt-*) → max_completion_tokens
+  # If an unknown model rejects max_tokens at runtime, the adapter swaps to
+  # max_completion_tokens automatically (one-shot per adapter) and logs a warning.
   #
   # Token budget chain (use context-calculator to recompute when switching models):
   #   ① context_window    = 128000
@@ -431,7 +438,7 @@ profiles:
     llm:
       context_window: 128000      # ① model's total context limit
       max_output_tokens: 16384    # ② output cap — gpt-4o max structured output
-      model: gpt-4o
+      model: gpt-5.4-mini-2026-03-17
       timeout: 300                # seconds per LLM call before raising a timeout error
       retry_429_max: 5            # max retries on HTTP 429 rate-limit before giving up
       retry_429_base_delay: 2.0   # initial backoff seconds; doubles on each retry (exponential)

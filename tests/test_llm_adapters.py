@@ -39,6 +39,120 @@ def test_openai_adapter_uses_given_model():
         assert adapter._model == "gpt-4o"
 
 
+def test_openai_adapter_uses_max_tokens_for_gpt4o():
+    """Legacy models (gpt-4o) must receive the `max_tokens` parameter."""
+    mock_response = MagicMock()
+    mock_response.choices[0].message.content = "hi"
+
+    with patch("openai.OpenAI") as mock_cls:
+        mock_client = MagicMock()
+        mock_cls.return_value = mock_client
+        mock_client.chat.completions.create.return_value = mock_response
+
+        from mykg.llm.openai_adapter import OpenAIAdapter
+
+        adapter = OpenAIAdapter(model="gpt-4o", max_tokens=4096, timeout=30, api_key="test-key")
+        adapter.complete("sys", "user")
+
+    kwargs = mock_client.chat.completions.create.call_args[1]
+    assert kwargs.get("max_tokens") == 4096
+    assert "max_completion_tokens" not in kwargs
+
+
+def test_openai_adapter_uses_max_completion_tokens_for_gpt5():
+    """gpt-5* models must receive `max_completion_tokens`, not `max_tokens`."""
+    mock_response = MagicMock()
+    mock_response.choices[0].message.content = "hi"
+
+    with patch("openai.OpenAI") as mock_cls:
+        mock_client = MagicMock()
+        mock_cls.return_value = mock_client
+        mock_client.chat.completions.create.return_value = mock_response
+
+        from mykg.llm.openai_adapter import OpenAIAdapter
+
+        adapter = OpenAIAdapter(
+            model="gpt-5.4-mini-2026-03-17", max_tokens=8192, timeout=30, api_key="test-key"
+        )
+        adapter.complete("sys", "user")
+
+    kwargs = mock_client.chat.completions.create.call_args[1]
+    assert kwargs.get("max_completion_tokens") == 8192
+    assert "max_tokens" not in kwargs
+
+
+def test_openai_adapter_uses_max_completion_tokens_for_o1():
+    """o1/o3/o4 reasoning models must receive `max_completion_tokens`."""
+    mock_response = MagicMock()
+    mock_response.choices[0].message.content = "hi"
+
+    with patch("openai.OpenAI") as mock_cls:
+        mock_client = MagicMock()
+        mock_cls.return_value = mock_client
+        mock_client.chat.completions.create.return_value = mock_response
+
+        from mykg.llm.openai_adapter import OpenAIAdapter
+
+        adapter = OpenAIAdapter(model="o1-mini", max_tokens=4096, timeout=30, api_key="test-key")
+        adapter.complete("sys", "user")
+
+    kwargs = mock_client.chat.completions.create.call_args[1]
+    assert kwargs.get("max_completion_tokens") == 4096
+    assert "max_tokens" not in kwargs
+
+
+def test_openai_adapter_falls_back_on_400_unsupported_max_tokens():
+    """If an unknown model rejects `max_tokens` with the canonical 400 message,
+    the adapter swaps to `max_completion_tokens` and retries once."""
+    import openai
+
+    bad_req = openai.BadRequestError(
+        message=(
+            "Unsupported parameter: 'max_tokens' is not supported with this model. "
+            "Use 'max_completion_tokens' instead."
+        ),
+        response=MagicMock(status_code=400, headers={}),
+        body={
+            "error": {
+                "message": (
+                    "Unsupported parameter: 'max_tokens' is not supported with this model. "
+                    "Use 'max_completion_tokens' instead."
+                ),
+                "type": "invalid_request_error",
+                "param": "max_tokens",
+                "code": "unsupported_parameter",
+            }
+        },
+    )
+    success_response = MagicMock()
+    success_response.choices[0].message.content = "after fallback"
+
+    with patch("openai.OpenAI") as mock_cls:
+        mock_client = MagicMock()
+        mock_cls.return_value = mock_client
+        mock_client.chat.completions.create.side_effect = [bad_req, success_response]
+
+        from mykg.llm.openai_adapter import OpenAIAdapter
+
+        # Model name not in the new-prefix allowlist — first call uses max_tokens,
+        # API rejects it, adapter swaps and retries.
+        adapter = OpenAIAdapter(
+            model="some-future-model", max_tokens=4096, timeout=30, api_key="test-key"
+        )
+        result = adapter.complete("sys", "user")
+
+    assert result == "after fallback"
+    assert mock_client.chat.completions.create.call_count == 2
+    first_kwargs = mock_client.chat.completions.create.call_args_list[0][1]
+    second_kwargs = mock_client.chat.completions.create.call_args_list[1][1]
+    assert first_kwargs.get("max_tokens") == 4096
+    assert "max_completion_tokens" not in first_kwargs
+    assert second_kwargs.get("max_completion_tokens") == 4096
+    assert "max_tokens" not in second_kwargs
+    # Adapter remembers the swap for subsequent calls.
+    assert adapter._use_max_completion_tokens is True
+
+
 def test_anthropic_adapter_raises_without_api_key():
     """AnthropicAdapter raises ValueError when no API key is available."""
     with patch.dict(os.environ, {"ANTHROPIC_API_KEY": "", "ANTHROPIC_AUTH_TOKEN": ""}, clear=False):
