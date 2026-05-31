@@ -19,33 +19,18 @@
 
 **myKG** automatically generates a confidence-scored knowledge graph from a directory of mixed documents — Markdown, PDF, Word, PowerPoint, HTML, and images — grounded in an inferred RDFS/OWL ontology.
 
-It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema from your document corpus; Pass 2 extracts typed entity and relationship instances per file against that schema. Non-Markdown inputs (`.pdf .docx .doc .pptx .png .jpg .jpeg .html .htm`) are converted to Markdown automatically before extraction. The result is exported to multiple formats: JSONL for property-graph consumers such as Neo4j, Turtle RDF for OWL toolchains, seven NetworkX formats for graph analysis and visualization, and an Obsidian vault — a second brain of wikilinked Markdown notes your AI coding assistant (Claude Code, Cursor, Copilot) can read and reason over directly.
-
 ## Command line
 
 ```
 mykg extract-graph my_notes/        # any directory: .md, .pdf, .docx, .html, images
 ```
 
-## Output
 
-```
-sessions/2026-05-17T18-31-07/
-  output/
-    nodes.jsonl                    ← typed entities with confidence scores
-    edges.jsonl                    ← typed relationships with provenance
-    knowledge_graph.ttl            ← RDFS/OWL TBox + RDF ABox (Protégé, SPARQL)
-    networkx_output/               ← GML, GraphML, GEXF, Pajek, JSON node-link,
-                                      knowledge_graph.html (interactive vis)
-    obsidian_vault/                ← Obsidian-ready linked Markdown notes
-      index.md                     ←   overview table with links to every entity
-      Person/                      ←   one .md note per entity, grouped by type
-      Organization/
-      ...
-  walkthrough.md                   ← per-run report: schema, stats, timing
-```
+<p align="center">
+  <img src="https://gcore.jsdelivr.net/gh/SenolIsci/mykg@main/docs/diagrams/architecture-sketch.png" style="vertical-align:middle;">
+</p>
 
----
+It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema from your document corpus; Pass 2 extracts typed entity and relationship instances per file against that schema. Non-Markdown inputs (`.pdf .docx .doc .pptx .png .jpg .jpeg .html .htm`) are converted to Markdown automatically before extraction. The result is exported to multiple formats: JSONL for property-graph consumers such as Neo4j, Turtle RDF for OWL toolchains, seven NetworkX formats for graph analysis and visualization, and an Obsidian vault — a second brain of wikilinked Markdown notes your AI coding assistant (Claude Code, Cursor, Copilot) can read and reason over directly.
 
 ## Contents
 
