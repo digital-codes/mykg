@@ -11,24 +11,45 @@ The pipeline code, the orchestrator, all prompts, all 12 pipeline steps, and the
 
 ---
 
+## Default behaviour — fresh session unless told otherwise
+
+**The default is to create a NEW session for every `extract-graph` invocation.** Pass no `--session` flag to `mykg extract-graph` and let mykg auto-create a fresh timestamped session under `sessions/`.
+
+Only reuse an existing session when the user *explicitly* signals it. Explicit signals are any of:
+
+- The verbs **resume**, **continue**, **redo**, **append**, **approve**, **walkthrough**.
+- A direct reference: **"the last session"**, **"the existing session"**, **"the same session"**, or a literal session name (typed as `--session <name>` or "session <name>").
+- A flag whose semantics require a session: **`--append`**, **`--from-step <step>`**.
+- A subcommand that inherently targets a completed session: **`approve-schema`**, **`walkthrough`**.
+
+For anything else — including bare `/mykg <dir>`, `/mykg extract <dir>`, `/mykg extract more from <dir>`, "extract this folder" — pass **NO** `--session` flag. Words like "more", "again", "now", "next" are NOT explicit signals; they trigger a fresh session like every other plain extract command.
+
+Never auto-detect-most-recent purely because a previous skill turn produced a session. The previous-turn signal only matters when the *current* user message also contains one of the explicit signals above.
+
+When in doubt, default to fresh and surface the choice in the Stage 2 confirmation.
+
+---
+
 ## When to invoke — intent examples
 
 Trigger this skill whenever the user types `/mykg <anything>`. Map the intent to a `mykg` CLI command using the table below as a guide; for anything not covered, fall back to the closest match and confirm before running.
 
 | User typed | Skill should run |
 | --- | --- |
-| `/mykg extract this folder` (when cwd contains md files) | `mykg extract-graph .` (fresh session) |
-| `/mykg ./docs` | `mykg extract-graph ./docs` (legacy positional alias still works) |
-| `/mykg extract ./docs with human review` | `mykg extract-graph ./docs --review` |
-| `/mykg append the new notes in ./docs` | `mykg extract-graph ./docs --append --session <auto-detect-most-recent>` |
-| `/mykg resume the last session` | `mykg extract-graph --session <most-recent>` (no input dir; resumes existing) |
-| `/mykg approve the schema` | `mykg approve-schema --session <most-recent>` |
-| `/mykg make a walkthrough` | `mykg walkthrough --session <most-recent>` |
-| `/mykg make a walkthrough for 2026-06-02T17-30-00` | `mykg walkthrough --session 2026-06-02T17-30-00` |
-| `/mykg convert pdfs in ./inbox to ./md` | `mykg parse-docs --input ./inbox --output ./md` |
-| `/mykg from-step orphan_connect on the last session` | `mykg extract-graph --session <most-recent> --from-step orphan_connect` |
-| `/mykg rerun orphan-connect from scratch on the last session` | `mykg extract-graph --session <most-recent> --from-step orphan_connect_fullsweep` |
-| `/mykg redo orphans but keep what we already confirmed` | `mykg extract-graph --session <most-recent> --from-step orphan_connect_incremental` |
+| `/mykg extract this folder` (when cwd contains md files) | `mykg extract-graph .` (**fresh session — no `--session`**) |
+| `/mykg ./docs` | `mykg extract-graph ./docs` (legacy positional alias — **fresh session — no `--session`**) |
+| `/mykg extract ./docs` | `mykg extract-graph ./docs` (**fresh session — no `--session`**) |
+| `/mykg extract more from ./more_docs` | `mykg extract-graph ./more_docs` (**fresh session** — "more" is NOT an explicit reuse signal; this is just another extract) |
+| `/mykg extract ./docs with human review` | `mykg extract-graph ./docs --review` (**fresh session — no `--session`**) |
+| `/mykg append the new notes in ./docs` | `mykg extract-graph ./docs --append --session <auto-detect-most-recent>` (explicit reuse via `append`) |
+| `/mykg resume the last session` | `mykg extract-graph --session <most-recent>` (explicit reuse via `resume the last session`) |
+| `/mykg approve the schema` | `mykg approve-schema --session <most-recent>` (session-only subcommand) |
+| `/mykg make a walkthrough` | `mykg walkthrough --session <most-recent>` (session-only subcommand) |
+| `/mykg make a walkthrough for 2026-06-02T17-30-00` | `mykg walkthrough --session 2026-06-02T17-30-00` (literal session name) |
+| `/mykg convert pdfs in ./inbox to ./md` | `mykg parse-docs --input ./inbox --output ./md` (no session concept) |
+| `/mykg from-step orphan_connect on the last session` | `mykg extract-graph --session <most-recent> --from-step orphan_connect` (explicit reuse via `the last session` + `--from-step`) |
+| `/mykg rerun orphan-connect from scratch on the last session` | `mykg extract-graph --session <most-recent> --from-step orphan_connect_fullsweep` (explicit reuse via `the last session`) |
+| `/mykg redo orphans but keep what we already confirmed` | `mykg extract-graph --session <most-recent> --from-step orphan_connect_incremental` (explicit reuse via `redo` — `--from-step` always operates on an existing session) |
 | `/mykg init` | refuse: "Run `mykg init` from a shell — it is interactive." |
 | `/mykg merge sessions A and B` | refuse: "Skill support for `mykg merge-graphs` is planned in a follow-up. Run from a shell." |
 
@@ -58,11 +79,15 @@ From the user's `/mykg <free text>` message extract:
 
 1. **Verb** — extract / append / approve / walkthrough / parse / resume / init / merge → maps to a CLI subcommand (or to a refusal).
 2. **Input dir** — the path the user named, or `.` if they said "this folder", or absent for session-only commands.
-3. **Session** — resolved in order:
-   1. If the user typed `--session <name>` or "session <name>", use it.
-   2. Else, if the previous skill turn produced a session and the user's intent is "approve", "walkthrough", "resume", "append", or "from-step", use that previous session.
-   3. Else, list sessions under `$SESSIONS_DIR` (read `sessions_dir` from `mykg_config.yaml`, default `sessions`) sorted by mtime; pick the most recent.
-   4. If no session exists and the command needs one, fail clearly: "No existing sessions under `$SESSIONS_DIR`. Run `/mykg extract <dir>` first."
+3. **Session** — **default: do not pass `--session` at all** so mykg auto-creates a fresh timestamped session. Only override the default when the current user message contains an explicit reuse signal (see "Default behaviour" above). Resolution order:
+   1. **Literal session name.** User typed `--session <name>` or "session <name>" → use that exact name.
+   2. **Explicit reuse verb / phrase.** User said one of: **resume**, **continue**, **redo**, **append**, **approve**, **walkthrough**, **"the last session"**, **"the existing session"**, **"the same session"** → auto-detect the most-recent session: list `$SESSIONS_DIR` (read `sessions_dir` from `mykg_config.yaml`, default `sessions`), sort by mtime, pick newest.
+   3. **Reuse-implying flag.** User specified `--append` or `--from-step <step>` → auto-detect-most-recent (these flags only make sense against an existing session).
+   4. **Session-only subcommand.** Verb is `approve-schema` or `walkthrough` → auto-detect-most-recent.
+   5. **Otherwise.** Do NOT pass `--session`. mykg creates a fresh session. This is the path for bare `/mykg <dir>`, `/mykg extract <dir>`, `/mykg extract more from <dir>`, "extract this folder", etc.
+   6. **Reuse required but missing.** If rules 2/3/4 fire but no session exists under `$SESSIONS_DIR`, fail clearly: `"No existing sessions under <SESSIONS_DIR>. Run /mykg extract <dir> first to create one."`
+
+**Never auto-detect-most-recent purely because a previous skill turn produced a session.** The previous-turn memory only matters when the *current* user message also contains one of the explicit signals in rules 1-4. A bare `/mykg ./more_docs` after a prior session must still create a fresh session.
 4. **Flags** — anything the user named that maps to a flag the cached `--help` confirms (`--review`, `--append`, `--from-step <step>`, `--workers <N>`, `--obsidian-vault`, `--base-schema`, `--thesaurus`, `--verbose`, `--confidence-agg`, etc.). Forward verbatim.
 
 `extract-graph` without `--append` or `--from-step` does not need a pre-existing session — it auto-creates one.
@@ -93,9 +118,35 @@ Reply "yes" to run, or correct me.
 
 For obviously safe actions (`walkthrough`, `parse-docs`), skip the confirmation and run.
 
+**Fresh-vs-reuse ambiguity:** when the user's intent is plausibly either a fresh extract or a continuation of a recent session (e.g. they typed `/mykg ./more_docs` and a session exists from earlier today), the proposed command MUST use a fresh session (no `--session`). Surface the alternative explicitly in the confirmation line so the user can correct it in one word:
+
+```
+About to run (fresh session): uv run mykg extract-graph ./more_docs
+
+Reply "yes" to run, or say "resume the last session" / "append to the last session" to reuse session <most-recent>.
+```
+
+Never silently inherit a prior session.
+
 ---
 
 ## Stage 3 — verify agent mode is active
+
+Two-step check. The first one catches the common "user installed mykg but never ran init" case before we waste a confusing CLI error.
+
+**Step 3a — does `mykg_config.yaml` exist at all?**
+
+```bash
+if [ ! -f mykg_config.yaml ]; then
+  echo "No mykg_config.yaml found in $(pwd)."
+  echo "Run \`mykg init --profile agent-claude-code\` from a shell first, then re-invoke /mykg."
+  exit 1
+fi
+```
+
+If the file is missing, stop and tell the user to run `mykg init --profile agent-claude-code` from a shell. Do not try to call the CLI.
+
+**Step 3b — is the active profile `agent-claude-code`?**
 
 ```bash
 grep -E '^profile:\s' mykg_config.yaml
