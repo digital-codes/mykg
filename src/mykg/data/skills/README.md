@@ -16,7 +16,11 @@ mykg init --profile agent-claude-code
 # ...then restart Claude Code so the skill loader picks up the new entry.
 ```
 
-The wizard copies `data/skills/mykg/` into `~/.claude/skills/mykg/` (honoring `$CLAUDE_CONFIG_DIR` if set) and writes a `.mykg_skill_version` stamp file so future invocations can detect drift.
+The wizard copies `data/skills/mykg/` into the user-level Claude Code skills folder and writes a `.mykg_skill_version` stamp file so future invocations can detect drift. The destination is resolved in this order:
+
+1. `$CLAUDE_CONFIG_DIR/skills/mykg` — explicit override (set this if Claude Code lives somewhere non-standard).
+2. `~/.claude/skills/mykg` — default on macOS / Linux / Windows Desktop.
+3. `%APPDATA%/Claude/skills/mykg` — Windows fallback, used only when `~/.claude/skills` does not exist and the `%APPDATA%/Claude/skills` folder already does (some Windows Claude Code builds put their config under `%APPDATA%`).
 
 **Upgrade after `pip install -U mykg`:**
 

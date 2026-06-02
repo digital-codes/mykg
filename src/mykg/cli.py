@@ -273,12 +273,40 @@ _SKILL_VERSION_STAMP = ".mykg_skill_version"
 def _claude_skills_dir() -> Path:
     """Return the user-level Claude Code skills folder.
 
-    Honors $CLAUDE_CONFIG_DIR if set (graphify-style override), otherwise
-    falls back to ~/.claude/skills.
+    Resolution order:
+      1. ``$CLAUDE_CONFIG_DIR/skills`` — explicit override (graphify-style).
+      2. ``~/.claude/skills`` — macOS / Linux / Windows-Desktop default.
+      3. ``%APPDATA%/Claude/skills`` — Windows fallback if it already exists
+         on disk and ``~/.claude/skills`` does not (some Windows Claude Code
+         builds put their config under ``%APPDATA%`` instead of ``%USERPROFILE%``).
+      4. ``~/.claude/skills`` — final fallback (created by mkdir at install).
+
+    The Windows fallback is only used when ``%APPDATA%/Claude/skills``
+    actually exists; we never invent it just because we're on Windows.
     """
     override = os.environ.get("CLAUDE_CONFIG_DIR")
-    base = Path(override) if override else Path.home() / ".claude"
-    return base / "skills"
+    if override:
+        return Path(override) / "skills"
+
+    home_claude = Path.home() / ".claude" / "skills"
+    if home_claude.exists():
+        return home_claude
+
+    if sys.platform == "win32":
+        appdata = os.environ.get("APPDATA")
+        if appdata:
+            appdata_claude = Path(appdata) / "Claude" / "skills"
+            if appdata_claude.exists():
+                return appdata_claude
+
+    return home_claude  # the default — created by mkdir during install
+
+
+def _manual_copy_hint(source: Path, target: Path) -> str:
+    """Return a platform-appropriate manual-copy command for the fallback message."""
+    if sys.platform == "win32":
+        return f'xcopy /E /I "{source}" "{target}"'
+    return f"cp -R {source} {target}"
 
 
 def _install_agent_skill(*, force: bool = False) -> None:
@@ -309,7 +337,7 @@ def _install_agent_skill(*, force: bool = False) -> None:
         target_dir.mkdir(parents=True, exist_ok=True)
     except OSError as exc:
         click.echo(f"\n[skill] Could not create {target_dir}: {exc}")
-        click.echo(f"        Copy manually: cp -R {source} {target}")
+        click.echo(f"        Copy manually: {_manual_copy_hint(source, target)}")
         return
 
     # Pre-existing target: decide between idempotent skip, version warning, or refusal.
@@ -358,7 +386,7 @@ def _install_agent_skill(*, force: bool = False) -> None:
         shutil.copytree(source, tmp)
     except OSError as exc:
         click.echo(f"\n[skill] Failed to copy {source} → {tmp}: {exc}")
-        click.echo(f"        Copy manually: cp -R {source} {target}")
+        click.echo(f"        Copy manually: {_manual_copy_hint(source, target)}")
         return
 
     try:
