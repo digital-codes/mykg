@@ -19,21 +19,11 @@
 
 **myKG** automatically generates a confidence-scored knowledge graph from a directory of mixed documents — Markdown, PDF, Word, PowerPoint, HTML, and images — grounded in an inferred RDFS/OWL ontology.
 
-## Command line
-
-```
-mykg extract-graph my_notes/        # any directory: .md, .pdf, .docx, .html, images
-```
-It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema from your document corpus; Pass 2 extracts typed entity and relationship instances per file against that schema. Non-Markdown inputs (`.pdf .docx .doc .pptx .png .jpg .jpeg .html .htm`) are converted to Markdown automatically before extraction. The result is exported to multiple formats: JSONL for property-graph consumers such as Neo4j, Turtle RDF for OWL toolchains, seven NetworkX formats for graph analysis and visualization, and an Obsidian vault — a second brain of wikilinked Markdown notes your AI coding assistant (Claude Code, Cursor, Copilot) can read and reason over directly.
-<p align="center">
-  <img src="https://gcore.jsdelivr.net/gh/SenolIsci/mykg@main/docs/diagrams/architecture-sketch.png" width="95%" style="vertical-align:middle;">
-</p>
-
 ## Contents
 
 - [Features](#features)
+- [Command line](#command-line)
 - [Quick Start](#quick-start)
-- [Using with Claude Code](#using-with-claude-code)
 - [Configuration](#configuration)
 - [Extract Pipeline](#extract-pipeline)
   - [Running](#running)
@@ -50,8 +40,11 @@ It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema fro
   - [Merging Sessions](#merging-sessions)
   - [Walkthrough Report](#walkthrough-report)
   - [Obsidian Vault Export](#obsidian-vault-export)
-- [Development](#development)
+- [Using mykg with Claude Code](#using-mykg-with-claude-code)
+  - [claude-cli profile](#claude-cli-profile)
+  - [Agent mode (Claude Code skill)](#agent-mode-claude-code-skill)
 - [Roadmap](#roadmap)
+- [Development](#development)
 - [Design](#design)
 - [License](#license)
 
@@ -65,7 +58,7 @@ It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema fro
 - **Verifiable TTL ontology** — after Pass 1, the induced schema is exported as a valid RDFS/OWL Turtle file (`intermediate/schema.ttl`) that can be opened directly in ontology editors such as [Protégé](https://protege.stanford.edu/). The TTL is validated by rdflib (syntax + semantic checks: domain/range refer to declared classes, no conflicting ranges) before any extraction begins
 - **Human-in-the-loop ontology design** — run with `--review` to pause after schema induction; inspect and edit `schema.json` (or load `schema.ttl` in Protégé, modify, and save back) before a single entity is extracted; resume with `mykg approve-schema`
 - **Incremental updates** — run with `--append` on an existing session to add new or modified Markdown files without re-running Pass 1; the schema is reused and only the new files go through Pass 2
-- **AI coding assistant friendly** — designed for smooth use alongside AI coding assistants such as [Claude Code](https://claude.ai/code); run extractions, inspect outputs, and iterate on your knowledge graph without leaving your coding environment; see [Using with Claude Code](#using-with-claude-code)
+- **AI coding assistant friendly** — designed for smooth use alongside AI coding assistants such as [Claude Code](https://claude.ai/code); run extractions, inspect outputs, and iterate on your knowledge graph without leaving your coding environment; see [Using mykg with Claude Code](#using-mykg-with-claude-code)
 - **Second brain for AI coding assistants** — the Obsidian vault output turns your extracted knowledge graph into a directory of wikilinked Markdown notes that any AI coding assistant can read as project context; point Claude Code, Cursor, or Copilot at `output/obsidian_vault/` and ask questions, trace relationships, and get answers grounded in your own documents
 
 ### Input
@@ -94,6 +87,16 @@ It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema fro
 - **Resumable pipeline** — every stage persists intermediate state; re-enter at any step after a crash or edit
 - **Session isolation** — each run is fully self-contained; inputs, intermediate state, outputs, and logs co-located
 - **Query knowledge graph** — natural-language queries directly against the extracted graph via AI coding assistants such as [Claude Code](https://claude.ai/code).
+
+## Command line
+
+```
+mykg extract-graph my_notes/        # any directory: .md, .pdf, .docx, .html, images
+```
+It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema from your document corpus; Pass 2 extracts typed entity and relationship instances per file against that schema. Non-Markdown inputs (`.pdf .docx .doc .pptx .png .jpg .jpeg .html .htm`) are converted to Markdown automatically before extraction. The result is exported to multiple formats: JSONL for property-graph consumers such as Neo4j, Turtle RDF for OWL toolchains, seven NetworkX formats for graph analysis and visualization, and an Obsidian vault — a second brain of wikilinked Markdown notes your AI coding assistant (Claude Code, Cursor, Copilot) can read and reason over directly.
+<p align="center">
+  <img src="https://gcore.jsdelivr.net/gh/SenolIsci/mykg@main/docs/diagrams/architecture-sketch.png" width="95%" style="vertical-align:middle;">
+</p>
 
 ## Quick Start
 
@@ -128,145 +131,6 @@ ollama pull llama3.3
 mykg init
 mykg extract-graph my_notes/
 ```
-
-## Claude Code as backend
-
-myKG ships with a `claude-cli` profile that runs extractions through the locally-installed `claude` CLI.
-
-### Setup
-
-Install the `claude` CLI, then install mykg and run the setup wizard — select **[5] Claude CLI** when prompted.
-
-```bash
-npm install -g @anthropic-ai/claude-code
-pip install mykg && mykg init
-mykg extract-graph my_notes/
-```
-
-### How it works
-
-The `claude-cli` provider calls `claude -p` as a subprocess for every LLM step (Pass 1 schema induction, Pass 2 extraction, orphan connection, name normalization). All pipeline features — session isolation, resumability, orphan recovery, cross-session merge — work identically to API-based providers.
-
-**Key constraints of the `claude-cli` profile:**
-- `max_workers` must be `1` — the `claude` CLI is serial by design; parallel workers will queue
-- The `effort` and `model` fields in `mykg_config.yaml` map directly to `--effort` and `--model` flags passed to `claude -p`
-
-### Using myKG from inside Claude Code Session
-
-You can run myKG extractions as a tool call from within a Claude Code session. This is useful for building knowledge graphs from notes or documentation while you work:
-
-```bash
-# From any Claude Code session terminal:
-mykg extract-graph ./docs/ --session my-docs-kg
-
-# Then reference the output in your session:
-# sessions/my-docs-kg/output/nodes.jsonl
-# sessions/my-docs-kg/output/knowledge_graph.ttl
-```
-
-Claude Code can then read `nodes.jsonl` or `edges.jsonl` directly to answer questions about the extracted graph, or load `knowledge_graph.ttl` into a SPARQL tool for structured queries.
-
-### Recommended `mykg_config.yaml` settings for Claude Code
-
-```yaml
-profile: claude-cli
-
-profiles:
-  claude-cli:
-    llm:
-      model: sonnet       # or opus for higher quality
-      effort: medium      # low | medium | high
-    pipeline:
-      pass1:
-        max_workers: 1    # required — claude CLI is serial
-      pass2:
-        max_workers: 1
-```
-
----
-
-## Claude Code skill as backend (agent mode)
-
-Agent mode is a different way to run myKG inside Claude Code: instead of `claude -p` subprocesses, the pipeline writes LLM tasks to a session-local inbox folder and a Claude Code **skill** dispatches subagents to answer them. Pick agent mode over `claude-cli` when you want parallel subagent dispatch from inside an active Claude Code session.
-
-### Why pick agent mode
-
-- **No API key needed.** Uses your existing Claude Pro/Max plan via the skill subagents — same as `claude-cli`, but without invoking the `claude -p` binary.
-- **Inspectable LLM I/O.** Every prompt lands as `intermediate/agent_inbox/<id>.task.json` and every answer as `intermediate/agent_outbox/<id>.answer.json`. Replay or edit any step by hand.
-- **Parallel by default.** The skill dispatches up to `pass2.max_workers` subagents per wave in a single message — not serial like `claude-cli`. Pass-2 chunks complete in parallel waves.
-
-### Install the skill
-
-```bash
-pip install mykg          # or: uv tool install mykg
-
-# Symlink the bundled skill into your Claude Code skills folder
-ln -s "$(python -c 'import mykg, pathlib; print(pathlib.Path(mykg.__file__).parent / "data" / "skills" / "mykg")')" ~/.claude/skills/mykg
-
-# Restart Claude Code (or re-open the project) so the skill loader picks up the new entry
-```
-
-### Configure the profile
-
-```bash
-mykg init --profile agent-claude-code
-```
-
-This writes a `mykg_config.yaml` with `profile: agent-claude-code` selected. The `agent:` block configures the inbox/outbox paths and poll interval:
-
-```yaml
-profile: agent-claude-code
-
-profiles:
-  agent-claude-code:
-    provider: agent
-    agent:
-      inbox_dir: agent_inbox        # relative to <session>/intermediate/
-      outbox_dir: agent_outbox
-      poll_interval_seconds: 2
-    pipeline:
-      pass2:
-        max_workers: 8              # how many subagents the skill dispatches per wave
-```
-
-### Invoke from inside Claude Code
-
-The skill exposes one slash command — `/mykg` — that accepts free-form intent. You describe what you want; the skill figures out which `mykg` CLI command to run, reads the live `--help` to validate flags, confirms expensive actions, and (for `extract-graph`) drains the LLM inbox in parallel waves.
-
-Examples:
-
-| You type | The skill runs |
-| --- | --- |
-| `/mykg extract ./docs` | `mykg extract-graph ./docs` |
-| `/mykg ./docs` | `mykg extract-graph ./docs` (legacy positional alias) |
-| `/mykg extract ./docs with human review` | `mykg extract-graph ./docs --review` |
-| `/mykg append the new notes in ./docs` | `mykg extract-graph ./docs --append --session <latest>` |
-| `/mykg resume the last session` | `mykg extract-graph --session <latest>` |
-| `/mykg approve the schema` | `mykg approve-schema --session <latest>` |
-| `/mykg make a walkthrough` | `mykg walkthrough --session <latest>` |
-| `/mykg convert pdfs in ./inbox to ./md` | `mykg parse-docs --input ./inbox --output ./md` |
-
-Any flag mykg accepts on the CLI works here too — the skill reads `--help` rather than maintaining its own list, so `--from-step orphan_connect`, `--workers 8`, `--obsidian-vault`, etc. all flow through.
-
-`mykg init` and `mykg merge-graphs` are intentionally not wrapped: init is interactive (run from a shell once per machine), and merge-graphs has additional design questions and will be added in a follow-up.
-
-### What the skill does on screen
-
-1. Confirms `mykg_config.yaml` has `profile: agent-claude-code` — aborts with a clear message if not.
-2. Launches `mykg extract-graph` in the background via `nohup` so it survives the skill turn.
-3. Watches `<session>/intermediate/agent_inbox/` for `*.task.json` files.
-4. Dispatches one Agent-tool subagent per unanswered task (parallel calls in one message, up to `pass2.max_workers` per wave).
-5. Exits when the pipeline subprocess exits, when `output/knowledge_graph.ttl` appears, or after **20 watch waves** — at which point it tells you to re-invoke `/mykg --session <name> --continue`.
-
-### Limitations and notes
-
-- The skill is bounded at **20 waves per invocation** to avoid runaway Claude Code sessions. Long pipelines may need multiple `/mykg --session <name> --continue` invocations.
-- The pipeline subprocess survives via `nohup`, so closing your Claude Code session does not kill it — the run continues in the background and you can re-attach by re-invoking the skill with `--continue`.
-- For non-Claude-Code hosts (Copilot CLI, Cursor, custom scripts), nothing prevents you from writing your own drainer against the same `agent_inbox`/`agent_outbox` contract — the protocol is just JSON files on disk.
-
-Full design and contract: [docs/agent-mode.md](docs/agent-mode.md). Skill source: [src/mykg/data/skills/mykg/SKILL.md](src/mykg/data/skills/mykg/SKILL.md).
-
----
 
 ## Configuration
 
@@ -316,7 +180,6 @@ export ANTHROPIC_API_KEY=sk-ant-...
 ANTHROPIC_API_KEY=sk-ant-...
 ```
 For source installs you can also copy [`sample.env.mykg`](sample.env.mykg) to `.env.mykg` as a starting template.
-
 
 
 ## Extract Pipeline
@@ -702,6 +565,127 @@ Disable with `pipeline.report.enabled: false`.
 
 ---
 
+## Using mykg with Claude Code
+
+myKG ships with two complementary integrations for running extractions from inside [Claude Code](https://claude.ai/code):
+
+- **`claude-cli` profile** — the pipeline shells out to the `claude -p` binary for each LLM step. Serial only.
+- **Agent mode (`agent-claude-code` profile + bundled skill)** — the pipeline writes LLM tasks to a session-local inbox folder and a Claude Code skill dispatches subagents to answer them. Parallel by default.
+
+Pick the first for a drop-in `claude`-as-LLM experience; pick the second when you want parallel subagent dispatch and inspectable JSON I/O.
+
+### claude-cli profile
+
+myKG ships with a `claude-cli` profile that runs extractions through the locally-installed `claude` CLI.
+
+#### Setup
+
+Install the `claude` CLI, then install mykg and run the setup wizard — select **[5] Claude CLI** when prompted.
+
+```bash
+npm install -g @anthropic-ai/claude-code
+pip install mykg && mykg init
+mykg extract-graph my_notes/
+```
+
+#### How it works
+
+The `claude-cli` provider calls `claude -p` as a subprocess for every LLM step (Pass 1 schema induction, Pass 2 extraction, orphan connection, name normalization). All pipeline features — session isolation, resumability, orphan recovery, cross-session merge — work identically to API-based providers.
+
+**Key constraints of the `claude-cli` profile:**
+- `max_workers` must be `1` — the `claude` CLI is serial by design; parallel workers will queue
+- The `effort` and `model` fields in `mykg_config.yaml` map directly to `--effort` and `--model` flags passed to `claude -p`
+
+#### Using myKG from inside Claude Code Session
+
+You can run myKG extractions as a tool call from within a Claude Code session. This is useful for building knowledge graphs from notes or documentation while you work:
+
+```bash
+# From any Claude Code session terminal:
+mykg extract-graph ./docs/ --session my-docs-kg
+
+# Then reference the output in your session:
+# sessions/my-docs-kg/output/nodes.jsonl
+# sessions/my-docs-kg/output/knowledge_graph.ttl
+```
+
+Claude Code can then read `nodes.jsonl` or `edges.jsonl` as well as the Obsidian vault directly to answer questions about the extracted graph, or load `knowledge_graph.ttl` into a SPARQL tool for structured queries.
+
+### Agent mode (Claude Code skill)
+
+Agent mode is a different way to run myKG inside Claude Code: instead of `claude -p` subprocesses, the pipeline writes LLM tasks to a session-local inbox folder and a Claude Code **skill** dispatches subagents to answer them. Pick agent mode over `claude-cli` when you want parallel subagent dispatch from inside an active Claude Code session.
+
+#### Why pick agent mode
+
+- **No API key needed.** Uses your existing Claude Pro/Max plan via the skill subagents — same as `claude-cli`, but without invoking the `claude -p` binary.
+- **Inspectable LLM I/O.** Every prompt lands as `intermediate/agent_inbox/<id>.task.json` and every answer as `intermediate/agent_outbox/<id>.answer.json`. Replay or edit any step by hand.
+- **Parallel by default.** The skill dispatches up to `pass2.max_workers` subagents per wave in a single message — not serial like `claude-cli`. Pass-2 chunks complete in parallel waves.
+
+#### Install the skill
+
+```bash
+pip install mykg          # or: uv tool install mykg
+
+# Symlink the bundled skill into your Claude Code skills folder
+ln -s "$(python -c 'import mykg, pathlib; print(pathlib.Path(mykg.__file__).parent / "data" / "skills" / "mykg")')" ~/.claude/skills/mykg
+
+# Restart Claude Code (or re-open the project) so the skill loader picks up the new entry
+```
+
+#### Configure the profile
+
+```bash
+mykg init --profile agent-claude-code
+```
+
+This writes a `mykg_config.yaml` with `profile: agent-claude-code` selected. The `agent:` block configures the inbox/outbox paths and poll interval:
+
+```yaml
+profile: agent-claude-code
+
+profiles:
+  agent-claude-code:
+    provider: agent
+    agent:
+      inbox_dir: agent_inbox        # relative to <session>/intermediate/
+      outbox_dir: agent_outbox
+      poll_interval_seconds: 2
+    pipeline:
+      pass2:
+        max_workers: 8              # how many subagents the skill dispatches per wave
+```
+
+#### Invoke from inside Claude Code
+
+The skill exposes one slash command — `/mykg` — that accepts free-form intent. You describe what you want; the skill figures out which `mykg` CLI command to run, reads the live `--help` to validate flags, confirms expensive actions, and (for `extract-graph`) drains the LLM inbox in parallel waves.
+
+Examples:
+
+| You type | The skill runs |
+| --- | --- |
+| `/mykg extract ./docs` | `mykg extract-graph ./docs` |
+| `/mykg ./docs` | `mykg extract-graph ./docs` (legacy positional alias) |
+| `/mykg extract ./docs with human review` | `mykg extract-graph ./docs --review` |
+| `/mykg append the new notes in ./docs` | `mykg extract-graph ./docs --append --session <latest>` |
+| `/mykg resume the last session` | `mykg extract-graph --session <latest>` |
+| `/mykg approve the schema` | `mykg approve-schema --session <latest>` |
+| `/mykg make a walkthrough` | `mykg walkthrough --session <latest>` |
+| `/mykg convert pdfs in ./inbox to ./md` | `mykg parse-docs --input ./inbox --output ./md` |
+
+Any flag mykg accepts on the CLI works here too — the skill reads `--help` rather than maintaining its own list, so `--from-step orphan_connect`, `--workers 8`, `--obsidian-vault`, etc. all flow through.
+
+`mykg init` and `mykg merge-graphs` are intentionally not wrapped: init is interactive (run from a shell once per machine), and merge-graphs has additional design questions and will be added in a follow-up.
+
+Full design and contract: [docs/agent-mode.md](docs/agent-mode.md). Skill source: [src/mykg/data/skills/mykg/SKILL.md](src/mykg/data/skills/mykg/SKILL.md).
+
+---
+
+## Roadmap
+
+- **Query knowledge graph** — natural-language and structured queries directly against the extracted graph; planned support for SPARQL, graph traversal, and LLM-assisted Q&A over nodes and edges
+
+---
+
 ## Development
 
 ### Installation
@@ -753,12 +737,6 @@ Outputs a ready-to-paste YAML snippet for the `pipeline:` block.
 python -m cProfile -o profile.out -m mykg.cli extract input_files/
 uv run snakeviz profile.out
 ```
-
----
-
-## Roadmap
-
-- **Query knowledge graph** — natural-language and structured queries directly against the extracted graph; planned support for SPARQL, graph traversal, and LLM-assisted Q&A over nodes and edges
 
 ---
 
