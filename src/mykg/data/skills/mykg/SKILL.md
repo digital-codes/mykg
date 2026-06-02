@@ -27,6 +27,8 @@ Trigger this skill whenever the user types `/mykg <anything>`. Map the intent to
 | `/mykg make a walkthrough for 2026-06-02T17-30-00` | `mykg walkthrough --session 2026-06-02T17-30-00` |
 | `/mykg convert pdfs in ./inbox to ./md` | `mykg parse-docs --input ./inbox --output ./md` |
 | `/mykg from-step orphan_connect on the last session` | `mykg extract-graph --session <most-recent> --from-step orphan_connect` |
+| `/mykg rerun orphan-connect from scratch on the last session` | `mykg extract-graph --session <most-recent> --from-step orphan_connect_fullsweep` |
+| `/mykg redo orphans but keep what we already confirmed` | `mykg extract-graph --session <most-recent> --from-step orphan_connect_incremental` |
 | `/mykg init` | refuse: "Run `mykg init` from a shell — it is interactive." |
 | `/mykg merge sessions A and B` | refuse: "Skill support for `mykg merge-graphs` is planned in a follow-up. Run from a shell." |
 
@@ -64,6 +66,18 @@ From the user's `/mykg <free text>` message extract:
 4. **Flags** — anything the user named that maps to a flag the cached `--help` confirms (`--review`, `--append`, `--from-step <step>`, `--workers <N>`, `--obsidian-vault`, `--base-schema`, `--thesaurus`, `--verbose`, `--confidence-agg`, etc.). Forward verbatim.
 
 `extract-graph` without `--append` or `--from-step` does not need a pre-existing session — it auto-creates one.
+
+### Special `--from-step` values for the orphan-connect step
+
+`--from-step` accepts every pipeline step name (`preprocess`, `ingest`, `pass1`, `schema_validate`, `human_review`, `schema_flatten`, `pass2`, `normalize_names`, `assemble`, `orphan_score`, `orphan_connect`, `validate_graph`) plus **two aliases** specific to the orphan-connection step. When the user describes intent that maps to either of these, pick the alias rather than bare `orphan_connect`:
+
+| `--from-step` value | Semantics | Pick when the user says |
+| --- | --- | --- |
+| `orphan_connect` | Equivalent to `orphan_connect_fullsweep` — bare form is the default. | "rerun orphan connect", "redo the orphan pass" (with no qualifier) |
+| `orphan_connect_fullsweep` | Deletes `orphan_connections.json`, `orphan_log.json`, `schema_gap_proposals.json` + all downstream outputs. The orphan-connect step recomputes every group from scratch — every orphan is re-sent to the LLM. Expensive but gives a clean redo. | "rerun from scratch", "fullsweep", "clean redo", "schema changed since last run", "model upgrade" |
+| `orphan_connect_incremental` | Deletes downstream outputs **but preserves** `orphan_connections.json` + `orphan_log.json`. The step loads the prior file as a seed, treats every orphan endpoint already in a confirmed edge as "resolved", and only sends the remaining uncovered groups to the LLM. Old confirmations are merged with new ones. Cheap and additive. | "redo orphans but keep what we have", "additive", "only do the new ones", "after `--append`" |
+
+If the user is ambiguous (e.g. "rerun orphans"), confirm in Stage 2 which one they want by presenting both options in one line.
 
 ---
 
