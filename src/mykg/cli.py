@@ -87,7 +87,7 @@ _PROFILE_META = {
         "default_model": "llama3.3",
     },
     "claude-cli": {
-        "label": "Claude CLI (uses claude -p, no API key needed)",
+        "label": "Claude CLI (uses claude -p)",
         "key_var": None,
         "key_hint": None,
         "key_url": None,
@@ -233,6 +233,49 @@ def _write_env_key(env_file: Path, var: str, value: str) -> None:
     env_file.write_text("\n".join(lines) + "\n")
 
 
+def _install_agent_skill() -> None:
+    """Symlink the bundled mykg skill into ~/.claude/skills/mykg.
+
+    If a link or directory already lives at the target, leave it alone and
+    just tell the user. Honest about every outcome — no silent overwrites.
+    """
+    import mykg
+
+    source = Path(mykg.__file__).parent / "data" / "skills" / "mykg"
+    target_dir = Path.home() / ".claude" / "skills"
+    target = target_dir / "mykg"
+
+    if not source.is_dir():
+        click.echo(f"\n[skill] WARNING: bundled skill not found at {source}; skipping install.")
+        return
+
+    try:
+        target_dir.mkdir(parents=True, exist_ok=True)
+    except OSError as exc:
+        click.echo(f"\n[skill] Could not create {target_dir}: {exc}")
+        click.echo(f"        Symlink manually: ln -s {source} {target}")
+        return
+
+    if target.is_symlink() or target.exists():
+        existing = target.resolve() if target.exists() else None
+        if existing == source.resolve():
+            click.echo(f"\n[skill] Already installed at {target} → {source}")
+        else:
+            click.echo(f"\n[skill] {target} already exists (points to {existing}).")
+            click.echo(f"        Leaving it untouched. Remove it and re-run if you want")
+            click.echo(f"        the bundled skill instead:  rm {target}")
+        return
+
+    try:
+        target.symlink_to(source, target_is_directory=True)
+    except OSError as exc:
+        click.echo(f"\n[skill] Failed to symlink {target} → {source}: {exc}")
+        click.echo(f"        Symlink manually: ln -s {source} {target}")
+        return
+
+    click.echo(f"\n[skill] Installed: {target} → {source}")
+
+
 def _print_next_steps(profile: str) -> None:
     click.echo("\nNext steps:")
     click.echo("  mykg extract-graph <your_notes_directory>/")
@@ -243,15 +286,10 @@ def _print_next_steps(profile: str) -> None:
             "  (make sure the claude CLI is installed: npm install -g @anthropic-ai/claude-code)"
         )
     elif profile == "agent-claude-code":
-        click.echo("\nAgent mode requires the bundled Claude Code skill:")
-        click.echo("  1. Symlink it into your Claude Code skills folder:")
-        click.echo(
-            "       ln -s \"$(python -c 'import mykg, pathlib; "
-            "print(pathlib.Path(mykg.__file__).parent / \"data\" / \"skills\" / \"mykg\")')\" "
-            "~/.claude/skills/mykg"
-        )
-        click.echo("  2. Restart Claude Code so the skill loader picks it up.")
-        click.echo("  3. Then in Claude Code, type:  /mykg <your_notes_directory>")
+        _install_agent_skill()
+        click.echo("\nThen, in Claude Code:")
+        click.echo("  1. Restart the app so the skill loader picks up the new entry.")
+        click.echo("  2. Type:  /mykg <your_notes_directory>")
         click.echo("\nSee docs/agent-mode.md for the full inbox/outbox contract.")
 
 
