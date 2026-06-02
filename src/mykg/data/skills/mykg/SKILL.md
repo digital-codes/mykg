@@ -104,6 +104,63 @@ From the user's `/mykg <free text>` message extract:
 
 If the user is ambiguous (e.g. "rerun orphans"), confirm in Stage 2 which one they want by presenting both options in one line.
 
+**Precondition — `schema_max_restarts` must be ≥ 1** for `orphan_connect_fullsweep` and `orphan_connect_incremental` to fully exercise the schema-gap auto-proposal loop. With `schema_max_restarts: 0` (the shipped default in every profile) the aliases still execute, but the LLM is never asked to propose new schema properties for orphans the current schema cannot connect — those orphans remain orphans. The skill MUST handle this transparently via the auto-bump procedure below.
+
+#### Auto-bump procedure (applies whenever Stage 1 lands on `orphan_connect_fullsweep` or `orphan_connect_incremental`)
+
+Before launching the run, check the active profile's `schema_max_restarts` and temporarily bump it to `1` if needed:
+
+```bash
+# Resolve active profile (top-of-file `profile:` line).
+ACTIVE_PROFILE=$(grep -E '^profile:\s' mykg_config.yaml | awk '{print $2}')
+
+# Read schema_max_restarts inside the active profile block.
+CURRENT=$(awk "/^  ${ACTIVE_PROFILE}:/,/^  [a-z]/" mykg_config.yaml \
+  | grep -E '^\s+schema_max_restarts:' | head -1 | awk '{print $2}')
+
+NEEDS_BUMP=0
+if [ "$CURRENT" = "0" ]; then
+  NEEDS_BUMP=1
+fi
+```
+
+If `NEEDS_BUMP=1`, edit `mykg_config.yaml` in-place to set the active profile's `schema_max_restarts: 1`, then surface the change to the user as part of the Stage 2 confirmation:
+
+```
+About to run: uv run mykg extract-graph --session 2026-06-02T17-30-00 --from-step orphan_connect_fullsweep
+
+Note: schema_max_restarts is currently 0 in profile `${ACTIVE_PROFILE}`. I will:
+  1. Temporarily bump it to 1 (so the LLM may propose new schema properties for unconnected orphans).
+  2. Run the alias.
+  3. Revert schema_max_restarts back to 0 after the run finishes.
+
+Reply "yes" to proceed, "no" to skip, or "keep at 1" to leave the value bumped permanently.
+```
+
+After the run finishes (success OR failure), **always revert** `schema_max_restarts: 1` → `0` in the same profile unless the user explicitly said "keep at 1". The bump is per-invocation; the configured behaviour returns to baseline. Emit a final line: `[skill] Restored schema_max_restarts: 0 in profile '${ACTIVE_PROFILE}'.`
+
+The YAML edit is **scoped to the active profile block only** — there are multiple `schema_max_restarts:` lines in the file (one per profile). Use a Python sub-shell with a regex anchored on `^  ${ACTIVE_PROFILE}:` and looking inside the block until the next sibling `^  [a-z]` to target the right line:
+
+```bash
+python3 - <<PYEOF
+import re, pathlib
+p = pathlib.Path("mykg_config.yaml")
+txt = p.read_text()
+profile = "$ACTIVE_PROFILE"
+new_value = "$NEW_VALUE"   # 1 to bump, 0 to revert
+pat = re.compile(
+    rf"(^  {re.escape(profile)}:.*?^\s+schema_max_restarts:\s*)\d+(\s*(?:#[^\n]*)?$)",
+    re.MULTILINE | re.DOTALL,
+)
+out, n = pat.subn(rf"\g<1>{new_value}\g<2>", txt, count=1)
+if n != 1:
+    raise SystemExit(f"Could not patch schema_max_restarts in profile '{profile}'")
+p.write_text(out)
+PYEOF
+```
+
+After every YAML edit, show `git diff --no-color mykg_config.yaml | head -8` to the user as proof of the change. Never edit YAML without surfacing the diff.
+
 ---
 
 ## Stage 2 — confirm intent before running
@@ -127,6 +184,8 @@ Reply "yes" to run, or say "resume the last session" / "append to the last sessi
 ```
 
 Never silently inherit a prior session.
+
+**Orphan re-entry aliases require an extra check:** if Stage 1 resolved the command to `--from-step orphan_connect_fullsweep` or `--from-step orphan_connect_incremental`, follow the **auto-bump procedure** in the "Special `--from-step` values for the orphan-connect step" subsection of Stage 1 *before* running. That procedure temporarily sets the active profile's `schema_max_restarts` to `1`, surfaces the change in this Stage 2 confirmation, and always reverts the value after the run unless the user explicitly says "keep at 1".
 
 ---
 
