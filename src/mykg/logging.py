@@ -60,14 +60,18 @@ def setup(log_file: Path | None = None, verbose: bool = False) -> None:
     if log_file:
         log_file.parent.mkdir(parents=True, exist_ok=True)
         root.addHandler(_file_handler(log_file, level))
-        llm_log = log_file.parent / "llm.log"
-        _llm_log_path = llm_log
-        _llm_handler = logging.handlers.RotatingFileHandler(
-            llm_log,
-            maxBytes=config.LOG_MAX_BYTES,
-            backupCount=config.LOG_BACKUP_COUNT,
-            encoding="utf-8",
-        )
+        if config.LOG_LLM_LOG:
+            llm_log = log_file.parent / "llm.log"
+            _llm_log_path = llm_log
+            _llm_handler = logging.handlers.RotatingFileHandler(
+                llm_log,
+                maxBytes=config.LOG_MAX_BYTES,
+                backupCount=config.LOG_BACKUP_COUNT,
+                encoding="utf-8",
+            )
+        else:
+            _llm_log_path = None
+            _llm_handler = None
         if config.LOG_CAPTURE_PROMPTS:
             _prompt_dir = log_file.parent / "intermediate" / "llm_calls"
             _prompt_dir.mkdir(parents=True, exist_ok=True)

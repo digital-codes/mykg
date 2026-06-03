@@ -190,6 +190,7 @@ FEEDBACK_MAX_FILE_CHARS: int = _get("feedback", "max_file_chars")
 # ---------------------------------------------------------------------------
 LOG_MAX_BYTES: int = _get("logging", "max_bytes")
 LOG_BACKUP_COUNT: int = _get("logging", "backup_count")
+LOG_LLM_LOG: bool = bool(_get_opt("logging", "llm_log", True))
 LOG_CAPTURE_PROMPTS: bool = bool(_get_opt("logging", "capture_prompts", False))
 LOG_ERROR_OUTPUT_MAX_CHARS: int = int(_get_opt("logging", "error_output_max_chars", 500))
 

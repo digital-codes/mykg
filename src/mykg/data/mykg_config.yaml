@@ -139,7 +139,8 @@ profiles:
       logging:
         max_bytes: 10485760     # 10 MB per log file before rotation
         backup_count: 3         # number of rotated log files to keep (e.g. run.log, run.log.1, run.log.2)
-        capture_prompts: true   # write each LLM system+user prompt to intermediate/llm_calls/ for debugging
+        llm_log: false           # write per-call accounting (provider, model, tokens, latency, raw response) to llm.log
+        capture_prompts: false   # write each LLM system+user prompt to intermediate/llm_calls/ for debugging
         error_output_max_chars: 500  # max chars of stderr/stdout included in LLM backend error messages
       report:
         enabled: true           # generate walkthrough.md after each extract run; set false to skip
@@ -272,7 +273,8 @@ profiles:
       logging:
         max_bytes: 10485760
         backup_count: 3
-        capture_prompts: true
+        llm_log: false
+        capture_prompts: false
         error_output_max_chars: 500
       report:
         enabled: true           # generate walkthrough.md after each extract run; set false to skip
@@ -402,7 +404,8 @@ profiles:
       logging:
         max_bytes: 10485760     # 10 MB per log file before rotation
         backup_count: 3         # number of rotated log files to keep (e.g. run.log, run.log.1, run.log.2)
-        capture_prompts: true   # write each LLM system+user prompt to intermediate/llm_calls/ for debugging
+        llm_log: false           # write per-call accounting (provider, model, tokens, latency, raw response) to llm.log
+        capture_prompts: false   # write each LLM system+user prompt to intermediate/llm_calls/ for debugging
         error_output_max_chars: 500  # max chars of stderr/stdout included in LLM backend error messages
       report:
         enabled: true           # generate walkthrough.md after each extract run; set false to skip
@@ -541,7 +544,8 @@ profiles:
       logging:
         max_bytes: 10485760
         backup_count: 3
-        capture_prompts: true
+        llm_log: false
+        capture_prompts: false
         error_output_max_chars: 500
       report:
         enabled: true           # generate walkthrough.md after each extract run; set false to skip
@@ -674,7 +678,8 @@ profiles:
       logging:
         max_bytes: 10485760
         backup_count: 3
-        capture_prompts: true
+        llm_log: false
+        capture_prompts: false
         error_output_max_chars: 500
       report:
         enabled: true           # generate walkthrough.md after each extract run; set false to skip
@@ -797,7 +802,8 @@ profiles:
       logging:
         max_bytes: 10485760
         backup_count: 3
-        capture_prompts: true
+        llm_log: false
+        capture_prompts: false
         error_output_max_chars: 500
       report:
         enabled: true
