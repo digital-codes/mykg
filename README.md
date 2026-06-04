@@ -40,6 +40,7 @@
   - [Merging Sessions](#merging-sessions)
   - [Walkthrough Report](#walkthrough-report)
   - [Obsidian Vault Export](#obsidian-vault-export)
+  - [Neo4j LOAD CSV Export](#neo4j-load-csv-export)
 - [Using mykg with Claude Code](#using-mykg-with-claude-code)
   - [claude-cli profile](#claude-cli-profile)
   - [Agent mode (Claude Code skill)](#agent-mode-claude-code-skill)
@@ -77,7 +78,7 @@
 ### Graph & Output
 
 - **Provider-agnostic** — works with Anthropic (Claude), OpenAI (GPT), Ollama (local), OpenRouter, or the `claude` CLI
-- **Four output families** — JSONL for Neo4j/NetworkX/RAG, Turtle RDF for OWL toolchains, NetworkX multi-format for graph analysis, and Obsidian vault for linked personal knowledge management
+- **Five output families** — JSONL for Neo4j/NetworkX/RAG, Turtle RDF for OWL toolchains, NetworkX multi-format for graph analysis, Obsidian vault for linked personal knowledge management, and an optional Neo4j LOAD CSV bundle (plain-header CSVs + paste-and-run Cypher script for Neo4j Browser / `cypher-shell`)
 - **Obsidian vault — second brain for AI coding assistants** — every extracted entity becomes a wikilinked Markdown note in `output/obsidian_vault/`; open it in [Obsidian](https://obsidian.md) to navigate the graph with backlinks and Graph View, or point your AI coding assistant (Claude Code, Cursor, Copilot) at the vault folder so it can answer questions, trace relationships, and reason over your knowledge base in natural language
 - **Interactive HTML graph** — node/edge filtering, search, hover popups; opens directly in a browser
 - **Confidence scoring** — every extracted attribute, node, and edge carries a `0.0–1.0` confidence score
@@ -93,7 +94,7 @@
 ```
 mykg extract-graph my_notes/        # any directory: .md, .pdf, .docx, .html, images
 ```
-It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema from your document corpus; Pass 2 extracts typed entity and relationship instances per file against that schema. Non-Markdown inputs (`.pdf .docx .doc .pptx .png .jpg .jpeg .html .htm`) are converted to Markdown automatically before extraction. The result is exported to multiple formats: JSONL for property-graph consumers such as Neo4j, Turtle RDF for OWL toolchains, seven NetworkX formats for graph analysis and visualization, and an Obsidian vault — a second brain of wikilinked Markdown notes your AI coding assistant (Claude Code, Cursor, Copilot) can read and reason over directly.
+It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema from your document corpus; Pass 2 extracts typed entity and relationship instances per file against that schema. Non-Markdown inputs (`.pdf .docx .doc .pptx .png .jpg .jpeg .html .htm`) are converted to Markdown automatically before extraction. The result is exported to multiple formats: JSONL for property-graph consumers such as Neo4j, Turtle RDF for OWL toolchains, seven NetworkX formats for graph analysis and visualization, an Obsidian vault — a second brain of wikilinked Markdown notes your AI coding assistant (Claude Code, Cursor, Copilot) can read and reason over directly — and optionally a Neo4j LOAD CSV bundle with a paste-and-run Cypher script for one-step import into Neo4j Browser or `cypher-shell`.
 <p align="center">
   <img src="https://gcore.jsdelivr.net/gh/SenolIsci/mykg@main/docs/diagrams/architecture-sketch.png" width="95%" style="vertical-align:middle;">
 </p>
@@ -208,6 +209,7 @@ mykg extract-graph <input_dir> [OPTIONS]
 | `--base-schema PATH` | Locked TBox TTL file (locked classes/properties cannot be changed by the LLM) |
 | `--thesaurus PATH` | SKOS TTL thesaurus for synonym resolution in schema merge |
 | `--obsidian-vault` | Force Obsidian vault export for this run (overrides config) |
+| `--neo4j-csv` | Force Neo4j LOAD CSV bundle export for this run (overrides config) |
 | `--log-file PATH` | Write logs here (relative paths placed inside the session folder) |
 | `--verbose / -v` | Enable DEBUG-level logging |
 
@@ -268,7 +270,7 @@ The pipeline runs 12 steps in sequence. All intermediate state is written to dis
 | 9 | `assemble` | — | `edge_metadata.json`, `nodes.json`, `merge_log.json` |
 | 10 | `orphan_score` | — | `orphan_candidates.json` |
 | 11 | `orphan_connect` | ✓ | `orphan_connections.json`, `orphan_log.json` |
-| 12 | `validate_graph` | — | `nodes.jsonl`, `edges.jsonl`, `knowledge_graph.ttl`, `knowledge_graph.html`, `networkx_output/`, `obsidian_vault/` |
+| 12 | `validate_graph` | — | `nodes.jsonl`, `edges.jsonl`, `knowledge_graph.ttl`, `knowledge_graph.html`, `networkx_output/`, `obsidian_vault/`, `neo4j_csv/` *(optional)* |
 
 Pass 1 internally runs four sequential stages: parallel batch induction → algorithmic merge → harmonization LLM call → quality review LLM call.
 
@@ -358,6 +360,38 @@ Node/edge attributes are exported as `attr_<name>_value` / `attr_<name>_confiden
 One `.md` note per extracted entity, grouped into subdirectories by concept type. Each note has YAML frontmatter (id, type, confidence, sources), an attributes section, outgoing and incoming wikilink relationship sections, and a source files list. An `index.md` at the vault root summarizes node counts per type with links to every entity.
 
 Open `output/obsidian_vault/` as a vault in [Obsidian](https://obsidian.md) to get Graph View, backlink navigation, and full-text search across the extracted entities.
+
+### Neo4j LOAD CSV Bundle (`neo4j_csv/`)
+
+Optional, off by default. Enable with `--neo4j-csv` on the command line, or set `pipeline.export.neo4j_csv_enabled: true` in `mykg_config.yaml`.
+
+When enabled, `step_validate_graph` writes a self-contained Neo4j import bundle next to the other outputs:
+
+```
+output/neo4j_csv/
+  nodes_<Label>.csv             ← one per concept type (Person, Organization, …)
+  relationships_<TYPE>.csv      ← one per property (WORKS_AT, KNOWS, …)
+  import_browser.cypher         ← paste-and-run for Neo4j Browser
+  import_shell.cypher           ← for `cypher-shell -f`
+  README.md                     ← bundle-local quick-reference
+```
+
+Plain CSV headers (`id,name,name_confidence,_node_confidence,_parents,_source_files,...`) — no `:ID` / `:LABEL` decorations, so the same files work for both Neo4j and any other CSV-aware tool.
+
+**Two ways to import the bundle:**
+
+```bash
+# Flow A — Neo4j Browser
+# 1. Copy *.csv into your DBMS's import/ directory
+# 2. Paste the contents of import_browser.cypher and press play
+
+# Flow B — cypher-shell (set dbms.security.allow_csv_import_from_file_urls=true first)
+cypher-shell -u neo4j -p <pw> -f output/neo4j_csv/import_shell.cypher
+```
+
+Both scripts use idempotent `MERGE` against a `_MykgNode` uniqueness constraint, so re-running updates the graph in place. Requires Neo4j 5+. No Python driver, no plugin, no APOC — the scripts use only core Cypher.
+
+See [Neo4j LOAD CSV Export](#neo4j-load-csv-export) below for configuration details and the standalone CLI fallback.
 
 ### Re-running from a Specific Step
 
@@ -551,6 +585,44 @@ pipeline:
 ```
 
 Or use `--obsidian-vault` on the command line for a one-off run without editing config.
+
+### Neo4j LOAD CSV Export
+
+Optional bundle for one-step import into Neo4j 5+. Off by default. When enabled, every run writes the bundle to `output/neo4j_csv/` alongside the other outputs.
+
+**Bundle contents** (see [`neo4j_csv/`](#neo4j-load-csv-bundle-neo4j_csv) above for the full layout):
+- One `nodes_<Label>.csv` per concept type with plain headers (`id,name,name_confidence,...`)
+- One `relationships_<TYPE>.csv` per property (rel-type names sanitized to upper snake_case)
+- `import_browser.cypher` — paste-and-run for Neo4j Browser (relative `file:/<name>.csv` URIs)
+- `import_shell.cypher` — for `cypher-shell -f` (absolute `file:///` URIs)
+- `README.md` — bundle-local quick-reference with paste instructions
+
+**The scripts use:**
+1. A uniqueness constraint on `(_MykgNode {id})` — created on first run, `IF NOT EXISTS` thereafter
+2. `MERGE` for every node and edge — idempotent, safe to re-run
+3. `IN TRANSACTIONS OF 1000 ROWS` — handles large bundles without OOM
+4. Per-label domain labels (`:Person`, `:Organization`) plus the shared `:_MykgNode` label that carries the constraint
+
+**Config:**
+
+```yaml
+pipeline:
+  export:
+    neo4j_csv_enabled: false        # default — set true to enable
+    neo4j_csv_dir: neo4j_csv        # subfolder name inside output/
+```
+
+Or use `--neo4j-csv` on the command line for a one-off run without editing config.
+
+**Standalone fallback.** Already have a finished session but didn't have the toggle on at extraction time? Produce the same bundle without re-running the pipeline:
+
+```bash
+python -m mykg.exporters.neo4j.emit_load_csv \
+  --session 2026-05-17T18-31-07 \
+  --out neo4j_load_csv/
+```
+
+The standalone CLI reads the session's `nodes.jsonl`, `edges.jsonl`, and `schema.json` and writes the same bundle to any directory.
 
 ### Walkthrough Report
 
