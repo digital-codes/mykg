@@ -231,6 +231,14 @@ All four output formats are produced from the same in-memory data at export time
 
 `nodes.jsonl` and `edges.jsonl` are the primary format for property graph consumers: Neo4j, NetworkX, visualizers like D3.js and Gephi, and LLM retrieval-augmented generation pipelines. Every node and edge record carries typed attributes with confidence scores, source file provenance, and — for nodes — an alias list.
 
+### Neo4j
+
+A `LOAD CSV` bundle is written to `output/neo4j_csv/` whenever `export.neo4j_csv_enabled: true` is set in `mykg_config.yaml` or the `--neo4j-csv` CLI flag is passed. The bundle is one of the four parallel formats produced by `step_validate_graph` — same in-memory data as the JSONL, TTL, and NetworkX outputs.
+
+The bundle contents are one `nodes_<Label>.csv` per concept type with plain headers, one `relationships_<TYPE>.csv` per property, `import_browser.cypher` for Neo4j Browser, `import_shell.cypher` for `cypher-shell`, and a per-bundle `README.md`. The scripts use idempotent `MERGE` against a `_MykgNode` uniqueness constraint, require Neo4j 5+, and need no Python driver, no plugin, and no APOC. Re-running the import updates the graph in place.
+
+A standalone CLI [`python -m mykg.exporters.neo4j.emit_load_csv`](../src/mykg/exporters/neo4j/emit_load_csv.py) produces the same bundle against an existing session and is the fallback when the toggle was off at extraction time. See the [exporters README](../src/mykg/exporters/neo4j/README.md) for the data model, sanitization rules, and Cypher examples.
+
 ### RDF / OWL (Turtle)
 
 `knowledge_graph.ttl` is a valid RDFS/OWL Turtle file with two sections. The TBox section declares concept types as RDFS classes with their subclass hierarchy, and relationship types as RDF properties with domain and range constraints. The ABox section records one type triple and one label triple per entity, plus one direct object-property triple per relationship.
