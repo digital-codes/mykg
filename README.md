@@ -614,16 +614,6 @@ pipeline:
 
 Or use `--neo4j-csv` on the command line for a one-off run without editing config.
 
-**Standalone fallback.** Already have a finished session but didn't have the toggle on at extraction time? Produce the same bundle without re-running the pipeline:
-
-```bash
-python -m mykg.exporters.neo4j.emit_load_csv \
-  --session 2026-05-17T18-31-07 \
-  --out neo4j_load_csv/
-```
-
-The standalone CLI reads the session's `nodes.jsonl`, `edges.jsonl`, and `schema.json` and writes the same bundle to any directory.
-
 ### Walkthrough Report
 
 A human-readable summary is written to `sessions/<name>/walkthrough.md` after every run:
