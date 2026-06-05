@@ -372,6 +372,31 @@ Pick the read source from the wording of the user's question:
 
 Same as the rest of Stage 1: latest under `$SESSIONS_DIR` unless the user named a session literally. `query` requires an existing session; if none exists, surface `"No existing sessions under <SESSIONS_DIR>. Run /mykg extract <dir> first to create one."` and stop.
 
+#### Find the latest session
+
+Don't guess the session name. Run one of these from the project root:
+
+```bash
+# Path to latest session root (use this in subsequent commands):
+ls -td mykg_sessions/*/ 2>/dev/null | head -1
+
+# One-line wiki status (node count + session path):
+ls -td mykg_sessions/*/output/nodes.jsonl 2>/dev/null | head -1 \
+  | xargs -I{} sh -c 'echo "mykg wiki: $(wc -l < {}) nodes in $(dirname $(dirname {}))"'
+```
+
+If the first command prints nothing, there is no graph yet — tell the user to
+run `/mykg extract <dir>` first instead of fabricating an answer.
+
+#### What's in a session
+
+Under `<latest-session>/output/`:
+
+- `nodes.jsonl` — entities with confidence-scored attributes
+- `edges.jsonl` — typed relationships
+- `knowledge_graph.ttl` — RDFS/OWL view (SPARQL-queryable)
+- `obsidian_vault/` — markdown notes with wikilinks (when generated)
+
 **Vault path — read steps**
 
 ```bash
