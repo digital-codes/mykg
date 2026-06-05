@@ -1,0 +1,62 @@
+## mykg knowledge graph
+
+This project uses [mykg](https://github.com/SenolIsci/mykg) — a knowledge
+graph extracted from source documents in this repo. The agent-mode skill is
+installed; query it via `/mykg`.
+
+### Find the latest session
+
+Don't guess the session name. Run one of these from the project root:
+
+```bash
+# Path to latest session root (use this in subsequent commands):
+ls -td mykg_sessions/*/ 2>/dev/null | head -1
+
+# One-line wiki status (node count + session path):
+ls -td mykg_sessions/*/output/nodes.jsonl 2>/dev/null | head -1 \
+  | xargs -I{} sh -c 'echo "mykg wiki: $(wc -l < {}) nodes in $(dirname $(dirname {}))"'
+```
+
+If the first command prints nothing, there is no graph yet — tell the user to
+run `/mykg extract <dir>` first instead of fabricating an answer.
+
+### What's in a session
+
+Under `<latest-session>/output/`:
+
+- `nodes.jsonl` — entities with confidence-scored attributes
+- `edges.jsonl` — typed relationships
+- `knowledge_graph.ttl` — RDFS/OWL view (SPARQL-queryable)
+- `obsidian_vault/` — markdown notes with wikilinks (when generated)
+
+### Read before answering
+
+Before answering any domain question about this corpus, read the latest
+session's `nodes.jsonl` / `edges.jsonl` (or browse `obsidian_vault/`). The
+graph is grounded in the source documents — your training data is not.
+
+### Extending the graph
+
+There is no project-wide "input folder" — each run takes a `<dir>` argument.
+To find the directory that was used most recently (line 1 of `run.log`
+records the full invocation):
+
+```bash
+# Input directory of the most recent extract-graph run:
+head -1 "$(ls -td mykg_sessions/*/run.log 2>/dev/null | head -1)" \
+  | sed -nE 's/.*mykg extract-graph ([^ ]+).*/\1/p'
+```
+
+To add new source documents: either drop them into that same directory and
+re-run, or pass a fresh directory containing them. From inside Claude Code:
+`/mykg append the new notes in <dir>`. From a shell:
+`mykg extract-graph <dir> --append --session <name> --obsidian-vault`. The
+`--obsidian-vault` flag regenerates the markdown vault alongside the JSONL /
+TTL outputs so the Obsidian view stays in sync.
+
+### Do not edit outputs directly
+
+`nodes.jsonl` / `edges.jsonl` are regenerated from
+`intermediate/edge_metadata.json` on every run. To correct the graph, edit the
+source markdown or `intermediate/schema.json` and re-run the affected pipeline
+step (`/mykg from-step <step> on the last session`).

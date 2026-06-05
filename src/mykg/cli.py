@@ -125,12 +125,24 @@ _PROFILE_META = {
         "refresh a stale install. Only meaningful with --profile agent-claude-code."
     ),
 )
+@click.option(
+    "--reinstall-claude-md",
+    is_flag=True,
+    default=False,
+    help=(
+        "Refresh the `<!-- BEGIN mykg-section -->` block in the project's "
+        "CLAUDE.md to match the version bundled with the current mykg "
+        "package. Existing user content outside the markers is preserved. "
+        "Only meaningful with --profile agent-claude-code."
+    ),
+)
 def init_config(
     force: bool,
     profile: str | None,
     model: str | None,
     api_key: str | None,
     reinstall_skill: bool,
+    reinstall_claude_md: bool,
 ) -> None:
     """Create mykg_config.yaml and optionally configure LLM provider, model, and API key."""
     dest = Path.cwd() / "mykg_config.yaml"
@@ -138,18 +150,22 @@ def init_config(
         # Short-circuit: --reinstall-skill on an existing agent-mode config refreshes the
         # bundled skill without touching the config. The canonical upgrade flow after
         # `pip install -U mykg`.
-        if reinstall_skill:
+        if reinstall_skill or reinstall_claude_md:
             try:
                 existing = dest.read_text()
             except OSError:
                 existing = ""
             if "profile: agent-claude-code" in existing:
-                _install_agent_skill(force=True)
+                if reinstall_skill:
+                    _install_agent_skill(force=True)
+                if reinstall_claude_md:
+                    claude_status = _write_claude_md_snippet(Path.cwd(), refresh=True)
+                    click.echo(f"[claude.md] {claude_status}")
                 return
             click.echo(
-                "--reinstall-skill is only meaningful when the active profile is "
-                "`agent-claude-code`. mykg_config.yaml uses a different profile; "
-                "skipping skill refresh."
+                "--reinstall-skill / --reinstall-claude-md are only meaningful "
+                "when the active profile is `agent-claude-code`. mykg_config.yaml "
+                "uses a different profile; skipping refresh."
             )
             return
         click.echo("mykg_config.yaml already exists. Use --force to overwrite.")
@@ -203,7 +219,12 @@ def init_config(
     # --- API key setup -------------------------------------------------------
     if meta["key_var"] is None:
         click.echo(f"No API key required for '{profile}'.")
-        _print_next_steps(profile, reinstall_skill=reinstall_skill)
+        _print_next_steps(
+            profile,
+            reinstall_skill=reinstall_skill,
+            reinstall_claude_md=reinstall_claude_md,
+            force=force,
+        )
         return
 
     env_file = Path.cwd() / ".env.mykg"
@@ -236,7 +257,12 @@ def init_config(
         else:
             click.echo(f"Skipped — set {var} in .env.mykg before running.")
 
-    _print_next_steps(profile, reinstall_skill=reinstall_skill)
+    _print_next_steps(
+        profile,
+        reinstall_skill=reinstall_skill,
+        reinstall_claude_md=reinstall_claude_md,
+        force=force,
+    )
 
 
 def _patch_profile_model(content: str, profile: str, model: str) -> str:
@@ -409,10 +435,70 @@ def _install_agent_skill(*, force: bool = False) -> None:
     click.echo(f"\n[skill] Installed: {target} (version {mykg.__version__})")
 
 
-def _print_next_steps(profile: str, *, reinstall_skill: bool = False) -> None:
+_CLAUDE_MD_BEGIN = "<!-- BEGIN mykg-section (managed by `mykg init`; safe to edit) -->"
+_CLAUDE_MD_END = "<!-- END mykg-section -->"
+
+
+def _write_claude_md_snippet(target_dir: Path, *, refresh: bool) -> str:
+    """Write or refresh the mykg-managed block in ``target_dir/CLAUDE.md``.
+
+    Only call for the ``agent-claude-code`` profile — the snippet is tailored
+    to Claude Code with the agent skill installed.
+
+    Returns a one-line status string suitable for echo.
+    """
+    snippet_path = Path(__file__).parent / "data" / "claude_md_snippet.md"
+    body = snippet_path.read_text(encoding="utf-8").rstrip("\n")
+    block = f"{_CLAUDE_MD_BEGIN}\n{body}\n{_CLAUDE_MD_END}\n"
+
+    claude_md = target_dir / "CLAUDE.md"
+    if not claude_md.exists():
+        claude_md.write_text(block, encoding="utf-8")
+        return "wrote CLAUDE.md"
+
+    existing = claude_md.read_text(encoding="utf-8", errors="replace")
+    begin_idx = existing.find(_CLAUDE_MD_BEGIN)
+    end_idx = existing.find(_CLAUDE_MD_END)
+
+    if begin_idx == -1 or end_idx == -1 or end_idx < begin_idx:
+        separator = "" if existing.endswith("\n\n") else "\n" if existing.endswith("\n") else "\n\n"
+        claude_md.write_text(existing + separator + block, encoding="utf-8")
+        return "appended mykg section to CLAUDE.md"
+
+    end_line_end = existing.find("\n", end_idx)
+    if end_line_end == -1:
+        end_line_end = len(existing)
+    current_block = existing[begin_idx : end_line_end + 1]
+    expected_block = block if block.endswith("\n") else block + "\n"
+
+    if current_block == expected_block:
+        return "CLAUDE.md already has up-to-date mykg section"
+
+    if not refresh:
+        return (
+            "CLAUDE.md mykg section is out of date — "
+            "re-run `mykg init --reinstall-claude-md` to refresh"
+        )
+
+    new_content = existing[:begin_idx] + expected_block + existing[end_line_end + 1 :]
+    claude_md.write_text(new_content, encoding="utf-8")
+    return "refreshed mykg section in CLAUDE.md"
+
+
+def _print_next_steps(
+    profile: str,
+    *,
+    reinstall_skill: bool = False,
+    reinstall_claude_md: bool = False,
+    force: bool = False,
+) -> None:
     if reinstall_skill and profile != "agent-claude-code":
         click.echo(
             "\n[skill] --reinstall-skill ignored: only meaningful with --profile agent-claude-code."
+        )
+    if reinstall_claude_md and profile != "agent-claude-code":
+        click.echo(
+            "\n[claude.md] --reinstall-claude-md ignored: only meaningful with --profile agent-claude-code."
         )
 
     click.echo("\nNext steps:")
@@ -425,10 +511,14 @@ def _print_next_steps(profile: str, *, reinstall_skill: bool = False) -> None:
         )
     elif profile == "agent-claude-code":
         _install_agent_skill(force=reinstall_skill)
+        claude_status = _write_claude_md_snippet(
+            Path.cwd(), refresh=force or reinstall_claude_md
+        )
+        click.echo(f"[claude.md] {claude_status}")
         click.echo("\nThen, in Claude Code:")
         click.echo("  1. Restart the app so the skill loader picks up the new entry.")
         click.echo("  2. Type:  /mykg <your_notes_directory>")
-        click.echo("\nUpgrade later with:  mykg init --reinstall-skill")
+        click.echo("\nUpgrade later with:  mykg init --reinstall-skill --reinstall-claude-md")
         click.echo("See docs/agent-mode.md for the full inbox/outbox contract.")
 
 

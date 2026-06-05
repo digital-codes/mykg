@@ -374,3 +374,112 @@ def test_write_env_key_creates_file_if_missing(tmp_path):
     _write_env_key(env, "K", "v")
     assert env.exists()
     assert "K=v" in env.read_text()
+
+
+# ---------------------------------------------------------------------------
+# CLAUDE.md snippet behaviour (agent-claude-code profile only)
+# ---------------------------------------------------------------------------
+
+_SNIPPET_SENTINEL = "mykg knowledge graph"
+_BEGIN_MARKER = "<!-- BEGIN mykg-section"
+_END_MARKER = "<!-- END mykg-section -->"
+
+
+def test_init_agent_creates_claude_md_when_missing(tmp_path, monkeypatch):
+    import mykg.cli as cli_mod
+
+    runner = _runner_in(tmp_path, monkeypatch)
+    result = runner.invoke(cli_mod.cli, ["init", "--profile", "agent-claude-code"])
+
+    assert result.exit_code == 0, result.output
+    claude_md = tmp_path / "CLAUDE.md"
+    assert claude_md.exists()
+    content = claude_md.read_text()
+    assert _BEGIN_MARKER in content
+    assert _END_MARKER in content
+    assert _SNIPPET_SENTINEL in content
+
+
+def test_init_agent_appends_section_to_existing_claude_md(tmp_path, monkeypatch):
+    import mykg.cli as cli_mod
+
+    claude_md = tmp_path / "CLAUDE.md"
+    user_content = "# My Project\n\nUser-authored guidance that must not be lost.\n"
+    claude_md.write_text(user_content)
+
+    runner = _runner_in(tmp_path, monkeypatch)
+    result = runner.invoke(cli_mod.cli, ["init", "--profile", "agent-claude-code"])
+
+    assert result.exit_code == 0, result.output
+    content = claude_md.read_text()
+    assert content.startswith(user_content)
+    assert _BEGIN_MARKER in content
+    assert _END_MARKER in content
+    assert _SNIPPET_SENTINEL in content
+
+
+def test_init_agent_is_idempotent_when_marker_present(tmp_path, monkeypatch):
+    import mykg.cli as cli_mod
+
+    runner = _runner_in(tmp_path, monkeypatch)
+    result1 = runner.invoke(cli_mod.cli, ["init", "--profile", "agent-claude-code"])
+    assert result1.exit_code == 0, result1.output
+    first = (tmp_path / "CLAUDE.md").read_bytes()
+
+    result2 = runner.invoke(
+        cli_mod.cli, ["init", "--force", "--profile", "agent-claude-code"]
+    )
+    assert result2.exit_code == 0, result2.output
+    second = (tmp_path / "CLAUDE.md").read_bytes()
+
+    assert first == second
+
+
+def test_init_agent_reinstall_claude_md_replaces_block(tmp_path, monkeypatch):
+    import mykg.cli as cli_mod
+
+    claude_md = tmp_path / "CLAUDE.md"
+    runner = _runner_in(tmp_path, monkeypatch)
+    runner.invoke(cli_mod.cli, ["init", "--profile", "agent-claude-code"])
+
+    user_tail = "\n\n## My own notes\n\nDo not touch me.\n"
+    claude_md.write_text(claude_md.read_text() + user_tail)
+
+    corrupted = claude_md.read_text().replace(_SNIPPET_SENTINEL, "REMOVED-BY-USER")
+    claude_md.write_text(corrupted)
+    assert _SNIPPET_SENTINEL not in claude_md.read_text()
+
+    result = runner.invoke(
+        cli_mod.cli,
+        ["init", "--force", "--profile", "agent-claude-code", "--reinstall-claude-md"],
+    )
+    assert result.exit_code == 0, result.output
+
+    restored = claude_md.read_text()
+    assert _SNIPPET_SENTINEL in restored
+    assert "Do not touch me." in restored
+
+
+def test_init_non_agent_profile_does_not_touch_claude_md(tmp_path, monkeypatch):
+    import mykg.cli as cli_mod
+
+    claude_md = tmp_path / "CLAUDE.md"
+    user_content = "# Plain project — no mykg section wanted\n"
+    claude_md.write_text(user_content)
+
+    runner = _runner_in(tmp_path, monkeypatch)
+    result = runner.invoke(
+        cli_mod.cli,
+        [
+            "init",
+            "--profile",
+            "openrouter-free",
+            "--model",
+            "openrouter/free",
+            "--api-key",
+            "",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert claude_md.read_text() == user_content
