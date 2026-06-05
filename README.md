@@ -691,15 +691,15 @@ mykg init --profile agent-claude-code
 # ...then restart Claude Code so the skill loader picks up the new entry.
 ```
 
-`mykg init --profile agent-claude-code` writes `mykg_config.yaml` *and* copies the bundled skill into `~/.claude/skills/mykg` (honoring `$CLAUDE_CONFIG_DIR` if set). A `.mykg_skill_version` stamp file is written next to the skill so future runs can detect drift.
+`mykg init --profile agent-claude-code` writes `mykg_config.yaml`, copies the bundled skill into `~/.claude/skills/mykg` (honoring `$CLAUDE_CONFIG_DIR` if set), *and* adds a managed `<!-- BEGIN mykg-section --> ... <!-- END mykg-section -->` block to the project's `CLAUDE.md`. A `.mykg_skill_version` stamp file is written next to the skill so future runs can detect drift; the CLAUDE.md block tells Claude Code where the wiki lives, how to find the most-recent session, and how to extend the graph with new documents (no separate setup required).
 
 **Upgrade after `pip install -U mykg`:**
 
 ```bash
-mykg init --reinstall-skill
+mykg init --reinstall-skill --reinstall-claude-md
 ```
 
-This atomically refreshes the bundled skill (copy to `.tmp` → `os.replace`) without touching your `mykg_config.yaml`. The copy-based install is deliberately not a symlink — symlinks fail on Windows without Developer Mode, dangle if mykg is uninstalled, and don't sync through OneDrive. The cost (live edits don't auto-propagate) only matters for mykg developers, who pass `--reinstall-skill` between edits.
+This atomically refreshes the bundled skill (copy to `.tmp` → `os.replace`) without touching your `mykg_config.yaml`, and replaces the content between the CLAUDE.md markers with the version shipped in the current package — any user content outside the markers is preserved. Either flag can be used alone (`--reinstall-skill` only / `--reinstall-claude-md` only). The copy-based skill install is deliberately not a symlink — symlinks fail on Windows without Developer Mode, dangle if mykg is uninstalled, and don't sync through OneDrive. The cost (live edits don't auto-propagate) only matters for mykg developers, who pass `--reinstall-skill` between edits.
 
 The `agent:` block in the generated `mykg_config.yaml` configures the inbox/outbox paths and poll interval:
 

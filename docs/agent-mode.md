@@ -85,13 +85,15 @@ The `agent-claude-code` profile is bundled in both `mykg_config.yaml` (repo root
 
 ### 2. Install the skill
 
-Symlink the skill directory into your user-level skills folder:
+Symlink the skill directory into your user-level skills folder (developer flow):
 
 ```bash
 ln -s "$(pwd)/src/mykg/data/skills/mykg" ~/.claude/skills/mykg
 ```
 
 Restart Claude Code (or re-open the project) so the skill loader picks up the new entry.
+
+For end users, `mykg init --profile agent-claude-code` does this for you (copy, not symlink, for cross-platform safety) and additionally writes a managed `<!-- BEGIN mykg-section -->` block into the project's `CLAUDE.md` so Claude Code learns where the wiki lives, how to resolve the most-recent session, and the `--obsidian-vault` extension workflow. The block is idempotent on re-init; refresh it with `mykg init --reinstall-skill --reinstall-claude-md` after `pip install -U mykg`. User content outside the markers is preserved.
 
 ### 3. Invoke
 
