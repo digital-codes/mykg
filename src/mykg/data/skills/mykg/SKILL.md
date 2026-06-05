@@ -1,13 +1,21 @@
 ---
 name: mykg
-description: Run mykg knowledge-graph commands inside Claude Code from one slash command `/mykg`. The user describes intent in natural language (extract, append, resume, approve, walkthrough, parse-docs); the skill parses intent, builds the right `mykg` CLI command from the live `--help` output, confirms, runs it, and drives the inbox/outbox watch loop for LLM-bearing commands (extract-graph). Excludes `mykg init` (interactive shell command) and `mykg merge-graphs` (follow-up planning).
+description: Run mykg knowledge-graph commands inside Claude Code from one slash command `/mykg`. The user describes intent in natural language (extract, append, resume, approve, walkthrough, parse-docs, query); the skill parses intent, builds the right `mykg` CLI command from the live `--help` output, confirms, runs it, and drives the inbox/outbox watch loop for LLM-bearing commands (extract-graph). Also handles read-only queries against existing sessions (`query`) by reading `obsidian_vault/` or `nodes.jsonl`/`edges.jsonl` directly — no CLI call. Excludes `mykg init` (interactive shell command) and `mykg merge-graphs` (follow-up planning).
 ---
 
 # mykg — single slash command, intent-driven CLI dispatcher
 
-This skill is the agent-mode driver for **mykg**. The user types `/mykg <free text>` describing what they want; the skill parses the intent, assembles the matching `mykg` CLI command (with live `--help` as ground truth for flags), confirms expensive actions, and executes. For LLM-bearing subcommands (`extract-graph`), it then drives the inbox/outbox watch loop. For synchronous subcommands (`walkthrough`, `approve-schema`, `parse-docs`), it shells out and reports.
+This skill is the agent-mode driver for **mykg**. The user types `/mykg <free text>` describing what they want; the skill parses the intent, assembles the matching `mykg` CLI command (with live `--help` as ground truth for flags), confirms expensive actions, and executes. For LLM-bearing subcommands (`extract-graph`), it then drives the inbox/outbox watch loop. For synchronous subcommands (`walkthrough`, `approve-schema`, `parse-docs`), it shells out and reports. For the read-only `query` verb, it reads files from the latest session directly — no subprocess, no LLM call from the skill.
 
 The pipeline code, the orchestrator, all prompts, all 12 pipeline steps, and the inbox/outbox contract are **unchanged**. This skill only changes how `mykg` is invoked from inside Claude Code.
+
+---
+
+## Read before answering — discipline rule
+
+Before answering any domain question about the corpus this project's mykg sessions cover, **read the latest session's graph files first**. Your training data is not grounded in this project's source documents; the graph is. Use `/mykg query <question>` (Stage 4d below) to do this — it returns the relevant nodes/edges/notes into your context so you can answer from them rather than guessing.
+
+This rule applies to *every* `/mykg query …` invocation and to every domain question asked outside the skill *when* the project's CLAUDE.md carries the managed mykg-section block (installed by `mykg init --profile agent-claude-code`).
 
 ---
 
@@ -47,6 +55,11 @@ Trigger this skill whenever the user types `/mykg <anything>`. Map the intent to
 | `/mykg make a walkthrough` | `mykg walkthrough --session <most-recent>` (session-only subcommand) |
 | `/mykg make a walkthrough for 2026-06-02T17-30-00` | `mykg walkthrough --session 2026-06-02T17-30-00` (literal session name) |
 | `/mykg convert pdfs in ./inbox to ./md` | `mykg parse-docs --input ./inbox --output ./md` (no session concept) |
+| `/mykg query who is Alice` | read-only — Stage 4d on the latest session; vault-first because the phrasing names an entity (wiki-style) |
+| `/mykg query what does the wiki say about <topic>` | read-only — Stage 4d on the latest session; **vault path** (`obsidian_vault/`); word "wiki" is explicit |
+| `/mykg query most connected node in the knowledge graph` | read-only — Stage 4d on the latest session; **jsonl path** (`nodes.jsonl` + `edges.jsonl`); words "knowledge graph" / "most connected" are structural |
+| `/mykg query which entities link Alice to Bob` | read-only — Stage 4d on the latest session; **jsonl path**; relationship-traversal question |
+| `/mykg query <free text> on session <name>` | read-only — Stage 4d on the named session instead of the latest |
 | `/mykg from-step orphan_connect on the last session` | `mykg extract-graph --session <most-recent> --from-step orphan_connect` (explicit reuse via `the last session` + `--from-step`) |
 | `/mykg rerun orphan-connect from scratch on the last session` | `mykg extract-graph --session <most-recent> --from-step orphan_connect_fullsweep` (explicit reuse via `the last session`) |
 | `/mykg redo orphans but keep what we already confirmed` | `mykg extract-graph --session <most-recent> --from-step orphan_connect_incremental` (explicit reuse via `redo` — `--from-step` always operates on an existing session) |
@@ -77,13 +90,13 @@ Use these cached values to:
 
 From the user's `/mykg <free text>` message extract:
 
-1. **Verb** — extract / append / approve / walkthrough / parse / resume / init / merge → maps to a CLI subcommand (or to a refusal).
-2. **Input dir** — the path the user named, or `.` if they said "this folder", or absent for session-only commands.
+1. **Verb** — extract / append / approve / walkthrough / parse / resume / init / merge / **query** → maps to a CLI subcommand, a refusal, or the read-only file-read path (`query`).
+2. **Input dir** — the path the user named, or `.` if they said "this folder", or absent for session-only commands (including `query`).
 3. **Session** — **default: do not pass `--session` at all** so mykg auto-creates a fresh timestamped session. Only override the default when the current user message contains an explicit reuse signal (see "Default behaviour" above). Resolution order:
    1. **Literal session name.** User typed `--session <name>` or "session <name>" → use that exact name.
-   2. **Explicit reuse verb / phrase.** User said one of: **resume**, **continue**, **redo**, **append**, **approve**, **walkthrough**, **"the last session"**, **"the existing session"**, **"the same session"** → auto-detect the most-recent session: list `$SESSIONS_DIR` (read `sessions_dir` from `mykg_config.yaml`, default `mykg_sessions`), sort by mtime, pick newest.
+   2. **Explicit reuse verb / phrase.** User said one of: **resume**, **continue**, **redo**, **append**, **approve**, **walkthrough**, **query**, **"the last session"**, **"the existing session"**, **"the same session"** → auto-detect the most-recent session: list `$SESSIONS_DIR` (read `sessions_dir` from `mykg_config.yaml`, default `mykg_sessions`), sort by mtime, pick newest.
    3. **Reuse-implying flag.** User specified `--append` or `--from-step <step>` → auto-detect-most-recent (these flags only make sense against an existing session).
-   4. **Session-only subcommand.** Verb is `approve-schema` or `walkthrough` → auto-detect-most-recent.
+   4. **Session-only verb.** Verb is `approve-schema`, `walkthrough`, or `query` → auto-detect-most-recent. (`query` is read-only and always operates against an existing session.)
    5. **Otherwise.** Do NOT pass `--session`. mykg creates a fresh session. This is the path for bare `/mykg <dir>`, `/mykg extract <dir>`, `/mykg extract more from <dir>`, "extract this folder", etc.
    6. **Reuse required but missing.** If rules 2/3/4 fire but no session exists under `$SESSIONS_DIR`, fail clearly: `"No existing sessions under <SESSIONS_DIR>. Run /mykg extract <dir> first to create one."`
 
@@ -334,6 +347,85 @@ Capture stdout/stderr; surface any non-zero exit to the user verbatim.
 - `/mykg merge ...` → reply: "Skill support is planned in a follow-up. Run from a shell."
 
 Do not dispatch anything.
+
+### Stage 4d — read-only file-read path (`query`)
+
+No CLI call, no subprocess, no LLM call from inside the skill. The skill reads files from the target session (latest unless the user named one) directly, places the relevant content into context, and lets the host LLM answer the user's question from that material.
+
+**Routing — vault vs. jsonl**
+
+Pick the read source from the wording of the user's question:
+
+- **Prefer `obsidian_vault/`** (wiki path) when the user says or implies:
+  - "wiki", "notes", "what does the wiki say", "tell me about X"
+  - A named entity ("who is Alice", "what is project Phoenix")
+  - Prose / explanatory questions
+- **Prefer `nodes.jsonl` + `edges.jsonl`** (graph path) when the user says or implies:
+  - "knowledge graph", "graph", "network"
+  - "most connected", "central", "hub", "bridge", "blocking link", "shortest path"
+  - "how does X connect to Y", "what links A and B"
+  - Structural / topology / aggregate questions
+- **Both** when the question genuinely needs structure *and* prose (e.g. "summarize what the wiki says about the most connected entity"). Read the jsonl first to identify the entity, then read the vault note for that entity.
+- **Ambiguous** → prefer the vault if it exists (more human-readable); fall back to jsonl.
+
+**Session resolution**
+
+Same as the rest of Stage 1: latest under `$SESSIONS_DIR` unless the user named a session literally. `query` requires an existing session; if none exists, surface `"No existing sessions under <SESSIONS_DIR>. Run /mykg extract <dir> first to create one."` and stop.
+
+**Vault path — read steps**
+
+```bash
+SESSION_ROOT=$(ls -td "$SESSIONS_DIR"/*/ 2>/dev/null | head -1)
+VAULT="$SESSION_ROOT/output/obsidian_vault"
+
+# Sanity-check the vault exists. If not, fall through to the jsonl path with
+# a one-line note: "vault not generated for this session — falling back to
+# jsonl. Re-run extract with --obsidian-vault to enable wiki queries."
+if [ ! -d "$VAULT" ]; then
+  echo "[query] obsidian_vault/ not found at $VAULT — falling back to jsonl path."
+fi
+```
+
+When the vault exists:
+1. List candidate note files with `ls "$VAULT"`.
+2. Identify likely matches by stem (Obsidian note filenames are derived from canonical node names).
+3. Use the `Read` tool to load the matching `.md` notes. Follow `[[wikilinks]]` to neighbours when the question implies a relationship.
+4. Answer the user from the note content. **Cite the note filenames** so the user can verify.
+
+**Jsonl path — read steps**
+
+```bash
+SESSION_ROOT=$(ls -td "$SESSIONS_DIR"/*/ 2>/dev/null | head -1)
+NODES="$SESSION_ROOT/output/nodes.jsonl"
+EDGES="$SESSION_ROOT/output/edges.jsonl"
+
+# Sanity check.
+[ -f "$NODES" ] || { echo "[query] $NODES missing"; exit 1; }
+[ -f "$EDGES" ] || { echo "[query] $EDGES missing"; exit 1; }
+```
+
+When the files exist:
+1. Use the `Read` tool on `nodes.jsonl` / `edges.jsonl` directly. Each line is one JSON record (the records are documented under D12 / D13 in the project's CLAUDE.md when one is present).
+2. For specific lookups (single node, one-hop neighbours), grep first then Read the matched lines:
+   ```bash
+   grep -F '"name": "Alice"' "$NODES" | head -20
+   grep -F '"from": "person-alice"' "$EDGES" | head -50
+   ```
+3. For aggregate / topology questions (most-connected node, hub identification), it is usually fine to Read the whole `edges.jsonl` and tally with the host LLM's reasoning — these files are typically a few hundred to a few thousand lines. For >50k-edge graphs the skill should warn the user and offer to drop into Python (`networkx`) via the `Bash` tool instead.
+4. Answer the user from the records. **Quote the matched ids/edge types** so the user can verify.
+
+**Hybrid path — read steps**
+
+Use the jsonl path to identify the target node(s), then resolve `<node>.md` in the vault and Read it for prose context. Cite both.
+
+**Confirmation behaviour**
+
+`query` is read-only and free, so **do not** ask the user to confirm. Just run it. Do echo a one-line summary of what was read before answering:
+
+```
+[query] vault: read 3 notes from $VAULT (Alice.md, AcmeCorp.md, Project_Phoenix.md).
+[query] jsonl: read 47 nodes + 89 edges from $SESSION_ROOT/output/.
+```
 
 ---
 

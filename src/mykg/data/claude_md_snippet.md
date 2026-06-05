@@ -31,9 +31,23 @@ Under `<latest-session>/output/`:
 
 ### Read before answering
 
-Before answering any domain question about this corpus, read the latest
-session's `nodes.jsonl` / `edges.jsonl` (or browse `obsidian_vault/`). The
-graph is grounded in the source documents — your training data is not.
+Before answering any domain question about this corpus, invoke
+`/mykg query <question>` so the skill reads the latest session's graph for
+you and returns the relevant material into context. The skill picks the
+right source automatically:
+
+- **wiki-style** ("who is Alice", "what does the wiki say about X", named
+  entities, prose questions) → reads `obsidian_vault/`
+- **graph-structural** ("most connected node", "what links A to B",
+  "shortest path", topology / aggregate questions) → reads `nodes.jsonl`
+  and `edges.jsonl`
+
+The graph is grounded in the source documents — your training data is not.
+Answer from what the skill returns, not from memory.
+
+If you cannot use the slash command (skill not installed, broken, etc.),
+fall back to reading the same files directly via the paths in the next
+section.
 
 ### Extending the graph
 
