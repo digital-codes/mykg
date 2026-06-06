@@ -73,6 +73,10 @@
   | HTML | `.html .htm` | [`markdownify`](https://pypi.org/project/markdownify/) in-process; anchors and image tags stripped |
 
   Anything outside the allowlist (e.g. `.svg`, `.css`, `.php` assets next to an HTML bundle) is logged and skipped, never silently dropped. The allowlist is configurable via `preprocess.extensions` in `mykg_config.yaml`.
+
+  **Incremental conversion** — unchanged non-md sources are skipped on re-run via a SHA-256 manifest. Adding one PDF to a corpus and re-running only re-converts that PDF. Force a full re-conversion with `mykg extract-graph --from-step preprocess`.
+
+  **Tidy session folders** — by default (`preprocess.keep_artifacts: false`), only the final `<stem>.md` is kept under `input/_preprocessed/<rel>/`; MinerU's nested per-file subtree, `images/` folder, and `.mineru.json` sidecars are removed after each conversion. Set `keep_artifacts: true` to inspect the full MinerU layout. Standalone `mykg parse-docs` is unaffected and always keeps the full layout.
 - **Structural signals preserved** — YAML/TOML frontmatter, headings, lists, and code blocks all act as extraction hints regardless of the source format; subdirectory structure under the input dir is preserved through the pipeline.
 
 ### Graph & Output
@@ -480,12 +484,14 @@ Re-run the pipeline on new or modified files without re-running Pass 1:
 mykg extract-graph my_notes/ --session <name> --append
 ```
 
-> **Note:** Append mode currently only supports adding or updating `.md` files. Mixed-format inputs (PDF, DOCX, HTML, etc. — i.e. anything requiring the `preprocess` step) are not yet supported. As a workaround, convert non-Markdown files to Markdown manually with `mykg parse-docs` first, pointing `--output` at the same folder you'll pass to `--append`:
+> **Note:** Append mode currently only supports adding or updating `.md` files. Mixed-format inputs (PDF, DOCX, HTML, etc. — i.e. anything requiring the `preprocess` step) are not yet supported on the `--append` code path. As a workaround, convert non-Markdown files to Markdown manually with `mykg parse-docs` first, then point `--append` at the converted output:
 >
 > ```bash
 > mykg parse-docs --input raw_docs/ --output my_notes/
 > mykg extract-graph my_notes/ --session <name> --append
 > ```
+>
+> `parse-docs` recurses subdirectories and preserves their structure at the output; per-file failures (e.g. an unsupported format in the input tree) are logged and the run continues, exiting non-zero at the end if any file failed.
 
 ### Merging Sessions
 
