@@ -929,17 +929,70 @@ def merge_graphs(
     type=click.Path(path_type=Path),
     help="Output directory (will be created) to receive converted Markdown.",
 )
+@click.option(
+    "--file",
+    "files",
+    multiple=True,
+    type=click.Path(path_type=Path),
+    help=(
+        "Process only these files (relative to --input when --input is a directory). "
+        "Repeatable. When omitted and --input is a directory, every non-md file "
+        "under the directory is processed recursively."
+    ),
+)
+@click.option(
+    "--file-list",
+    "file_list",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    help=(
+        "Read one file path per line from this file. Same semantics as --file "
+        "but avoids the OS argv-size limit on large corpora. Mutually exclusive "
+        "with --file."
+    ),
+)
 @click.argument("extra_args", nargs=-1, type=click.UNPROCESSED)
-def parse_docs(input_path: Path, output_path: Path, extra_args: tuple[str, ...]) -> None:
+def parse_docs(
+    input_path: Path,
+    output_path: Path,
+    files: tuple[Path, ...],
+    file_list: Path | None,
+    extra_args: tuple[str, ...],
+) -> None:
     """Convert non-Markdown documents (PDF, DOCX, images, etc.) to Markdown using MinerU.
 
     Wraps `mineru -p INPUT -o OUTPUT`. MinerU runs inside an ephemeral
     Python venv created via `uv` (pinned to preprocess.uv_python_version)
     and deleted on exit; no MinerU bits are installed into mykg's own
     interpreter. Extra arguments after --output are passed through to mineru.
+
+    Input shape:
+      * `--input <file>` — process that single file.
+      * `--input <dir>` — recursive: every non-md file under the directory
+        is converted, subfolder structure preserved at the output.
+      * `--file <rel>` (repeatable) — restrict to the named files,
+        relative to --input when --input is a directory.
+      * `--file-list <path>` — read one rel-path per line from a text file.
+        Use this for large corpora to avoid the OS argv-size limit.
+
+    All files share a single ephemeral venv — MinerU is invoked once per file
+    inside that venv, so the multi-GB install cost is paid at most once per
+    `parse-docs` call regardless of file count.
+
+    Per-file MinerU failures (e.g. an unsupported format like HTML) are logged
+    and the loop continues; parse-docs exits non-zero at the end if any file
+    failed. Timeouts remain fatal.
     """
     from mykg import config as _cfg
     from mykg.uv_venv import ephemeral_mineru_venv
+
+    if files and file_list is not None:
+        raise click.UsageError("--file and --file-list are mutually exclusive.")
+    if file_list is not None:
+        files = tuple(
+            Path(line)
+            for line in file_list.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        )
 
     with ephemeral_mineru_venv(
         _cfg.PREPROCESS_UV_PYTHON_VERSION,
@@ -948,23 +1001,67 @@ def parse_docs(input_path: Path, output_path: Path, extra_args: tuple[str, ...])
         _cfg.PREPROCESS_INSTALL_TIMEOUT_SECONDS,
     ) as mineru_bin:
         output_path.mkdir(parents=True, exist_ok=True)
-        cmd = [str(mineru_bin), "-p", str(input_path), "-o", str(output_path)] + list(extra_args)
-        click.echo(f"Running: {' '.join(cmd)}")
 
-        try:
-            proc = subprocess.run(
-                cmd,
-                check=False,
-                timeout=_cfg.PREPROCESS_TIMEOUT_SECONDS,
-            )
-        except subprocess.TimeoutExpired as exc:
-            raise click.ClickException(
-                f"mineru timed out after {_cfg.PREPROCESS_TIMEOUT_SECONDS}s"
-            ) from exc
+        if files:
+            targets: list[tuple[Path, Path]] = []
+            for f in files:
+                resolved = f if f.is_absolute() else (input_path / f)
+                # Preserve subfolder structure: "sub/a.pdf" → output_path/"sub"/...
+                rel_parent = (
+                    f.parent if not f.is_absolute() and f.parent != Path(".") else Path()
+                )
+                per_file_out = output_path / rel_parent
+                per_file_out.mkdir(parents=True, exist_ok=True)
+                targets.append((resolved, per_file_out))
+        elif input_path.is_file():
+            targets = [(input_path, output_path)]
+        else:
+            # Recursive directory mode: rglob every non-md file and convert it.
+            # MinerU's own `-p <dir>` only walks the top level and can't preserve
+            # subfolder structure — this loop fixes both.
+            targets = []
+            for src in sorted(input_path.rglob("*")):
+                if not src.is_file() or src.suffix.lower() == ".md":
+                    continue
+                rel_parent = src.relative_to(input_path).parent
+                per_file_out = output_path / rel_parent
+                per_file_out.mkdir(parents=True, exist_ok=True)
+                targets.append((src, per_file_out))
 
-        if proc.returncode != 0:
-            raise click.ClickException(f"mineru exited with code {proc.returncode}")
+        failures: list[tuple[Path, int | str]] = []
+        for src, dst in targets:
+            cmd = [str(mineru_bin), "-p", str(src), "-o", str(dst)] + list(extra_args)
+            click.echo(f"Running: {' '.join(cmd)}")
 
+            try:
+                proc = subprocess.run(
+                    cmd,
+                    check=False,
+                    timeout=_cfg.PREPROCESS_TIMEOUT_SECONDS,
+                )
+            except subprocess.TimeoutExpired as exc:
+                # Timeouts are still fatal — they signal the venv or the
+                # underlying process is stuck, not a per-file format issue.
+                raise click.ClickException(
+                    f"mineru timed out after {_cfg.PREPROCESS_TIMEOUT_SECONDS}s"
+                ) from exc
+
+            if proc.returncode != 0:
+                click.echo(
+                    f"mineru exited with code {proc.returncode} on {src} — continuing",
+                    err=True,
+                )
+                failures.append((src, proc.returncode))
+
+    if failures:
+        click.echo(
+            f"Done. {len(targets) - len(failures)}/{len(targets)} files converted. "
+            f"{len(failures)} failed — output under: {output_path}",
+            err=True,
+        )
+        raise click.ClickException(
+            f"{len(failures)} of {len(targets)} files failed conversion"
+        )
     click.echo(f"Done. Output written to: {output_path}")
 
 

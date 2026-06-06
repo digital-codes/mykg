@@ -52,6 +52,7 @@ profiles:
       preprocess:
         enabled: true                # set true to convert non-md files (PDF/DOCX/images) via MinerU before ingest
         subdir: _preprocessed         # converted .md files land in <session>/input/<subdir>/
+        keep_artifacts: false        # when false (default) keep only the final <stem>.md; drop MinerU's nested subtree, images/, and .mineru.json sidecar. Set true to retain everything MinerU wrote (debugging).
         extra_args: []                # extra arguments passed through to mineru (e.g. ["--backend", "pipeline"])
         timeout_seconds: 1800         # mineru run-phase timeout (30 min)
         uv_path: uv                   # path or PATH name of the uv CLI (uv is a core mykg dependency)
@@ -188,6 +189,7 @@ profiles:
       preprocess:
         enabled: true                # set true to convert non-md files (PDF/DOCX/images) via MinerU before ingest
         subdir: _preprocessed         # converted .md files land in <session>/input/<subdir>/
+        keep_artifacts: false        # when false (default) keep only the final <stem>.md; drop MinerU's nested subtree, images/, and .mineru.json sidecar. Set true to retain everything MinerU wrote (debugging).
         extra_args: []                # extra arguments passed through to mineru (e.g. ["--backend", "pipeline"])
         timeout_seconds: 1800         # mineru run-phase timeout (30 min)
         uv_path: uv                   # path or PATH name of the uv CLI (uv is a core mykg dependency)
@@ -323,6 +325,7 @@ profiles:
       preprocess:
         enabled: true                # set true to convert non-md files (PDF/DOCX/images) via MinerU before ingest
         subdir: _preprocessed         # converted .md files land in <session>/input/<subdir>/
+        keep_artifacts: false        # when false (default) keep only the final <stem>.md; drop MinerU's nested subtree, images/, and .mineru.json sidecar. Set true to retain everything MinerU wrote (debugging).
         extra_args: []                # extra arguments passed through to mineru (e.g. ["--backend", "pipeline"])
         timeout_seconds: 1800         # mineru run-phase timeout (30 min)
         uv_path: uv                   # path or PATH name of the uv CLI (uv is a core mykg dependency)
@@ -463,6 +466,7 @@ profiles:
       preprocess:
         enabled: true                # set true to convert non-md files (PDF/DOCX/images) via MinerU before ingest
         subdir: _preprocessed         # converted .md files land in <session>/input/<subdir>/
+        keep_artifacts: false        # when false (default) keep only the final <stem>.md; drop MinerU's nested subtree, images/, and .mineru.json sidecar. Set true to retain everything MinerU wrote (debugging).
         extra_args: []                # extra arguments passed through to mineru (e.g. ["--backend", "pipeline"])
         timeout_seconds: 1800         # mineru run-phase timeout (30 min)
         uv_path: uv                   # path or PATH name of the uv CLI (uv is a core mykg dependency)
@@ -599,6 +603,7 @@ profiles:
       preprocess:
         enabled: true                # set true to convert non-md files (PDF/DOCX/images) via MinerU before ingest
         subdir: _preprocessed         # converted .md files land in <session>/input/<subdir>/
+        keep_artifacts: false        # when false (default) keep only the final <stem>.md; drop MinerU's nested subtree, images/, and .mineru.json sidecar. Set true to retain everything MinerU wrote (debugging).
         extra_args: []                # extra arguments passed through to mineru (e.g. ["--backend", "pipeline"])
         timeout_seconds: 1800         # mineru run-phase timeout (30 min)
         uv_path: uv                   # path or PATH name of the uv CLI (uv is a core mykg dependency)
@@ -731,6 +736,7 @@ profiles:
       preprocess:
         enabled: true
         subdir: _preprocessed
+        keep_artifacts: false
         extra_args: []
         timeout_seconds: 1800
         uv_path: uv

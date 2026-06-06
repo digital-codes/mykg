@@ -204,6 +204,7 @@ LOG_ERROR_OUTPUT_MAX_CHARS: int = int(_get_opt("logging", "error_output_max_char
 # ---------------------------------------------------------------------------
 PREPROCESS_ENABLED: bool = bool(_get_opt("preprocess", "enabled", False))
 PREPROCESS_SUBDIR: str = _get_opt("preprocess", "subdir", "_preprocessed")
+PREPROCESS_KEEP_ARTIFACTS: bool = bool(_get_opt("preprocess", "keep_artifacts", False))
 PREPROCESS_EXTRA_ARGS: list = list(_get_opt("preprocess", "extra_args", []) or [])
 PREPROCESS_TIMEOUT_SECONDS: int = int(_get_opt("preprocess", "timeout_seconds", 1800))
 PREPROCESS_UV_PATH: str = _get_opt("preprocess", "uv_path", "uv")
