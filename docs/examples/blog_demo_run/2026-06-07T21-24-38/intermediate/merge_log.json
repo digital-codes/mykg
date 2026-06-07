@@ -1,0 +1,2156 @@
+[
+  {
+    "event": "node_merge",
+    "id": "person-alice-chen",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Alice Chen",
+        "confidence": 0.98
+      },
+      "title": {
+        "value": "Senior Software Engineer",
+        "confidence": 0.97
+      },
+      "email": {
+        "value": "alice.chen@acme.com",
+        "confidence": 0.98
+      },
+      "education": {
+        "value": "BSc in Computer Science from MIT",
+        "confidence": 0.97
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "person-bob-martinez",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Bob Martinez",
+        "confidence": 0.98
+      },
+      "title": {
+        "value": "Director of Engineering",
+        "confidence": 0.97
+      },
+      "email": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "education": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "person-carol-okafor",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Carol Okafor",
+        "confidence": 0.98
+      },
+      "title": {
+        "value": "Site Reliability Engineer",
+        "confidence": 0.95
+      },
+      "email": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "education": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "person-sandra-kim",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Sandra Kim",
+        "confidence": 0.98
+      },
+      "title": {
+        "value": "CEO",
+        "confidence": 0.97
+      },
+      "email": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "education": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "person-james-whitfield",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "James Whitfield",
+        "confidence": 0.98
+      },
+      "title": {
+        "value": "CTO",
+        "confidence": 0.97
+      },
+      "email": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "education": {
+        "value": "PhD in Computer Science from Stanford",
+        "confidence": 0.96
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "person-dr-yuna-park",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Dr. Yuna Park",
+        "confidence": 0.97
+      },
+      "title": {
+        "value": "Principal Researcher",
+        "confidence": 0.95
+      },
+      "email": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "education": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "person-dr-priya-nair",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Dr. Priya Nair",
+        "confidence": 0.95
+      },
+      "title": {
+        "value": "VP of Engineering",
+        "confidence": 0.9
+      },
+      "email": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "education": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "person-marcus-tan",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Marcus Tan",
+        "confidence": 0.93
+      },
+      "title": {
+        "value": "Enterprise Account Manager",
+        "confidence": 0.9
+      },
+      "email": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "education": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "person-lisa-huang",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Lisa Huang",
+        "confidence": 0.93
+      },
+      "title": {
+        "value": "Account Manager",
+        "confidence": 0.9
+      },
+      "email": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "education": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "organization-acme-corp",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Acme Corp",
+        "confidence": 0.98
+      },
+      "industry": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "headquarters": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "organization-datasystems-inc",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "DataSystems Inc",
+        "confidence": 0.97
+      },
+      "industry": {
+        "value": "Data infrastructure",
+        "confidence": 0.95
+      },
+      "headquarters": {
+        "value": "San Francisco",
+        "confidence": 0.95
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "organization-novatech-inc",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "NovaTech Inc",
+        "confidence": 0.96
+      },
+      "industry": {
+        "value": "SaaS / developer tooling",
+        "confidence": 0.93
+      },
+      "headquarters": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "organization-hashicorp",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "HashiCorp",
+        "confidence": 0.96
+      },
+      "industry": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "headquarters": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "organization-amazon-web-services-aws",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Amazon Web Services (AWS)",
+        "confidence": 0.96
+      },
+      "industry": {
+        "value": "Cloud provider",
+        "confidence": 0.93
+      },
+      "headquarters": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "organization-google",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Google",
+        "confidence": 0.9
+      },
+      "industry": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "headquarters": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "organization-deepmind",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "DeepMind",
+        "confidence": 0.88
+      },
+      "industry": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "headquarters": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "organization-mit",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "MIT",
+        "confidence": 0.82
+      },
+      "industry": {
+        "value": "Education",
+        "confidence": 0.7
+      },
+      "headquarters": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "organization-stanford",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Stanford",
+        "confidence": 0.82
+      },
+      "industry": {
+        "value": "Education",
+        "confidence": 0.7
+      },
+      "headquarters": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "team-infrastructure-team",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Infrastructure team",
+        "confidence": 0.96
+      },
+      "industry": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "headquarters": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "focus": {
+        "value": "Cloud operations, CI/CD pipelines, on-call rotations",
+        "confidence": 0.93
+      },
+      "member_count": {
+        "value": "5",
+        "confidence": 0.92
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "team-ai-research-team",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "AI Research team",
+        "confidence": 0.96
+      },
+      "industry": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "headquarters": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "focus": {
+        "value": "Retrieval-augmented generation (RAG) and knowledge graph applications",
+        "confidence": 0.93
+      },
+      "member_count": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "team-platform-team",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Platform team",
+        "confidence": 0.93
+      },
+      "industry": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "headquarters": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "focus": {
+        "value": "Secrets management",
+        "confidence": 0.7
+      },
+      "member_count": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "team-product-team",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Product team",
+        "confidence": 0.85
+      },
+      "industry": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "headquarters": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "focus": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "member_count": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "team-backend-engineering-guild",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Backend engineering guild",
+        "confidence": 0.85
+      },
+      "industry": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "headquarters": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "focus": {
+        "value": "Backend language choices; Python (FastAPI), Go",
+        "confidence": 0.8
+      },
+      "member_count": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "project-db-migration-project",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "DB Migration Project",
+        "confidence": 0.97
+      },
+      "status": {
+        "value": "In progress",
+        "confidence": 0.95
+      },
+      "target_date": {
+        "value": "End of Q3 2026",
+        "confidence": 0.93
+      },
+      "budget": {
+        "value": "$120,000",
+        "confidence": 0.95
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "project-rag-pipeline-project",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "RAG Pipeline Project",
+        "confidence": 0.97
+      },
+      "status": {
+        "value": "Design phase",
+        "confidence": 0.93
+      },
+      "target_date": {
+        "value": "Q4 2026",
+        "confidence": 0.92
+      },
+      "budget": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "project-platform-secrets-service",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Platform Secrets Service",
+        "confidence": 0.96
+      },
+      "status": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "target_date": {
+        "value": "August 2026",
+        "confidence": 0.92
+      },
+      "budget": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "project-data-lake-migration",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Data lake migration",
+        "confidence": 0.8
+      },
+      "status": {
+        "value": "Planned",
+        "confidence": 0.85
+      },
+      "target_date": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "budget": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "technology-aws-aurora",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "AWS Aurora",
+        "confidence": 0.95
+      },
+      "category": {
+        "value": "Database",
+        "confidence": 0.9
+      },
+      "vendor": {
+        "value": "AWS",
+        "confidence": 0.9
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "technology-postgresql-15",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "PostgreSQL 15",
+        "confidence": 0.93
+      },
+      "category": {
+        "value": "Database",
+        "confidence": 0.9
+      },
+      "vendor": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "technology-pinecone",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Pinecone",
+        "confidence": 0.94
+      },
+      "category": {
+        "value": "Vector database",
+        "confidence": 0.92
+      },
+      "vendor": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "technology-weaviate",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Weaviate",
+        "confidence": 0.8
+      },
+      "category": {
+        "value": "Vector database",
+        "confidence": 0.85
+      },
+      "vendor": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "technology-qdrant",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Qdrant",
+        "confidence": 0.8
+      },
+      "category": {
+        "value": "Vector database",
+        "confidence": 0.85
+      },
+      "vendor": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "technology-hashicorp-vault",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "HashiCorp Vault",
+        "confidence": 0.94
+      },
+      "category": {
+        "value": "Secrets management",
+        "confidence": 0.9
+      },
+      "vendor": {
+        "value": "HashiCorp",
+        "confidence": 0.93
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "technology-github-actions",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "GitHub Actions",
+        "confidence": 0.9
+      },
+      "category": {
+        "value": "CI/CD",
+        "confidence": 0.88
+      },
+      "vendor": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "technology-kubernetes-eks",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Kubernetes (EKS)",
+        "confidence": 0.9
+      },
+      "category": {
+        "value": "Container orchestration",
+        "confidence": 0.88
+      },
+      "vendor": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "technology-python",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Python",
+        "confidence": 0.9
+      },
+      "category": {
+        "value": "Programming language",
+        "confidence": 0.9
+      },
+      "vendor": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "technology-pytorch",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "PyTorch",
+        "confidence": 0.88
+      },
+      "category": {
+        "value": "ML framework",
+        "confidence": 0.85
+      },
+      "vendor": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "technology-hugging-face-transformers",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Hugging Face Transformers",
+        "confidence": 0.87
+      },
+      "category": {
+        "value": "ML library",
+        "confidence": 0.85
+      },
+      "vendor": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "technology-aws-sagemaker",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "AWS SageMaker",
+        "confidence": 0.87
+      },
+      "category": {
+        "value": "ML platform",
+        "confidence": 0.85
+      },
+      "vendor": {
+        "value": "AWS",
+        "confidence": 0.88
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "technology-fastapi",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "FastAPI",
+        "confidence": 0.85
+      },
+      "category": {
+        "value": "Web framework",
+        "confidence": 0.85
+      },
+      "vendor": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "technology-go",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "Go",
+        "confidence": 0.85
+      },
+      "category": {
+        "value": "Programming language",
+        "confidence": 0.9
+      },
+      "vendor": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "technology-react",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "React",
+        "confidence": 0.85
+      },
+      "category": {
+        "value": "Frontend framework",
+        "confidence": 0.85
+      },
+      "vendor": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "technology-typescript",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "TypeScript",
+        "confidence": 0.85
+      },
+      "category": {
+        "value": "Programming language",
+        "confidence": 0.9
+      },
+      "vendor": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "node_merge",
+    "id": "location-san-francisco",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "name": {
+        "value": "San Francisco",
+        "confidence": 0.9
+      },
+      "country": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "region": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-0adce0",
+    "type": "works_at",
+    "from": "person-alice-chen",
+    "to": "organization-acme-corp",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "Senior Software Engineer",
+        "confidence": 0.97
+      },
+      "start_date": {
+        "value": "March 2021",
+        "confidence": 0.95
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-ece6c4",
+    "type": "works_at",
+    "from": "person-bob-martinez",
+    "to": "organization-acme-corp",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "Director of Engineering",
+        "confidence": 0.97
+      },
+      "start_date": {
+        "value": "2018",
+        "confidence": 0.93
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-083f4a",
+    "type": "works_at",
+    "from": "person-bob-martinez",
+    "to": "organization-google",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "Staff Engineer",
+        "confidence": 0.9
+      },
+      "start_date": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-079047",
+    "type": "works_at",
+    "from": "person-carol-okafor",
+    "to": "organization-acme-corp",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "Site Reliability Engineer",
+        "confidence": 0.95
+      },
+      "start_date": {
+        "value": "January 2023",
+        "confidence": 0.93
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-f1b25e",
+    "type": "works_at",
+    "from": "person-carol-okafor",
+    "to": "organization-datasystems-inc",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "DevOps Engineer",
+        "confidence": 0.95
+      },
+      "start_date": {
+        "value": "2019",
+        "confidence": 0.9
+      },
+      "end_date": {
+        "value": "2022",
+        "confidence": 0.9
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-793b1e",
+    "type": "works_at",
+    "from": "person-sandra-kim",
+    "to": "organization-acme-corp",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "CEO",
+        "confidence": 0.96
+      },
+      "start_date": {
+        "value": "2015",
+        "confidence": 0.85
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-f5f9c8",
+    "type": "works_at",
+    "from": "person-sandra-kim",
+    "to": "organization-novatech-inc",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "VP Engineering",
+        "confidence": 0.92
+      },
+      "start_date": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-94a3a9",
+    "type": "works_at",
+    "from": "person-james-whitfield",
+    "to": "organization-acme-corp",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "CTO",
+        "confidence": 0.96
+      },
+      "start_date": {
+        "value": "2015",
+        "confidence": 0.8
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-f8fd44",
+    "type": "works_at",
+    "from": "person-dr-yuna-park",
+    "to": "organization-acme-corp",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "Principal Researcher",
+        "confidence": 0.9
+      },
+      "start_date": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-283b79",
+    "type": "works_at",
+    "from": "person-dr-yuna-park",
+    "to": "organization-deepmind",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "start_date": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-8adddb",
+    "type": "works_at",
+    "from": "person-dr-priya-nair",
+    "to": "organization-datasystems-inc",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "VP of Engineering",
+        "confidence": 0.92
+      },
+      "start_date": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-c27b40",
+    "type": "works_at",
+    "from": "person-marcus-tan",
+    "to": "organization-hashicorp",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "Enterprise Account Manager",
+        "confidence": 0.92
+      },
+      "start_date": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-ee41b0",
+    "type": "works_at",
+    "from": "person-lisa-huang",
+    "to": "organization-amazon-web-services-aws",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "Account Manager",
+        "confidence": 0.92
+      },
+      "start_date": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-9dc267",
+    "type": "reports_to",
+    "from": "person-bob-martinez",
+    "to": "person-sandra-kim",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-f92d5f",
+    "type": "reports_to",
+    "from": "person-carol-okafor",
+    "to": "person-dr-priya-nair",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-8c3e84",
+    "type": "manages",
+    "from": "person-bob-martinez",
+    "to": "team-infrastructure-team",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-cff8ed",
+    "type": "manages",
+    "from": "person-bob-martinez",
+    "to": "team-product-team",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-73ec0d",
+    "type": "manages",
+    "from": "person-james-whitfield",
+    "to": "team-platform-team",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-8f0036",
+    "type": "manages",
+    "from": "person-james-whitfield",
+    "to": "team-ai-research-team",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-439f54",
+    "type": "manages",
+    "from": "person-dr-yuna-park",
+    "to": "team-ai-research-team",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-770457",
+    "type": "manages",
+    "from": "person-alice-chen",
+    "to": "team-backend-engineering-guild",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-5f6aa7",
+    "type": "member_of",
+    "from": "person-carol-okafor",
+    "to": "team-infrastructure-team",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-f77976",
+    "type": "contributes_to",
+    "from": "person-alice-chen",
+    "to": "project-db-migration-project",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "Core engineering contributor",
+        "confidence": 0.92
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-1bb309",
+    "type": "contributes_to",
+    "from": "person-carol-okafor",
+    "to": "project-db-migration-project",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "Core engineering contributor",
+        "confidence": 0.92
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-350a81",
+    "type": "contributes_to",
+    "from": "person-bob-martinez",
+    "to": "project-db-migration-project",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "Initiator",
+        "confidence": 0.85
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-9ca93e",
+    "type": "contributes_to",
+    "from": "person-alice-chen",
+    "to": "project-rag-pipeline-project",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "Backend API work",
+        "confidence": 0.9
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-2433f1",
+    "type": "contributes_to",
+    "from": "person-dr-yuna-park",
+    "to": "project-rag-pipeline-project",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "Project lead",
+        "confidence": 0.92
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-e68f52",
+    "type": "contributes_to",
+    "from": "person-james-whitfield",
+    "to": "project-platform-secrets-service",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "Project owner",
+        "confidence": 0.9
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-1a9de5",
+    "type": "contributes_to",
+    "from": "person-alice-chen",
+    "to": "project-platform-secrets-service",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "role": {
+        "value": "Requester",
+        "confidence": 0.8
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-8f9959",
+    "type": "owns_project",
+    "from": "team-infrastructure-team",
+    "to": "project-db-migration-project",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-16dc00",
+    "type": "owns_project",
+    "from": "team-ai-research-team",
+    "to": "project-rag-pipeline-project",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-07c70d",
+    "type": "owns_project",
+    "from": "team-platform-team",
+    "to": "project-platform-secrets-service",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-629b4f",
+    "type": "depends_on",
+    "from": "project-db-migration-project",
+    "to": "project-platform-secrets-service",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-554618",
+    "type": "uses_technology",
+    "from": "project-db-migration-project",
+    "to": "technology-aws-aurora",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-fb6892",
+    "type": "uses_technology",
+    "from": "project-db-migration-project",
+    "to": "technology-postgresql-15",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-025633",
+    "type": "uses_technology",
+    "from": "project-rag-pipeline-project",
+    "to": "technology-pinecone",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-ae6127",
+    "type": "uses_technology",
+    "from": "project-rag-pipeline-project",
+    "to": "technology-python",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-bedee6",
+    "type": "uses_technology",
+    "from": "project-platform-secrets-service",
+    "to": "technology-hashicorp-vault",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-cb5ce9",
+    "type": "partners_with",
+    "from": "organization-acme-corp",
+    "to": "organization-datasystems-inc",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "type": {
+        "value": "Strategic partnership",
+        "confidence": 0.93
+      },
+      "start_date": {
+        "value": "September 2025",
+        "confidence": 0.92
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-a69b31",
+    "type": "partners_with",
+    "from": "organization-acme-corp",
+    "to": "organization-novatech-inc",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {
+      "type": {
+        "value": "Informal advisory relationship",
+        "confidence": 0.9
+      },
+      "start_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    }
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-9b016f",
+    "type": "provides_technology",
+    "from": "organization-hashicorp",
+    "to": "technology-hashicorp-vault",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-22ebdc",
+    "type": "provides_technology",
+    "from": "organization-amazon-web-services-aws",
+    "to": "technology-aws-aurora",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-c69a76",
+    "type": "provides_technology",
+    "from": "organization-amazon-web-services-aws",
+    "to": "technology-aws-sagemaker",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-d1bc0d",
+    "type": "located_in",
+    "from": "organization-datasystems-inc",
+    "to": "location-san-francisco",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-e8a0d4",
+    "type": "part_of",
+    "from": "team-infrastructure-team",
+    "to": "organization-acme-corp",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-bf8cce",
+    "type": "part_of",
+    "from": "team-ai-research-team",
+    "to": "organization-acme-corp",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-7ebd4b",
+    "type": "part_of",
+    "from": "team-platform-team",
+    "to": "organization-acme-corp",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-56ae94",
+    "type": "part_of",
+    "from": "team-product-team",
+    "to": "organization-acme-corp",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  },
+  {
+    "event": "edge_merge",
+    "id": "edge-5f072d",
+    "type": "part_of",
+    "from": "team-backend-engineering-guild",
+    "to": "organization-acme-corp",
+    "sources": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "winning_attributes": {},
+    "losing_attributes": {}
+  }
+]

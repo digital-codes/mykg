@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "generated_at": "2026-06-07T21:30:37.464899+00:00",
+    "input_name_count_by_type": {
+      "Person": 9,
+      "Organization": 9,
+      "Team": 5,
+      "Project": 4,
+      "Technology": 16,
+      "Location": 1
+    },
+    "aliases_mapped": 0
+  },
+  "mappings": {}
+}

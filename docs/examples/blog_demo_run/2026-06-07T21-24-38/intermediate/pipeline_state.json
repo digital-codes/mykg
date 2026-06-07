@@ -1,0 +1,56 @@
+{
+  "status": "running",
+  "started_at": "2026-06-07T21:24:38.732709+00:00",
+  "last_updated": "2026-06-07T21:32:49.826107+00:00",
+  "steps": {
+    "preprocess": {
+      "status": "done",
+      "completed_at": "2026-06-07T21:24:38.733231+00:00"
+    },
+    "ingest": {
+      "status": "done",
+      "completed_at": "2026-06-07T21:24:38.796683+00:00"
+    },
+    "pass1": {
+      "status": "done",
+      "completed_at": "2026-06-07T21:27:41.123733+00:00"
+    },
+    "schema_validate": {
+      "status": "done",
+      "completed_at": "2026-06-07T21:27:41.131787+00:00"
+    },
+    "human_review": {
+      "status": "done",
+      "completed_at": "2026-06-07T21:27:41.132183+00:00"
+    },
+    "schema_flatten": {
+      "status": "done",
+      "completed_at": "2026-06-07T21:27:41.132564+00:00"
+    },
+    "pass2": {
+      "status": "done",
+      "completed_at": "2026-06-07T21:29:39.351903+00:00"
+    },
+    "normalize_names": {
+      "status": "done",
+      "completed_at": "2026-06-07T21:30:37.466222+00:00"
+    },
+    "assemble": {
+      "status": "done",
+      "completed_at": "2026-06-07T21:30:37.471725+00:00"
+    },
+    "orphan_score": {
+      "status": "done",
+      "completed_at": "2026-06-07T21:30:37.473817+00:00"
+    },
+    "orphan_connect": {
+      "status": "done",
+      "completed_at": "2026-06-07T21:32:49.727632+00:00"
+    },
+    "validate_graph": {
+      "status": "done",
+      "completed_at": "2026-06-07T21:32:49.826083+00:00"
+    }
+  },
+  "errors": {}
+}

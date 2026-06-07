@@ -4,7 +4,7 @@
 # ACTIVE PROFILE — change this one line to switch provider and all settings.
 # Available: ollama-local | anthropic-claude | openai | openrouter-free | claude-cli | agent-claude-code
 # =============================================================================
-profile: openrouter-free
+profile: agent-claude-code
 
 # ---------------------------------------------------------------------------
 # Profiles — each is fully self-contained: provider, credentials, and pipeline.
@@ -52,7 +52,6 @@ profiles:
       preprocess:
         enabled: true                # set true to convert non-md files (PDF/DOCX/images) via MinerU before ingest
         subdir: _preprocessed         # converted .md files land in <session>/input/<subdir>/
-        keep_artifacts: false        # when false (default) keep only the final <stem>.md; drop MinerU's nested subtree, images/, and .mineru.json sidecar. Set true to retain everything MinerU wrote (debugging).
         extra_args: []                # extra arguments passed through to mineru (e.g. ["--backend", "pipeline"])
         timeout_seconds: 1800         # mineru run-phase timeout (30 min)
         uv_path: uv                   # path or PATH name of the uv CLI (uv is a core mykg dependency)
@@ -174,7 +173,7 @@ profiles:
       context_window: 200000      # ① model's total context limit
       max_output_tokens: 8192     # ② output cap — Sonnet/Opus default max
       model: claude-sonnet-4-5
-      timeout: 300                # seconds per LLM call before raising a timeout error
+      timeout: 1800                # seconds per LLM call before raising a timeout error
       retry_429_max: 5            # max retries on HTTP 429 rate-limit before giving up
       retry_429_base_delay: 2.0   # initial backoff seconds; doubles on each retry (exponential)
       # base_url:                 # optional: override for Anthropic-compatible endpoint
@@ -189,7 +188,6 @@ profiles:
       preprocess:
         enabled: true                # set true to convert non-md files (PDF/DOCX/images) via MinerU before ingest
         subdir: _preprocessed         # converted .md files land in <session>/input/<subdir>/
-        keep_artifacts: false        # when false (default) keep only the final <stem>.md; drop MinerU's nested subtree, images/, and .mineru.json sidecar. Set true to retain everything MinerU wrote (debugging).
         extra_args: []                # extra arguments passed through to mineru (e.g. ["--backend", "pipeline"])
         timeout_seconds: 1800         # mineru run-phase timeout (30 min)
         uv_path: uv                   # path or PATH name of the uv CLI (uv is a core mykg dependency)
@@ -325,7 +323,6 @@ profiles:
       preprocess:
         enabled: true                # set true to convert non-md files (PDF/DOCX/images) via MinerU before ingest
         subdir: _preprocessed         # converted .md files land in <session>/input/<subdir>/
-        keep_artifacts: false        # when false (default) keep only the final <stem>.md; drop MinerU's nested subtree, images/, and .mineru.json sidecar. Set true to retain everything MinerU wrote (debugging).
         extra_args: []                # extra arguments passed through to mineru (e.g. ["--backend", "pipeline"])
         timeout_seconds: 1800         # mineru run-phase timeout (30 min)
         uv_path: uv                   # path or PATH name of the uv CLI (uv is a core mykg dependency)
@@ -466,7 +463,6 @@ profiles:
       preprocess:
         enabled: true                # set true to convert non-md files (PDF/DOCX/images) via MinerU before ingest
         subdir: _preprocessed         # converted .md files land in <session>/input/<subdir>/
-        keep_artifacts: false        # when false (default) keep only the final <stem>.md; drop MinerU's nested subtree, images/, and .mineru.json sidecar. Set true to retain everything MinerU wrote (debugging).
         extra_args: []                # extra arguments passed through to mineru (e.g. ["--backend", "pipeline"])
         timeout_seconds: 1800         # mineru run-phase timeout (30 min)
         uv_path: uv                   # path or PATH name of the uv CLI (uv is a core mykg dependency)
@@ -603,7 +599,6 @@ profiles:
       preprocess:
         enabled: true                # set true to convert non-md files (PDF/DOCX/images) via MinerU before ingest
         subdir: _preprocessed         # converted .md files land in <session>/input/<subdir>/
-        keep_artifacts: false        # when false (default) keep only the final <stem>.md; drop MinerU's nested subtree, images/, and .mineru.json sidecar. Set true to retain everything MinerU wrote (debugging).
         extra_args: []                # extra arguments passed through to mineru (e.g. ["--backend", "pipeline"])
         timeout_seconds: 1800         # mineru run-phase timeout (30 min)
         uv_path: uv                   # path or PATH name of the uv CLI (uv is a core mykg dependency)
@@ -723,7 +718,7 @@ profiles:
       max_retries: 0
     llm:
       max_output_tokens: 20000  # passed through to the task envelope; the skill enforces it
-      timeout: 1800             # seconds the pipeline will wait for a .done sentinel
+      timeout: 300             # seconds the pipeline will wait for a .done sentinel
       retry_429_max: 0          # agent provider does not hit API rate limits
       retry_429_base_delay: 2.0
     agent:
@@ -736,7 +731,6 @@ profiles:
       preprocess:
         enabled: true
         subdir: _preprocessed
-        keep_artifacts: false
         extra_args: []
         timeout_seconds: 1800
         uv_path: uv
@@ -778,7 +772,7 @@ profiles:
         top_k_per_orphan: 5
         confidence_base: 0.5
         confidence_weight: 0.5
-        max_workers: 4
+        max_workers: 2
         schema_max_restarts: 0
         excerpt_window: 4000
         excerpt_context: 1500

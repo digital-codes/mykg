@@ -1,0 +1,144 @@
+{
+  "concepts": [
+    {
+      "type": "Person",
+      "parent": null,
+      "attributes": [
+        "name",
+        "title",
+        "email",
+        "education"
+      ]
+    },
+    {
+      "type": "Organization",
+      "parent": null,
+      "attributes": [
+        "name",
+        "industry",
+        "headquarters"
+      ]
+    },
+    {
+      "type": "Team",
+      "parent": "Organization",
+      "attributes": [
+        "focus",
+        "member_count"
+      ]
+    },
+    {
+      "type": "Project",
+      "parent": null,
+      "attributes": [
+        "name",
+        "status",
+        "target_date",
+        "budget"
+      ]
+    },
+    {
+      "type": "Technology",
+      "parent": null,
+      "attributes": [
+        "name",
+        "category",
+        "vendor"
+      ]
+    },
+    {
+      "type": "Location",
+      "parent": null,
+      "attributes": [
+        "name",
+        "country",
+        "region"
+      ]
+    }
+  ],
+  "properties": [
+    {
+      "name": "works_at",
+      "domain": "Person",
+      "range": "Organization",
+      "attributes": [
+        "role",
+        "start_date",
+        "end_date"
+      ]
+    },
+    {
+      "name": "member_of",
+      "domain": "Person",
+      "range": "Team",
+      "attributes": [
+        "role"
+      ]
+    },
+    {
+      "name": "manages",
+      "domain": "Person",
+      "range": "Team",
+      "attributes": []
+    },
+    {
+      "name": "reports_to",
+      "domain": "Person",
+      "range": "Person",
+      "attributes": []
+    },
+    {
+      "name": "contributes_to",
+      "domain": "Person",
+      "range": "Project",
+      "attributes": [
+        "role"
+      ]
+    },
+    {
+      "name": "owns_project",
+      "domain": "Team",
+      "range": "Project",
+      "attributes": []
+    },
+    {
+      "name": "depends_on",
+      "domain": "Project",
+      "range": "Project",
+      "attributes": []
+    },
+    {
+      "name": "uses_technology",
+      "domain": "Project",
+      "range": "Technology",
+      "attributes": []
+    },
+    {
+      "name": "partners_with",
+      "domain": "Organization",
+      "range": "Organization",
+      "attributes": [
+        "type",
+        "start_date"
+      ]
+    },
+    {
+      "name": "provides_technology",
+      "domain": "Organization",
+      "range": "Technology",
+      "attributes": []
+    },
+    {
+      "name": "located_in",
+      "domain": "Organization",
+      "range": "Location",
+      "attributes": []
+    },
+    {
+      "name": "part_of",
+      "domain": "Team",
+      "range": "Organization",
+      "attributes": []
+    }
+  ]
+}

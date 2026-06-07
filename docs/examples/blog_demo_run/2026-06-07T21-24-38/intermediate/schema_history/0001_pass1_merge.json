@@ -1,0 +1,32 @@
+{
+  "seq": 1,
+  "trigger": "pass1_merge",
+  "timestamp": "2026-06-07T21:25:44Z",
+  "concepts_added": [
+    "Location",
+    "Organization",
+    "Person",
+    "Project",
+    "Team",
+    "Technology"
+  ],
+  "concepts_removed": [],
+  "properties_added": [
+    "contributes_to",
+    "depends_on",
+    "leads",
+    "located_in",
+    "manages",
+    "member_of",
+    "owns_project",
+    "part_of",
+    "partners_with",
+    "provides_technology",
+    "reports_to",
+    "uses_technology",
+    "works_at"
+  ],
+  "properties_removed": [],
+  "concepts_total": 6,
+  "properties_total": 13
+}

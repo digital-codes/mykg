@@ -1,0 +1,36 @@
+{
+  "Person": [
+    "name",
+    "title",
+    "email",
+    "education"
+  ],
+  "Organization": [
+    "name",
+    "industry",
+    "headquarters"
+  ],
+  "Team": [
+    "name",
+    "industry",
+    "headquarters",
+    "focus",
+    "member_count"
+  ],
+  "Project": [
+    "name",
+    "status",
+    "target_date",
+    "budget"
+  ],
+  "Technology": [
+    "name",
+    "category",
+    "vendor"
+  ],
+  "Location": [
+    "name",
+    "country",
+    "region"
+  ]
+}

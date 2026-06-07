@@ -1,0 +1,29 @@
+{
+  "batch_0000": {
+    "files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ],
+    "chunks": [
+      {
+        "file": "partners.md",
+        "chunk_idx": 1
+      },
+      {
+        "file": "projects.md",
+        "chunk_idx": 1
+      },
+      {
+        "file": "team.md",
+        "chunk_idx": 1
+      },
+      {
+        "file": "technologies.md",
+        "chunk_idx": 1
+      }
+    ],
+    "total_tokens": 1248
+  }
+}

@@ -1,0 +1,314 @@
+[
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "organization-mit",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "organization-stanford",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "project-data-lake-migration",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-fastapi",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-github-actions",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-go",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-hugging-face-transformers",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-kubernetes-eks",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-pytorch",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-qdrant",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-react",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-typescript",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-weaviate",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "organization-mit",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "organization-stanford",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "project-data-lake-migration",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-fastapi",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-github-actions",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-go",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-hugging-face-transformers",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-kubernetes-eks",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-pytorch",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-qdrant",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-react",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-typescript",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-weaviate",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "organization-mit",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "organization-stanford",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "project-data-lake-migration",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-fastapi",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-github-actions",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-go",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-hugging-face-transformers",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-kubernetes-eks",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-pytorch",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-qdrant",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-react",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-typescript",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-weaviate",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "organization-mit",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "organization-stanford",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "project-data-lake-migration",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-fastapi",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-github-actions",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-go",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-hugging-face-transformers",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-kubernetes-eks",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-pytorch",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-qdrant",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-react",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-typescript",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  },
+  {
+    "event": "orphan_edge_rejected",
+    "orphan_id": "technology-weaviate",
+    "candidate_id": null,
+    "reason": "llm_rejected"
+  }
+]

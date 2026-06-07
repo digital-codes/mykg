@@ -1,0 +1,89 @@
+22:24:38 [INFO] mykg.cli — Command: /Library/Frameworks/Python.framework/Versions/3.14/bin/mykg extract-graph notes --obsidian-vault
+22:24:38 [INFO] mykg.cli — LLM endpoint: agent / claude-code (inbox=mykg_sessions/2026-06-07T21-24-38/intermediate/agent_inbox)
+22:24:38 [INFO] mykg.orchestrator — RUN  preprocess
+22:24:38 [INFO] mykg.steps.preprocess — Step 0 — no eligible non-md files to preprocess; skipping
+22:24:38 [INFO] mykg.orchestrator — DONE preprocess
+22:24:38 [INFO] mykg.orchestrator — RUN  ingest
+22:24:38 [INFO] mykg.steps.ingest — Step 1 — found 4 input file(s): ['partners.md', 'projects.md', 'team.md', 'technologies.md']
+22:24:38 [INFO] mykg.steps.ingest — Step 1 — 4 total chunk(s) ready for Pass 1
+22:24:38 [INFO] mykg.orchestrator — DONE ingest
+22:24:38 [INFO] mykg.orchestrator — RUN  pass1
+22:24:38 [INFO] mykg.steps.pass1 — Step 2 — running Pass 1 (schema induction) …
+22:24:38 [INFO] mykg.pass1 — Pass 1 — 1 batch(es) to process (max_workers=2)
+22:24:38 [INFO] mykg.pass1 —   batch 1/1 — 4 chunk(s), ~1248 tokens
+22:24:38 [INFO] mykg.llm.agent — agent: wrote task 59778efe600f (step=pass1)
+22:25:44 [INFO] mykg.steps.pass1 — Step 2 — received 1 schema proposal(s)
+22:25:44 [INFO] mykg.steps.pass1 — Step 3 — merging schema proposals …
+22:25:44 [INFO] mykg.steps.pass1 — Step 3 — schema: 6 concept(s), 13 property(ies)
+22:25:44 [INFO] mykg.steps.pass1 — Step 3 — harmonizing schema (semantic near-duplicate collapse) …
+22:25:44 [INFO] mykg.llm.agent — agent: wrote task 025b4c9811ec (step=schema_harmonize)
+22:26:43 [INFO] mykg.steps.pass1 — Step 3 — schema after harmonization: 6 concept(s), 12 property(ies)
+22:26:43 [INFO] mykg.steps.pass1 — Step 3 — reviewing schema quality …
+22:26:43 [INFO] mykg.llm.agent — agent: wrote task 86671e9f2305 (step=schema_quality_review)
+22:27:41 [INFO] mykg.steps.pass1 — Step 3 — schema after quality review: 6 concept(s), 12 property(ies)
+22:27:41 [INFO] mykg.orchestrator — DONE pass1
+22:27:41 [INFO] mykg.orchestrator — RUN  schema_validate
+22:27:41 [INFO] mykg.steps.schema — Step 3b — schema.ttl valid
+22:27:41 [INFO] mykg.orchestrator — DONE schema_validate
+22:27:41 [INFO] mykg.orchestrator — RUN  human_review
+22:27:41 [INFO] mykg.steps.schema — Step 4 — review gate skipped (--review not set)
+22:27:41 [INFO] mykg.orchestrator — DONE human_review
+22:27:41 [INFO] mykg.orchestrator — RUN  schema_flatten
+22:27:41 [INFO] mykg.steps.pass2 — Step 5 — flattened 6 concept(s)
+22:27:41 [INFO] mykg.orchestrator — DONE schema_flatten
+22:27:41 [INFO] mykg.orchestrator — RUN  pass2
+22:27:41 [INFO] mykg.steps.pass2 — Step 6 — 0 file(s) already done, 4 remaining
+22:27:41 [INFO] mykg.pass2 — Pass 2 batched — 4 file(s), 4 chunk(s) → 1 batch(es)
+22:27:41 [INFO] mykg.pass2 —   batch 1/1 — 4 chunk(s), ~1248 tokens
+22:27:41 [INFO] mykg.llm.agent — agent: wrote task 1526ab55f8d8 (step=pass2)
+22:29:39 [INFO] mykg.pass2 — Pass 2 batched progress — 1/1 batches (100.0%) — elapsed 1m 58s — ETA ~0h 00m
+22:29:39 [INFO] mykg.pass2 —   partners.md — total: 44 node(s), 49 edge(s)
+22:29:39 [INFO] mykg.pass2 —   projects.md — total: 44 node(s), 49 edge(s)
+22:29:39 [INFO] mykg.pass2 —   team.md — total: 44 node(s), 49 edge(s)
+22:29:39 [INFO] mykg.pass2 —   technologies.md — total: 44 node(s), 49 edge(s)
+22:29:39 [INFO] mykg.steps.pass2 — Step 6 — batch map: 1 batch(es) written to pass2_batch_map.json
+22:29:39 [INFO] mykg.steps.pass2 — Step 6 — extracted 176 node(s), 196 edge(s) (raw, total)
+22:29:39 [INFO] mykg.orchestrator — DONE pass2
+22:29:39 [INFO] mykg.orchestrator — RUN  normalize_names
+22:29:39 [INFO] mykg.steps.normalize — Step 6b — normalizing names across 6 type(s), 44 total names
+22:29:39 [INFO] mykg.llm.agent — agent: wrote task 0a0c275ff515 (step=?)
+22:30:37 [INFO] mykg.steps.normalize — Step 6b — 0 alias(es) mapped; name_normalization.json written
+22:30:37 [INFO] mykg.orchestrator — DONE normalize_names
+22:30:37 [INFO] mykg.orchestrator — RUN  assemble
+22:30:37 [INFO] mykg.steps.assemble — Steps 7–9 — assigning stable IDs and deduplicating …
+22:30:37 [INFO] mykg.steps.assemble — Steps 7–9 — 44 unique node(s), 49 unique edge(s)
+22:30:37 [INFO] mykg.steps.assemble — Steps 7–9 — merge_log.json written (93 entries)
+22:30:37 [INFO] mykg.orchestrator — DONE assemble
+22:30:37 [INFO] mykg.orchestrator — RUN  orphan_score
+22:30:37 [INFO] mykg.orphan_connector — Stage 1 — 13 orphan node(s) identified
+22:30:37 [INFO] mykg.orphan_connector — Stage 1 — 4 chunk group(s) produced (52 orphan(s) total)
+22:30:37 [INFO] mykg.steps.orphan_score — Step orphan_score — 52 orphan(s) in 4 group(s) (0 blank-response group(s)), 0 unresolvable orphan(s) logged as advisory
+22:30:37 [INFO] mykg.orchestrator — DONE orphan_score
+22:30:37 [INFO] mykg.orchestrator — RUN  orphan_connect
+22:30:37 [INFO] mykg.llm.agent — agent: wrote task b81b1042a623 (step=orphan)
+22:30:37 [INFO] mykg.llm.agent — agent: wrote task 2ab8aaabf0d3 (step=orphan)
+22:31:47 [INFO] mykg.llm.agent — agent: wrote task 3a5411e56a40 (step=orphan)
+22:31:51 [INFO] mykg.llm.agent — agent: wrote task 15b89fa5190c (step=orphan)
+22:32:49 [INFO] mykg.orphan_connector — chunk_recovery — 0 edge(s) confirmed across 4 group(s)
+22:32:49 [INFO] mykg.steps.orphan_connect — Step orphan_connect — 0 edge(s) added to edge_metadata.json (0 skipped as duplicates)
+22:32:49 [INFO] mykg.steps.orphan_connect — Step orphan_connect — technology-hugging-face-transformers: no edges confirmed; promoted to schema-gap orphan
+22:32:49 [INFO] mykg.steps.orphan_connect — Step orphan_connect — organization-mit: no edges confirmed; promoted to schema-gap orphan
+22:32:49 [INFO] mykg.steps.orphan_connect — Step orphan_connect — technology-react: no edges confirmed; promoted to schema-gap orphan
+22:32:49 [INFO] mykg.steps.orphan_connect — Step orphan_connect — technology-typescript: no edges confirmed; promoted to schema-gap orphan
+22:32:49 [INFO] mykg.steps.orphan_connect — Step orphan_connect — technology-fastapi: no edges confirmed; promoted to schema-gap orphan
+22:32:49 [INFO] mykg.steps.orphan_connect — Step orphan_connect — technology-kubernetes-eks: no edges confirmed; promoted to schema-gap orphan
+22:32:49 [INFO] mykg.steps.orphan_connect — Step orphan_connect — technology-go: no edges confirmed; promoted to schema-gap orphan
+22:32:49 [INFO] mykg.steps.orphan_connect — Step orphan_connect — project-data-lake-migration: no edges confirmed; promoted to schema-gap orphan
+22:32:49 [INFO] mykg.steps.orphan_connect — Step orphan_connect — organization-stanford: no edges confirmed; promoted to schema-gap orphan
+22:32:49 [INFO] mykg.steps.orphan_connect — Step orphan_connect — technology-qdrant: no edges confirmed; promoted to schema-gap orphan
+22:32:49 [INFO] mykg.steps.orphan_connect — Step orphan_connect — technology-github-actions: no edges confirmed; promoted to schema-gap orphan
+22:32:49 [INFO] mykg.steps.orphan_connect — Step orphan_connect — technology-weaviate: no edges confirmed; promoted to schema-gap orphan
+22:32:49 [INFO] mykg.steps.orphan_connect — Step orphan_connect — technology-pytorch: no edges confirmed; promoted to schema-gap orphan
+22:32:49 [INFO] mykg.orchestrator — DONE orphan_connect
+22:32:49 [INFO] mykg.orchestrator — RUN  validate_graph
+22:32:49 [INFO] mykg.steps.validate_graph — Steps 10–12 — validating and writing graph outputs …
+22:32:49 [INFO] mykg.steps.validate_graph — Step 12c — NetworkX export: knowledge_graph.gml, knowledge_graph.graphml, knowledge_graph.gexf, knowledge_graph.net, knowledge_graph.json, knowledge_graph.html, edges_nx.txt, adjacency.txt
+22:32:49 [INFO] mykg.steps.validate_graph — Step 12d — Obsidian vault export: 45 notes written
+22:32:49 [INFO] mykg.steps.validate_graph — Step 12b — knowledge_graph.ttl valid
+22:32:49 [INFO] mykg.orchestrator — DONE validate_graph
+22:32:49 [INFO] mykg.steps.step_walkthrough — Walkthrough report written to mykg_sessions/2026-06-07T21-24-38/walkthrough.md

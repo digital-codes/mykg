@@ -1,0 +1,13 @@
+{
+  "seq": 2,
+  "trigger": "schema_harmonize",
+  "timestamp": "2026-06-07T21:26:43Z",
+  "concepts_added": [],
+  "concepts_removed": [],
+  "properties_added": [],
+  "properties_removed": [
+    "leads"
+  ],
+  "concepts_total": 6,
+  "properties_total": 12
+}

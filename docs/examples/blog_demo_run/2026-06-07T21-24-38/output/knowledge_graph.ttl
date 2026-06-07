@@ -1,0 +1,304 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ex:   <http://mykg.local/schema/> .
+@prefix data: <http://mykg.local/data/> .
+
+# ==========================================
+# 1. THE RDFS SCHEMA (TBox)
+# ==========================================
+
+ex:Person rdf:type rdfs:Class .
+ex:Organization rdf:type rdfs:Class .
+ex:Team rdf:type rdfs:Class .
+ex:Project rdf:type rdfs:Class .
+ex:Technology rdf:type rdfs:Class .
+ex:Location rdf:type rdfs:Class .
+
+ex:Team rdfs:subClassOf ex:Organization .
+
+ex:name rdf:type rdf:Property ;
+    rdfs:domain ex:Person ;
+    rdfs:range  rdfs:Literal .
+ex:title rdf:type rdf:Property ;
+    rdfs:domain ex:Person ;
+    rdfs:range  rdfs:Literal .
+ex:email rdf:type rdf:Property ;
+    rdfs:domain ex:Person ;
+    rdfs:range  rdfs:Literal .
+ex:education rdf:type rdf:Property ;
+    rdfs:domain ex:Person ;
+    rdfs:range  rdfs:Literal .
+ex:name rdf:type rdf:Property ;
+    rdfs:domain ex:Organization ;
+    rdfs:range  rdfs:Literal .
+ex:industry rdf:type rdf:Property ;
+    rdfs:domain ex:Organization ;
+    rdfs:range  rdfs:Literal .
+ex:headquarters rdf:type rdf:Property ;
+    rdfs:domain ex:Organization ;
+    rdfs:range  rdfs:Literal .
+ex:focus rdf:type rdf:Property ;
+    rdfs:domain ex:Team ;
+    rdfs:range  rdfs:Literal .
+ex:member_count rdf:type rdf:Property ;
+    rdfs:domain ex:Team ;
+    rdfs:range  rdfs:Literal .
+ex:name rdf:type rdf:Property ;
+    rdfs:domain ex:Project ;
+    rdfs:range  rdfs:Literal .
+ex:status rdf:type rdf:Property ;
+    rdfs:domain ex:Project ;
+    rdfs:range  rdfs:Literal .
+ex:target_date rdf:type rdf:Property ;
+    rdfs:domain ex:Project ;
+    rdfs:range  rdfs:Literal .
+ex:budget rdf:type rdf:Property ;
+    rdfs:domain ex:Project ;
+    rdfs:range  rdfs:Literal .
+ex:name rdf:type rdf:Property ;
+    rdfs:domain ex:Technology ;
+    rdfs:range  rdfs:Literal .
+ex:category rdf:type rdf:Property ;
+    rdfs:domain ex:Technology ;
+    rdfs:range  rdfs:Literal .
+ex:vendor rdf:type rdf:Property ;
+    rdfs:domain ex:Technology ;
+    rdfs:range  rdfs:Literal .
+ex:name rdf:type rdf:Property ;
+    rdfs:domain ex:Location ;
+    rdfs:range  rdfs:Literal .
+ex:country rdf:type rdf:Property ;
+    rdfs:domain ex:Location ;
+    rdfs:range  rdfs:Literal .
+ex:region rdf:type rdf:Property ;
+    rdfs:domain ex:Location ;
+    rdfs:range  rdfs:Literal .
+
+ex:works_at rdf:type rdf:Property ;
+    rdfs:domain ex:Person ;
+    rdfs:range  ex:Organization .
+ex:member_of rdf:type rdf:Property ;
+    rdfs:domain ex:Person ;
+    rdfs:range  ex:Team .
+ex:manages rdf:type rdf:Property ;
+    rdfs:domain ex:Person ;
+    rdfs:range  ex:Team .
+ex:reports_to rdf:type rdf:Property ;
+    rdfs:domain ex:Person ;
+    rdfs:range  ex:Person .
+ex:contributes_to rdf:type rdf:Property ;
+    rdfs:domain ex:Person ;
+    rdfs:range  ex:Project .
+ex:owns_project rdf:type rdf:Property ;
+    rdfs:domain ex:Team ;
+    rdfs:range  ex:Project .
+ex:depends_on rdf:type rdf:Property ;
+    rdfs:domain ex:Project ;
+    rdfs:range  ex:Project .
+ex:uses_technology rdf:type rdf:Property ;
+    rdfs:domain ex:Project ;
+    rdfs:range  ex:Technology .
+ex:partners_with rdf:type rdf:Property ;
+    rdfs:domain ex:Organization ;
+    rdfs:range  ex:Organization .
+ex:provides_technology rdf:type rdf:Property ;
+    rdfs:domain ex:Organization ;
+    rdfs:range  ex:Technology .
+ex:located_in rdf:type rdf:Property ;
+    rdfs:domain ex:Organization ;
+    rdfs:range  ex:Location .
+ex:part_of rdf:type rdf:Property ;
+    rdfs:domain ex:Team ;
+    rdfs:range  ex:Organization .
+
+# ==========================================
+# 2. THE RDF INSTANCE DATA (ABox)
+# ==========================================
+
+data:person-alice-chen rdf:type ex:Person .
+data:person-bob-martinez rdf:type ex:Person .
+data:person-carol-okafor rdf:type ex:Person .
+data:person-sandra-kim rdf:type ex:Person .
+data:person-james-whitfield rdf:type ex:Person .
+data:person-dr-yuna-park rdf:type ex:Person .
+data:person-dr-priya-nair rdf:type ex:Person .
+data:person-marcus-tan rdf:type ex:Person .
+data:person-lisa-huang rdf:type ex:Person .
+data:organization-acme-corp rdf:type ex:Organization .
+data:organization-datasystems-inc rdf:type ex:Organization .
+data:organization-novatech-inc rdf:type ex:Organization .
+data:organization-hashicorp rdf:type ex:Organization .
+data:organization-amazon-web-services-aws rdf:type ex:Organization .
+data:organization-google rdf:type ex:Organization .
+data:organization-deepmind rdf:type ex:Organization .
+data:organization-mit rdf:type ex:Organization .
+data:organization-stanford rdf:type ex:Organization .
+data:team-infrastructure-team rdf:type ex:Team .
+data:team-ai-research-team rdf:type ex:Team .
+data:team-platform-team rdf:type ex:Team .
+data:team-product-team rdf:type ex:Team .
+data:team-backend-engineering-guild rdf:type ex:Team .
+data:project-db-migration-project rdf:type ex:Project .
+data:project-rag-pipeline-project rdf:type ex:Project .
+data:project-platform-secrets-service rdf:type ex:Project .
+data:project-data-lake-migration rdf:type ex:Project .
+data:technology-aws-aurora rdf:type ex:Technology .
+data:technology-postgresql-15 rdf:type ex:Technology .
+data:technology-pinecone rdf:type ex:Technology .
+data:technology-weaviate rdf:type ex:Technology .
+data:technology-qdrant rdf:type ex:Technology .
+data:technology-hashicorp-vault rdf:type ex:Technology .
+data:technology-github-actions rdf:type ex:Technology .
+data:technology-kubernetes-eks rdf:type ex:Technology .
+data:technology-python rdf:type ex:Technology .
+data:technology-pytorch rdf:type ex:Technology .
+data:technology-hugging-face-transformers rdf:type ex:Technology .
+data:technology-aws-sagemaker rdf:type ex:Technology .
+data:technology-fastapi rdf:type ex:Technology .
+data:technology-go rdf:type ex:Technology .
+data:technology-react rdf:type ex:Technology .
+data:technology-typescript rdf:type ex:Technology .
+data:location-san-francisco rdf:type ex:Location .
+
+data:person-alice-chen ex:name "Alice Chen" .
+data:person-alice-chen ex:title "Senior Software Engineer" .
+data:person-alice-chen ex:email "alice.chen@acme.com" .
+data:person-alice-chen ex:education "BSc in Computer Science from MIT" .
+data:person-bob-martinez ex:name "Bob Martinez" .
+data:person-bob-martinez ex:title "Director of Engineering" .
+data:person-carol-okafor ex:name "Carol Okafor" .
+data:person-carol-okafor ex:title "Site Reliability Engineer" .
+data:person-sandra-kim ex:name "Sandra Kim" .
+data:person-sandra-kim ex:title "CEO" .
+data:person-james-whitfield ex:name "James Whitfield" .
+data:person-james-whitfield ex:title "CTO" .
+data:person-james-whitfield ex:education "PhD in Computer Science from Stanford" .
+data:person-dr-yuna-park ex:name "Dr. Yuna Park" .
+data:person-dr-yuna-park ex:title "Principal Researcher" .
+data:person-dr-priya-nair ex:name "Dr. Priya Nair" .
+data:person-dr-priya-nair ex:title "VP of Engineering" .
+data:person-marcus-tan ex:name "Marcus Tan" .
+data:person-marcus-tan ex:title "Enterprise Account Manager" .
+data:person-lisa-huang ex:name "Lisa Huang" .
+data:person-lisa-huang ex:title "Account Manager" .
+data:organization-acme-corp ex:name "Acme Corp" .
+data:organization-datasystems-inc ex:name "DataSystems Inc" .
+data:organization-datasystems-inc ex:industry "Data infrastructure" .
+data:organization-datasystems-inc ex:headquarters "San Francisco" .
+data:organization-novatech-inc ex:name "NovaTech Inc" .
+data:organization-novatech-inc ex:industry "SaaS / developer tooling" .
+data:organization-hashicorp ex:name "HashiCorp" .
+data:organization-amazon-web-services-aws ex:name "Amazon Web Services (AWS)" .
+data:organization-amazon-web-services-aws ex:industry "Cloud provider" .
+data:organization-google ex:name "Google" .
+data:organization-deepmind ex:name "DeepMind" .
+data:organization-mit ex:name "MIT" .
+data:organization-mit ex:industry "Education" .
+data:organization-stanford ex:name "Stanford" .
+data:organization-stanford ex:industry "Education" .
+data:team-infrastructure-team ex:name "Infrastructure team" .
+data:team-infrastructure-team ex:focus "Cloud operations, CI/CD pipelines, on-call rotations" .
+data:team-infrastructure-team ex:member_count "5" .
+data:team-ai-research-team ex:name "AI Research team" .
+data:team-ai-research-team ex:focus "Retrieval-augmented generation (RAG) and knowledge graph applications" .
+data:team-platform-team ex:name "Platform team" .
+data:team-platform-team ex:focus "Secrets management" .
+data:team-product-team ex:name "Product team" .
+data:team-backend-engineering-guild ex:name "Backend engineering guild" .
+data:team-backend-engineering-guild ex:focus "Backend language choices; Python (FastAPI), Go" .
+data:project-db-migration-project ex:name "DB Migration Project" .
+data:project-db-migration-project ex:status "In progress" .
+data:project-db-migration-project ex:target_date "End of Q3 2026" .
+data:project-db-migration-project ex:budget "$120,000" .
+data:project-rag-pipeline-project ex:name "RAG Pipeline Project" .
+data:project-rag-pipeline-project ex:status "Design phase" .
+data:project-rag-pipeline-project ex:target_date "Q4 2026" .
+data:project-platform-secrets-service ex:name "Platform Secrets Service" .
+data:project-platform-secrets-service ex:target_date "August 2026" .
+data:project-data-lake-migration ex:name "Data lake migration" .
+data:project-data-lake-migration ex:status "Planned" .
+data:technology-aws-aurora ex:name "AWS Aurora" .
+data:technology-aws-aurora ex:category "Database" .
+data:technology-aws-aurora ex:vendor "AWS" .
+data:technology-postgresql-15 ex:name "PostgreSQL 15" .
+data:technology-postgresql-15 ex:category "Database" .
+data:technology-pinecone ex:name "Pinecone" .
+data:technology-pinecone ex:category "Vector database" .
+data:technology-weaviate ex:name "Weaviate" .
+data:technology-weaviate ex:category "Vector database" .
+data:technology-qdrant ex:name "Qdrant" .
+data:technology-qdrant ex:category "Vector database" .
+data:technology-hashicorp-vault ex:name "HashiCorp Vault" .
+data:technology-hashicorp-vault ex:category "Secrets management" .
+data:technology-hashicorp-vault ex:vendor "HashiCorp" .
+data:technology-github-actions ex:name "GitHub Actions" .
+data:technology-github-actions ex:category "CI/CD" .
+data:technology-kubernetes-eks ex:name "Kubernetes (EKS)" .
+data:technology-kubernetes-eks ex:category "Container orchestration" .
+data:technology-python ex:name "Python" .
+data:technology-python ex:category "Programming language" .
+data:technology-pytorch ex:name "PyTorch" .
+data:technology-pytorch ex:category "ML framework" .
+data:technology-hugging-face-transformers ex:name "Hugging Face Transformers" .
+data:technology-hugging-face-transformers ex:category "ML library" .
+data:technology-aws-sagemaker ex:name "AWS SageMaker" .
+data:technology-aws-sagemaker ex:category "ML platform" .
+data:technology-aws-sagemaker ex:vendor "AWS" .
+data:technology-fastapi ex:name "FastAPI" .
+data:technology-fastapi ex:category "Web framework" .
+data:technology-go ex:name "Go" .
+data:technology-go ex:category "Programming language" .
+data:technology-react ex:name "React" .
+data:technology-react ex:category "Frontend framework" .
+data:technology-typescript ex:name "TypeScript" .
+data:technology-typescript ex:category "Programming language" .
+data:location-san-francisco ex:name "San Francisco" .
+data:person-alice-chen ex:works_at data:organization-acme-corp .
+data:person-bob-martinez ex:works_at data:organization-acme-corp .
+data:person-bob-martinez ex:works_at data:organization-google .
+data:person-carol-okafor ex:works_at data:organization-acme-corp .
+data:person-carol-okafor ex:works_at data:organization-datasystems-inc .
+data:person-sandra-kim ex:works_at data:organization-acme-corp .
+data:person-sandra-kim ex:works_at data:organization-novatech-inc .
+data:person-james-whitfield ex:works_at data:organization-acme-corp .
+data:person-dr-yuna-park ex:works_at data:organization-acme-corp .
+data:person-dr-yuna-park ex:works_at data:organization-deepmind .
+data:person-dr-priya-nair ex:works_at data:organization-datasystems-inc .
+data:person-marcus-tan ex:works_at data:organization-hashicorp .
+data:person-lisa-huang ex:works_at data:organization-amazon-web-services-aws .
+data:person-bob-martinez ex:reports_to data:person-sandra-kim .
+data:person-carol-okafor ex:reports_to data:person-dr-priya-nair .
+data:person-bob-martinez ex:manages data:team-infrastructure-team .
+data:person-bob-martinez ex:manages data:team-product-team .
+data:person-james-whitfield ex:manages data:team-platform-team .
+data:person-james-whitfield ex:manages data:team-ai-research-team .
+data:person-dr-yuna-park ex:manages data:team-ai-research-team .
+data:person-alice-chen ex:manages data:team-backend-engineering-guild .
+data:person-carol-okafor ex:member_of data:team-infrastructure-team .
+data:person-alice-chen ex:contributes_to data:project-db-migration-project .
+data:person-carol-okafor ex:contributes_to data:project-db-migration-project .
+data:person-bob-martinez ex:contributes_to data:project-db-migration-project .
+data:person-alice-chen ex:contributes_to data:project-rag-pipeline-project .
+data:person-dr-yuna-park ex:contributes_to data:project-rag-pipeline-project .
+data:person-james-whitfield ex:contributes_to data:project-platform-secrets-service .
+data:person-alice-chen ex:contributes_to data:project-platform-secrets-service .
+data:team-infrastructure-team ex:owns_project data:project-db-migration-project .
+data:team-ai-research-team ex:owns_project data:project-rag-pipeline-project .
+data:team-platform-team ex:owns_project data:project-platform-secrets-service .
+data:project-db-migration-project ex:depends_on data:project-platform-secrets-service .
+data:project-db-migration-project ex:uses_technology data:technology-aws-aurora .
+data:project-db-migration-project ex:uses_technology data:technology-postgresql-15 .
+data:project-rag-pipeline-project ex:uses_technology data:technology-pinecone .
+data:project-rag-pipeline-project ex:uses_technology data:technology-python .
+data:project-platform-secrets-service ex:uses_technology data:technology-hashicorp-vault .
+data:organization-acme-corp ex:partners_with data:organization-datasystems-inc .
+data:organization-acme-corp ex:partners_with data:organization-novatech-inc .
+data:organization-hashicorp ex:provides_technology data:technology-hashicorp-vault .
+data:organization-amazon-web-services-aws ex:provides_technology data:technology-aws-aurora .
+data:organization-amazon-web-services-aws ex:provides_technology data:technology-aws-sagemaker .
+data:organization-datasystems-inc ex:located_in data:location-san-francisco .
+data:team-infrastructure-team ex:part_of data:organization-acme-corp .
+data:team-ai-research-team ex:part_of data:organization-acme-corp .
+data:team-platform-team ex:part_of data:organization-acme-corp .
+data:team-product-team ex:part_of data:organization-acme-corp .
+data:team-backend-engineering-guild ex:part_of data:organization-acme-corp .

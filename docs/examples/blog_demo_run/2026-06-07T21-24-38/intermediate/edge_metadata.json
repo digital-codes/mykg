@@ -1,0 +1,964 @@
+{
+  "edge-0adce0": {
+    "id": "edge-0adce0",
+    "type": "works_at",
+    "from": "person-alice-chen",
+    "to": "organization-acme-corp",
+    "confidence": 0.97,
+    "attributes": {
+      "role": {
+        "value": "Senior Software Engineer",
+        "confidence": 0.97
+      },
+      "start_date": {
+        "value": "March 2021",
+        "confidence": 0.95
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-ece6c4": {
+    "id": "edge-ece6c4",
+    "type": "works_at",
+    "from": "person-bob-martinez",
+    "to": "organization-acme-corp",
+    "confidence": 0.97,
+    "attributes": {
+      "role": {
+        "value": "Director of Engineering",
+        "confidence": 0.97
+      },
+      "start_date": {
+        "value": "2018",
+        "confidence": 0.93
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-083f4a": {
+    "id": "edge-083f4a",
+    "type": "works_at",
+    "from": "person-bob-martinez",
+    "to": "organization-google",
+    "confidence": 0.9,
+    "attributes": {
+      "role": {
+        "value": "Staff Engineer",
+        "confidence": 0.9
+      },
+      "start_date": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-079047": {
+    "id": "edge-079047",
+    "type": "works_at",
+    "from": "person-carol-okafor",
+    "to": "organization-acme-corp",
+    "confidence": 0.96,
+    "attributes": {
+      "role": {
+        "value": "Site Reliability Engineer",
+        "confidence": 0.95
+      },
+      "start_date": {
+        "value": "January 2023",
+        "confidence": 0.93
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-f1b25e": {
+    "id": "edge-f1b25e",
+    "type": "works_at",
+    "from": "person-carol-okafor",
+    "to": "organization-datasystems-inc",
+    "confidence": 0.95,
+    "attributes": {
+      "role": {
+        "value": "DevOps Engineer",
+        "confidence": 0.95
+      },
+      "start_date": {
+        "value": "2019",
+        "confidence": 0.9
+      },
+      "end_date": {
+        "value": "2022",
+        "confidence": 0.9
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-793b1e": {
+    "id": "edge-793b1e",
+    "type": "works_at",
+    "from": "person-sandra-kim",
+    "to": "organization-acme-corp",
+    "confidence": 0.96,
+    "attributes": {
+      "role": {
+        "value": "CEO",
+        "confidence": 0.96
+      },
+      "start_date": {
+        "value": "2015",
+        "confidence": 0.85
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-f5f9c8": {
+    "id": "edge-f5f9c8",
+    "type": "works_at",
+    "from": "person-sandra-kim",
+    "to": "organization-novatech-inc",
+    "confidence": 0.92,
+    "attributes": {
+      "role": {
+        "value": "VP Engineering",
+        "confidence": 0.92
+      },
+      "start_date": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-94a3a9": {
+    "id": "edge-94a3a9",
+    "type": "works_at",
+    "from": "person-james-whitfield",
+    "to": "organization-acme-corp",
+    "confidence": 0.96,
+    "attributes": {
+      "role": {
+        "value": "CTO",
+        "confidence": 0.96
+      },
+      "start_date": {
+        "value": "2015",
+        "confidence": 0.8
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-f8fd44": {
+    "id": "edge-f8fd44",
+    "type": "works_at",
+    "from": "person-dr-yuna-park",
+    "to": "organization-acme-corp",
+    "confidence": 0.88,
+    "attributes": {
+      "role": {
+        "value": "Principal Researcher",
+        "confidence": 0.9
+      },
+      "start_date": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-283b79": {
+    "id": "edge-283b79",
+    "type": "works_at",
+    "from": "person-dr-yuna-park",
+    "to": "organization-deepmind",
+    "confidence": 0.85,
+    "attributes": {
+      "role": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "start_date": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-8adddb": {
+    "id": "edge-8adddb",
+    "type": "works_at",
+    "from": "person-dr-priya-nair",
+    "to": "organization-datasystems-inc",
+    "confidence": 0.93,
+    "attributes": {
+      "role": {
+        "value": "VP of Engineering",
+        "confidence": 0.92
+      },
+      "start_date": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-c27b40": {
+    "id": "edge-c27b40",
+    "type": "works_at",
+    "from": "person-marcus-tan",
+    "to": "organization-hashicorp",
+    "confidence": 0.92,
+    "attributes": {
+      "role": {
+        "value": "Enterprise Account Manager",
+        "confidence": 0.92
+      },
+      "start_date": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-ee41b0": {
+    "id": "edge-ee41b0",
+    "type": "works_at",
+    "from": "person-lisa-huang",
+    "to": "organization-amazon-web-services-aws",
+    "confidence": 0.92,
+    "attributes": {
+      "role": {
+        "value": "Account Manager",
+        "confidence": 0.92
+      },
+      "start_date": {
+        "value": null,
+        "confidence": 0.0
+      },
+      "end_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-9dc267": {
+    "id": "edge-9dc267",
+    "type": "reports_to",
+    "from": "person-bob-martinez",
+    "to": "person-sandra-kim",
+    "confidence": 0.95,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-f92d5f": {
+    "id": "edge-f92d5f",
+    "type": "reports_to",
+    "from": "person-carol-okafor",
+    "to": "person-dr-priya-nair",
+    "confidence": 0.8,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-8c3e84": {
+    "id": "edge-8c3e84",
+    "type": "manages",
+    "from": "person-bob-martinez",
+    "to": "team-infrastructure-team",
+    "confidence": 0.95,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-cff8ed": {
+    "id": "edge-cff8ed",
+    "type": "manages",
+    "from": "person-bob-martinez",
+    "to": "team-product-team",
+    "confidence": 0.92,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-73ec0d": {
+    "id": "edge-73ec0d",
+    "type": "manages",
+    "from": "person-james-whitfield",
+    "to": "team-platform-team",
+    "confidence": 0.9,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-8f0036": {
+    "id": "edge-8f0036",
+    "type": "manages",
+    "from": "person-james-whitfield",
+    "to": "team-ai-research-team",
+    "confidence": 0.88,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-439f54": {
+    "id": "edge-439f54",
+    "type": "manages",
+    "from": "person-dr-yuna-park",
+    "to": "team-ai-research-team",
+    "confidence": 0.92,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-770457": {
+    "id": "edge-770457",
+    "type": "manages",
+    "from": "person-alice-chen",
+    "to": "team-backend-engineering-guild",
+    "confidence": 0.85,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-5f6aa7": {
+    "id": "edge-5f6aa7",
+    "type": "member_of",
+    "from": "person-carol-okafor",
+    "to": "team-infrastructure-team",
+    "confidence": 0.93,
+    "attributes": {
+      "role": {
+        "value": null,
+        "confidence": 0.0
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-f77976": {
+    "id": "edge-f77976",
+    "type": "contributes_to",
+    "from": "person-alice-chen",
+    "to": "project-db-migration-project",
+    "confidence": 0.93,
+    "attributes": {
+      "role": {
+        "value": "Core engineering contributor",
+        "confidence": 0.92
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-1bb309": {
+    "id": "edge-1bb309",
+    "type": "contributes_to",
+    "from": "person-carol-okafor",
+    "to": "project-db-migration-project",
+    "confidence": 0.93,
+    "attributes": {
+      "role": {
+        "value": "Core engineering contributor",
+        "confidence": 0.92
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-350a81": {
+    "id": "edge-350a81",
+    "type": "contributes_to",
+    "from": "person-bob-martinez",
+    "to": "project-db-migration-project",
+    "confidence": 0.85,
+    "attributes": {
+      "role": {
+        "value": "Initiator",
+        "confidence": 0.85
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-9ca93e": {
+    "id": "edge-9ca93e",
+    "type": "contributes_to",
+    "from": "person-alice-chen",
+    "to": "project-rag-pipeline-project",
+    "confidence": 0.9,
+    "attributes": {
+      "role": {
+        "value": "Backend API work",
+        "confidence": 0.9
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-2433f1": {
+    "id": "edge-2433f1",
+    "type": "contributes_to",
+    "from": "person-dr-yuna-park",
+    "to": "project-rag-pipeline-project",
+    "confidence": 0.92,
+    "attributes": {
+      "role": {
+        "value": "Project lead",
+        "confidence": 0.92
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-e68f52": {
+    "id": "edge-e68f52",
+    "type": "contributes_to",
+    "from": "person-james-whitfield",
+    "to": "project-platform-secrets-service",
+    "confidence": 0.9,
+    "attributes": {
+      "role": {
+        "value": "Project owner",
+        "confidence": 0.9
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-1a9de5": {
+    "id": "edge-1a9de5",
+    "type": "contributes_to",
+    "from": "person-alice-chen",
+    "to": "project-platform-secrets-service",
+    "confidence": 0.82,
+    "attributes": {
+      "role": {
+        "value": "Requester",
+        "confidence": 0.8
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-8f9959": {
+    "id": "edge-8f9959",
+    "type": "owns_project",
+    "from": "team-infrastructure-team",
+    "to": "project-db-migration-project",
+    "confidence": 0.9,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-16dc00": {
+    "id": "edge-16dc00",
+    "type": "owns_project",
+    "from": "team-ai-research-team",
+    "to": "project-rag-pipeline-project",
+    "confidence": 0.85,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-07c70d": {
+    "id": "edge-07c70d",
+    "type": "owns_project",
+    "from": "team-platform-team",
+    "to": "project-platform-secrets-service",
+    "confidence": 0.85,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-629b4f": {
+    "id": "edge-629b4f",
+    "type": "depends_on",
+    "from": "project-db-migration-project",
+    "to": "project-platform-secrets-service",
+    "confidence": 0.9,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-554618": {
+    "id": "edge-554618",
+    "type": "uses_technology",
+    "from": "project-db-migration-project",
+    "to": "technology-aws-aurora",
+    "confidence": 0.93,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-fb6892": {
+    "id": "edge-fb6892",
+    "type": "uses_technology",
+    "from": "project-db-migration-project",
+    "to": "technology-postgresql-15",
+    "confidence": 0.85,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-025633": {
+    "id": "edge-025633",
+    "type": "uses_technology",
+    "from": "project-rag-pipeline-project",
+    "to": "technology-pinecone",
+    "confidence": 0.92,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-ae6127": {
+    "id": "edge-ae6127",
+    "type": "uses_technology",
+    "from": "project-rag-pipeline-project",
+    "to": "technology-python",
+    "confidence": 0.82,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-bedee6": {
+    "id": "edge-bedee6",
+    "type": "uses_technology",
+    "from": "project-platform-secrets-service",
+    "to": "technology-hashicorp-vault",
+    "confidence": 0.92,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-cb5ce9": {
+    "id": "edge-cb5ce9",
+    "type": "partners_with",
+    "from": "organization-acme-corp",
+    "to": "organization-datasystems-inc",
+    "confidence": 0.95,
+    "attributes": {
+      "type": {
+        "value": "Strategic partnership",
+        "confidence": 0.93
+      },
+      "start_date": {
+        "value": "September 2025",
+        "confidence": 0.92
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-a69b31": {
+    "id": "edge-a69b31",
+    "type": "partners_with",
+    "from": "organization-acme-corp",
+    "to": "organization-novatech-inc",
+    "confidence": 0.85,
+    "attributes": {
+      "type": {
+        "value": "Informal advisory relationship",
+        "confidence": 0.9
+      },
+      "start_date": {
+        "value": null,
+        "confidence": 0.0
+      }
+    },
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-9b016f": {
+    "id": "edge-9b016f",
+    "type": "provides_technology",
+    "from": "organization-hashicorp",
+    "to": "technology-hashicorp-vault",
+    "confidence": 0.93,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-22ebdc": {
+    "id": "edge-22ebdc",
+    "type": "provides_technology",
+    "from": "organization-amazon-web-services-aws",
+    "to": "technology-aws-aurora",
+    "confidence": 0.9,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-c69a76": {
+    "id": "edge-c69a76",
+    "type": "provides_technology",
+    "from": "organization-amazon-web-services-aws",
+    "to": "technology-aws-sagemaker",
+    "confidence": 0.85,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-d1bc0d": {
+    "id": "edge-d1bc0d",
+    "type": "located_in",
+    "from": "organization-datasystems-inc",
+    "to": "location-san-francisco",
+    "confidence": 0.92,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-e8a0d4": {
+    "id": "edge-e8a0d4",
+    "type": "part_of",
+    "from": "team-infrastructure-team",
+    "to": "organization-acme-corp",
+    "confidence": 0.93,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-bf8cce": {
+    "id": "edge-bf8cce",
+    "type": "part_of",
+    "from": "team-ai-research-team",
+    "to": "organization-acme-corp",
+    "confidence": 0.93,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-7ebd4b": {
+    "id": "edge-7ebd4b",
+    "type": "part_of",
+    "from": "team-platform-team",
+    "to": "organization-acme-corp",
+    "confidence": 0.9,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-56ae94": {
+    "id": "edge-56ae94",
+    "type": "part_of",
+    "from": "team-product-team",
+    "to": "organization-acme-corp",
+    "confidence": 0.85,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  },
+  "edge-5f072d": {
+    "id": "edge-5f072d",
+    "type": "part_of",
+    "from": "team-backend-engineering-guild",
+    "to": "organization-acme-corp",
+    "confidence": 0.82,
+    "attributes": {},
+    "method": "llm_extraction",
+    "source_files": [
+      "partners.md",
+      "projects.md",
+      "team.md",
+      "technologies.md"
+    ]
+  }
+}

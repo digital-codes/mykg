@@ -1,0 +1,1065 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d47" for="edge" attr.name="attr_type_confidence" attr.type="double"/>
+<key id="d46" for="edge" attr.name="attr_type_value" attr.type="string"/>
+<key id="d45" for="edge" attr.name="attr_end_date_confidence" attr.type="double"/>
+<key id="d44" for="edge" attr.name="attr_end_date_value" attr.type="string"/>
+<key id="d43" for="edge" attr.name="attr_start_date_confidence" attr.type="double"/>
+<key id="d42" for="edge" attr.name="attr_start_date_value" attr.type="string"/>
+<key id="d41" for="edge" attr.name="attr_role_confidence" attr.type="double"/>
+<key id="d40" for="edge" attr.name="attr_role_value" attr.type="string"/>
+<key id="d39" for="edge" attr.name="source_files" attr.type="string"/>
+<key id="d38" for="edge" attr.name="confidence" attr.type="double"/>
+<key id="d37" for="edge" attr.name="edge_type" attr.type="string"/>
+<key id="d36" for="edge" attr.name="label" attr.type="string"/>
+<key id="d35" for="node" attr.name="attr_region_confidence" attr.type="double"/>
+<key id="d34" for="node" attr.name="attr_region_value" attr.type="string"/>
+<key id="d33" for="node" attr.name="attr_country_confidence" attr.type="double"/>
+<key id="d32" for="node" attr.name="attr_country_value" attr.type="string"/>
+<key id="d31" for="node" attr.name="attr_vendor_confidence" attr.type="double"/>
+<key id="d30" for="node" attr.name="attr_vendor_value" attr.type="string"/>
+<key id="d29" for="node" attr.name="attr_category_confidence" attr.type="double"/>
+<key id="d28" for="node" attr.name="attr_category_value" attr.type="string"/>
+<key id="d27" for="node" attr.name="attr_budget_confidence" attr.type="double"/>
+<key id="d26" for="node" attr.name="attr_budget_value" attr.type="string"/>
+<key id="d25" for="node" attr.name="attr_target_date_confidence" attr.type="double"/>
+<key id="d24" for="node" attr.name="attr_target_date_value" attr.type="string"/>
+<key id="d23" for="node" attr.name="attr_status_confidence" attr.type="double"/>
+<key id="d22" for="node" attr.name="attr_status_value" attr.type="string"/>
+<key id="d21" for="node" attr.name="attr_member_count_confidence" attr.type="double"/>
+<key id="d20" for="node" attr.name="attr_member_count_value" attr.type="string"/>
+<key id="d19" for="node" attr.name="attr_focus_confidence" attr.type="double"/>
+<key id="d18" for="node" attr.name="attr_focus_value" attr.type="string"/>
+<key id="d17" for="node" attr.name="attr_headquarters_confidence" attr.type="double"/>
+<key id="d16" for="node" attr.name="attr_headquarters_value" attr.type="string"/>
+<key id="d15" for="node" attr.name="attr_industry_confidence" attr.type="double"/>
+<key id="d14" for="node" attr.name="attr_industry_value" attr.type="string"/>
+<key id="d13" for="node" attr.name="attr_education_confidence" attr.type="double"/>
+<key id="d12" for="node" attr.name="attr_education_value" attr.type="string"/>
+<key id="d11" for="node" attr.name="attr_email_confidence" attr.type="double"/>
+<key id="d10" for="node" attr.name="attr_email_value" attr.type="string"/>
+<key id="d9" for="node" attr.name="attr_title_confidence" attr.type="double"/>
+<key id="d8" for="node" attr.name="attr_title_value" attr.type="string"/>
+<key id="d7" for="node" attr.name="attr_name_confidence" attr.type="double"/>
+<key id="d6" for="node" attr.name="attr_name_value" attr.type="string"/>
+<key id="d5" for="node" attr.name="aliases" attr.type="string"/>
+<key id="d4" for="node" attr.name="source_files" attr.type="string"/>
+<key id="d3" for="node" attr.name="confidence" attr.type="double"/>
+<key id="d2" for="node" attr.name="node_type" attr.type="string"/>
+<key id="d1" for="node" attr.name="label" attr.type="string"/>
+<key id="d0" for="graph" attr.name="name" attr.type="string"/>
+<graph edgedefault="directed"><data key="d0">mykg knowledge graph</data>
+<node id="person-alice-chen">
+  <data key="d1">person-alice-chen</data>
+  <data key="d2">Person</data>
+  <data key="d3">0.98</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Alice Chen</data>
+  <data key="d7">0.98</data>
+  <data key="d8">Senior Software Engineer</data>
+  <data key="d9">0.97</data>
+  <data key="d10">alice.chen@acme.com</data>
+  <data key="d11">0.98</data>
+  <data key="d12">BSc in Computer Science from MIT</data>
+  <data key="d13">0.97</data>
+</node>
+<node id="person-bob-martinez">
+  <data key="d1">person-bob-martinez</data>
+  <data key="d2">Person</data>
+  <data key="d3">0.98</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Bob Martinez</data>
+  <data key="d7">0.98</data>
+  <data key="d8">Director of Engineering</data>
+  <data key="d9">0.97</data>
+  <data key="d10"></data>
+  <data key="d11">0.0</data>
+  <data key="d12"></data>
+  <data key="d13">0.0</data>
+</node>
+<node id="person-carol-okafor">
+  <data key="d1">person-carol-okafor</data>
+  <data key="d2">Person</data>
+  <data key="d3">0.98</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Carol Okafor</data>
+  <data key="d7">0.98</data>
+  <data key="d8">Site Reliability Engineer</data>
+  <data key="d9">0.95</data>
+  <data key="d10"></data>
+  <data key="d11">0.0</data>
+  <data key="d12"></data>
+  <data key="d13">0.0</data>
+</node>
+<node id="person-sandra-kim">
+  <data key="d1">person-sandra-kim</data>
+  <data key="d2">Person</data>
+  <data key="d3">0.98</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Sandra Kim</data>
+  <data key="d7">0.98</data>
+  <data key="d8">CEO</data>
+  <data key="d9">0.97</data>
+  <data key="d10"></data>
+  <data key="d11">0.0</data>
+  <data key="d12"></data>
+  <data key="d13">0.0</data>
+</node>
+<node id="person-james-whitfield">
+  <data key="d1">person-james-whitfield</data>
+  <data key="d2">Person</data>
+  <data key="d3">0.98</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">James Whitfield</data>
+  <data key="d7">0.98</data>
+  <data key="d8">CTO</data>
+  <data key="d9">0.97</data>
+  <data key="d10"></data>
+  <data key="d11">0.0</data>
+  <data key="d12">PhD in Computer Science from Stanford</data>
+  <data key="d13">0.96</data>
+</node>
+<node id="person-dr-yuna-park">
+  <data key="d1">person-dr-yuna-park</data>
+  <data key="d2">Person</data>
+  <data key="d3">0.97</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Dr. Yuna Park</data>
+  <data key="d7">0.97</data>
+  <data key="d8">Principal Researcher</data>
+  <data key="d9">0.95</data>
+  <data key="d10"></data>
+  <data key="d11">0.0</data>
+  <data key="d12"></data>
+  <data key="d13">0.0</data>
+</node>
+<node id="person-dr-priya-nair">
+  <data key="d1">person-dr-priya-nair</data>
+  <data key="d2">Person</data>
+  <data key="d3">0.95</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Dr. Priya Nair</data>
+  <data key="d7">0.95</data>
+  <data key="d8">VP of Engineering</data>
+  <data key="d9">0.9</data>
+  <data key="d10"></data>
+  <data key="d11">0.0</data>
+  <data key="d12"></data>
+  <data key="d13">0.0</data>
+</node>
+<node id="person-marcus-tan">
+  <data key="d1">person-marcus-tan</data>
+  <data key="d2">Person</data>
+  <data key="d3">0.93</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Marcus Tan</data>
+  <data key="d7">0.93</data>
+  <data key="d8">Enterprise Account Manager</data>
+  <data key="d9">0.9</data>
+  <data key="d10"></data>
+  <data key="d11">0.0</data>
+  <data key="d12"></data>
+  <data key="d13">0.0</data>
+</node>
+<node id="person-lisa-huang">
+  <data key="d1">person-lisa-huang</data>
+  <data key="d2">Person</data>
+  <data key="d3">0.93</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Lisa Huang</data>
+  <data key="d7">0.93</data>
+  <data key="d8">Account Manager</data>
+  <data key="d9">0.9</data>
+  <data key="d10"></data>
+  <data key="d11">0.0</data>
+  <data key="d12"></data>
+  <data key="d13">0.0</data>
+</node>
+<node id="organization-acme-corp">
+  <data key="d1">organization-acme-corp</data>
+  <data key="d2">Organization</data>
+  <data key="d3">0.98</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Acme Corp</data>
+  <data key="d7">0.98</data>
+  <data key="d14"></data>
+  <data key="d15">0.0</data>
+  <data key="d16"></data>
+  <data key="d17">0.0</data>
+</node>
+<node id="organization-datasystems-inc">
+  <data key="d1">organization-datasystems-inc</data>
+  <data key="d2">Organization</data>
+  <data key="d3">0.97</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">DataSystems Inc</data>
+  <data key="d7">0.97</data>
+  <data key="d14">Data infrastructure</data>
+  <data key="d15">0.95</data>
+  <data key="d16">San Francisco</data>
+  <data key="d17">0.95</data>
+</node>
+<node id="organization-novatech-inc">
+  <data key="d1">organization-novatech-inc</data>
+  <data key="d2">Organization</data>
+  <data key="d3">0.96</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">NovaTech Inc</data>
+  <data key="d7">0.96</data>
+  <data key="d14">SaaS / developer tooling</data>
+  <data key="d15">0.93</data>
+  <data key="d16"></data>
+  <data key="d17">0.0</data>
+</node>
+<node id="organization-hashicorp">
+  <data key="d1">organization-hashicorp</data>
+  <data key="d2">Organization</data>
+  <data key="d3">0.96</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">HashiCorp</data>
+  <data key="d7">0.96</data>
+  <data key="d14"></data>
+  <data key="d15">0.0</data>
+  <data key="d16"></data>
+  <data key="d17">0.0</data>
+</node>
+<node id="organization-amazon-web-services-aws">
+  <data key="d1">organization-amazon-web-services-aws</data>
+  <data key="d2">Organization</data>
+  <data key="d3">0.96</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Amazon Web Services (AWS)</data>
+  <data key="d7">0.96</data>
+  <data key="d14">Cloud provider</data>
+  <data key="d15">0.93</data>
+  <data key="d16"></data>
+  <data key="d17">0.0</data>
+</node>
+<node id="organization-google">
+  <data key="d1">organization-google</data>
+  <data key="d2">Organization</data>
+  <data key="d3">0.9</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Google</data>
+  <data key="d7">0.9</data>
+  <data key="d14"></data>
+  <data key="d15">0.0</data>
+  <data key="d16"></data>
+  <data key="d17">0.0</data>
+</node>
+<node id="organization-deepmind">
+  <data key="d1">organization-deepmind</data>
+  <data key="d2">Organization</data>
+  <data key="d3">0.88</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">DeepMind</data>
+  <data key="d7">0.88</data>
+  <data key="d14"></data>
+  <data key="d15">0.0</data>
+  <data key="d16"></data>
+  <data key="d17">0.0</data>
+</node>
+<node id="organization-mit">
+  <data key="d1">organization-mit</data>
+  <data key="d2">Organization</data>
+  <data key="d3">0.82</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">MIT</data>
+  <data key="d7">0.82</data>
+  <data key="d14">Education</data>
+  <data key="d15">0.7</data>
+  <data key="d16"></data>
+  <data key="d17">0.0</data>
+</node>
+<node id="organization-stanford">
+  <data key="d1">organization-stanford</data>
+  <data key="d2">Organization</data>
+  <data key="d3">0.82</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Stanford</data>
+  <data key="d7">0.82</data>
+  <data key="d14">Education</data>
+  <data key="d15">0.7</data>
+  <data key="d16"></data>
+  <data key="d17">0.0</data>
+</node>
+<node id="team-infrastructure-team">
+  <data key="d1">team-infrastructure-team</data>
+  <data key="d2">Team</data>
+  <data key="d3">0.96</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Infrastructure team</data>
+  <data key="d7">0.96</data>
+  <data key="d14"></data>
+  <data key="d15">0.0</data>
+  <data key="d16"></data>
+  <data key="d17">0.0</data>
+  <data key="d18">Cloud operations, CI/CD pipelines, on-call rotations</data>
+  <data key="d19">0.93</data>
+  <data key="d20">5</data>
+  <data key="d21">0.92</data>
+</node>
+<node id="team-ai-research-team">
+  <data key="d1">team-ai-research-team</data>
+  <data key="d2">Team</data>
+  <data key="d3">0.96</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">AI Research team</data>
+  <data key="d7">0.96</data>
+  <data key="d14"></data>
+  <data key="d15">0.0</data>
+  <data key="d16"></data>
+  <data key="d17">0.0</data>
+  <data key="d18">Retrieval-augmented generation (RAG) and knowledge graph applications</data>
+  <data key="d19">0.93</data>
+  <data key="d20"></data>
+  <data key="d21">0.0</data>
+</node>
+<node id="team-platform-team">
+  <data key="d1">team-platform-team</data>
+  <data key="d2">Team</data>
+  <data key="d3">0.93</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Platform team</data>
+  <data key="d7">0.93</data>
+  <data key="d14"></data>
+  <data key="d15">0.0</data>
+  <data key="d16"></data>
+  <data key="d17">0.0</data>
+  <data key="d18">Secrets management</data>
+  <data key="d19">0.7</data>
+  <data key="d20"></data>
+  <data key="d21">0.0</data>
+</node>
+<node id="team-product-team">
+  <data key="d1">team-product-team</data>
+  <data key="d2">Team</data>
+  <data key="d3">0.85</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Product team</data>
+  <data key="d7">0.85</data>
+  <data key="d14"></data>
+  <data key="d15">0.0</data>
+  <data key="d16"></data>
+  <data key="d17">0.0</data>
+  <data key="d18"></data>
+  <data key="d19">0.0</data>
+  <data key="d20"></data>
+  <data key="d21">0.0</data>
+</node>
+<node id="team-backend-engineering-guild">
+  <data key="d1">team-backend-engineering-guild</data>
+  <data key="d2">Team</data>
+  <data key="d3">0.85</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Backend engineering guild</data>
+  <data key="d7">0.85</data>
+  <data key="d14"></data>
+  <data key="d15">0.0</data>
+  <data key="d16"></data>
+  <data key="d17">0.0</data>
+  <data key="d18">Backend language choices; Python (FastAPI), Go</data>
+  <data key="d19">0.8</data>
+  <data key="d20"></data>
+  <data key="d21">0.0</data>
+</node>
+<node id="project-db-migration-project">
+  <data key="d1">project-db-migration-project</data>
+  <data key="d2">Project</data>
+  <data key="d3">0.97</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">DB Migration Project</data>
+  <data key="d7">0.97</data>
+  <data key="d22">In progress</data>
+  <data key="d23">0.95</data>
+  <data key="d24">End of Q3 2026</data>
+  <data key="d25">0.93</data>
+  <data key="d26">$120,000</data>
+  <data key="d27">0.95</data>
+</node>
+<node id="project-rag-pipeline-project">
+  <data key="d1">project-rag-pipeline-project</data>
+  <data key="d2">Project</data>
+  <data key="d3">0.97</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">RAG Pipeline Project</data>
+  <data key="d7">0.97</data>
+  <data key="d22">Design phase</data>
+  <data key="d23">0.93</data>
+  <data key="d24">Q4 2026</data>
+  <data key="d25">0.92</data>
+  <data key="d26"></data>
+  <data key="d27">0.0</data>
+</node>
+<node id="project-platform-secrets-service">
+  <data key="d1">project-platform-secrets-service</data>
+  <data key="d2">Project</data>
+  <data key="d3">0.96</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Platform Secrets Service</data>
+  <data key="d7">0.96</data>
+  <data key="d22"></data>
+  <data key="d23">0.0</data>
+  <data key="d24">August 2026</data>
+  <data key="d25">0.92</data>
+  <data key="d26"></data>
+  <data key="d27">0.0</data>
+</node>
+<node id="project-data-lake-migration">
+  <data key="d1">project-data-lake-migration</data>
+  <data key="d2">Project</data>
+  <data key="d3">0.8</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Data lake migration</data>
+  <data key="d7">0.8</data>
+  <data key="d22">Planned</data>
+  <data key="d23">0.85</data>
+  <data key="d24"></data>
+  <data key="d25">0.0</data>
+  <data key="d26"></data>
+  <data key="d27">0.0</data>
+</node>
+<node id="technology-aws-aurora">
+  <data key="d1">technology-aws-aurora</data>
+  <data key="d2">Technology</data>
+  <data key="d3">0.95</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">AWS Aurora</data>
+  <data key="d7">0.95</data>
+  <data key="d28">Database</data>
+  <data key="d29">0.9</data>
+  <data key="d30">AWS</data>
+  <data key="d31">0.9</data>
+</node>
+<node id="technology-postgresql-15">
+  <data key="d1">technology-postgresql-15</data>
+  <data key="d2">Technology</data>
+  <data key="d3">0.93</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">PostgreSQL 15</data>
+  <data key="d7">0.93</data>
+  <data key="d28">Database</data>
+  <data key="d29">0.9</data>
+  <data key="d30"></data>
+  <data key="d31">0.0</data>
+</node>
+<node id="technology-pinecone">
+  <data key="d1">technology-pinecone</data>
+  <data key="d2">Technology</data>
+  <data key="d3">0.94</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Pinecone</data>
+  <data key="d7">0.94</data>
+  <data key="d28">Vector database</data>
+  <data key="d29">0.92</data>
+  <data key="d30"></data>
+  <data key="d31">0.0</data>
+</node>
+<node id="technology-weaviate">
+  <data key="d1">technology-weaviate</data>
+  <data key="d2">Technology</data>
+  <data key="d3">0.8</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Weaviate</data>
+  <data key="d7">0.8</data>
+  <data key="d28">Vector database</data>
+  <data key="d29">0.85</data>
+  <data key="d30"></data>
+  <data key="d31">0.0</data>
+</node>
+<node id="technology-qdrant">
+  <data key="d1">technology-qdrant</data>
+  <data key="d2">Technology</data>
+  <data key="d3">0.8</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Qdrant</data>
+  <data key="d7">0.8</data>
+  <data key="d28">Vector database</data>
+  <data key="d29">0.85</data>
+  <data key="d30"></data>
+  <data key="d31">0.0</data>
+</node>
+<node id="technology-hashicorp-vault">
+  <data key="d1">technology-hashicorp-vault</data>
+  <data key="d2">Technology</data>
+  <data key="d3">0.94</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">HashiCorp Vault</data>
+  <data key="d7">0.94</data>
+  <data key="d28">Secrets management</data>
+  <data key="d29">0.9</data>
+  <data key="d30">HashiCorp</data>
+  <data key="d31">0.93</data>
+</node>
+<node id="technology-github-actions">
+  <data key="d1">technology-github-actions</data>
+  <data key="d2">Technology</data>
+  <data key="d3">0.9</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">GitHub Actions</data>
+  <data key="d7">0.9</data>
+  <data key="d28">CI/CD</data>
+  <data key="d29">0.88</data>
+  <data key="d30"></data>
+  <data key="d31">0.0</data>
+</node>
+<node id="technology-kubernetes-eks">
+  <data key="d1">technology-kubernetes-eks</data>
+  <data key="d2">Technology</data>
+  <data key="d3">0.9</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Kubernetes (EKS)</data>
+  <data key="d7">0.9</data>
+  <data key="d28">Container orchestration</data>
+  <data key="d29">0.88</data>
+  <data key="d30"></data>
+  <data key="d31">0.0</data>
+</node>
+<node id="technology-python">
+  <data key="d1">technology-python</data>
+  <data key="d2">Technology</data>
+  <data key="d3">0.9</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Python</data>
+  <data key="d7">0.9</data>
+  <data key="d28">Programming language</data>
+  <data key="d29">0.9</data>
+  <data key="d30"></data>
+  <data key="d31">0.0</data>
+</node>
+<node id="technology-pytorch">
+  <data key="d1">technology-pytorch</data>
+  <data key="d2">Technology</data>
+  <data key="d3">0.88</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">PyTorch</data>
+  <data key="d7">0.88</data>
+  <data key="d28">ML framework</data>
+  <data key="d29">0.85</data>
+  <data key="d30"></data>
+  <data key="d31">0.0</data>
+</node>
+<node id="technology-hugging-face-transformers">
+  <data key="d1">technology-hugging-face-transformers</data>
+  <data key="d2">Technology</data>
+  <data key="d3">0.87</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Hugging Face Transformers</data>
+  <data key="d7">0.87</data>
+  <data key="d28">ML library</data>
+  <data key="d29">0.85</data>
+  <data key="d30"></data>
+  <data key="d31">0.0</data>
+</node>
+<node id="technology-aws-sagemaker">
+  <data key="d1">technology-aws-sagemaker</data>
+  <data key="d2">Technology</data>
+  <data key="d3">0.87</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">AWS SageMaker</data>
+  <data key="d7">0.87</data>
+  <data key="d28">ML platform</data>
+  <data key="d29">0.85</data>
+  <data key="d30">AWS</data>
+  <data key="d31">0.88</data>
+</node>
+<node id="technology-fastapi">
+  <data key="d1">technology-fastapi</data>
+  <data key="d2">Technology</data>
+  <data key="d3">0.85</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">FastAPI</data>
+  <data key="d7">0.85</data>
+  <data key="d28">Web framework</data>
+  <data key="d29">0.85</data>
+  <data key="d30"></data>
+  <data key="d31">0.0</data>
+</node>
+<node id="technology-go">
+  <data key="d1">technology-go</data>
+  <data key="d2">Technology</data>
+  <data key="d3">0.85</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">Go</data>
+  <data key="d7">0.85</data>
+  <data key="d28">Programming language</data>
+  <data key="d29">0.9</data>
+  <data key="d30"></data>
+  <data key="d31">0.0</data>
+</node>
+<node id="technology-react">
+  <data key="d1">technology-react</data>
+  <data key="d2">Technology</data>
+  <data key="d3">0.85</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">React</data>
+  <data key="d7">0.85</data>
+  <data key="d28">Frontend framework</data>
+  <data key="d29">0.85</data>
+  <data key="d30"></data>
+  <data key="d31">0.0</data>
+</node>
+<node id="technology-typescript">
+  <data key="d1">technology-typescript</data>
+  <data key="d2">Technology</data>
+  <data key="d3">0.85</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">TypeScript</data>
+  <data key="d7">0.85</data>
+  <data key="d28">Programming language</data>
+  <data key="d29">0.9</data>
+  <data key="d30"></data>
+  <data key="d31">0.0</data>
+</node>
+<node id="location-san-francisco">
+  <data key="d1">location-san-francisco</data>
+  <data key="d2">Location</data>
+  <data key="d3">0.9</data>
+  <data key="d4">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d5"></data>
+  <data key="d6">San Francisco</data>
+  <data key="d7">0.9</data>
+  <data key="d32"></data>
+  <data key="d33">0.0</data>
+  <data key="d34"></data>
+  <data key="d35">0.0</data>
+</node>
+<edge source="person-alice-chen" target="organization-acme-corp">
+  <data key="d36">edge-0adce0</data>
+  <data key="d37">works_at</data>
+  <data key="d38">0.97</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">Senior Software Engineer</data>
+  <data key="d41">0.97</data>
+  <data key="d42">March 2021</data>
+  <data key="d43">0.95</data>
+  <data key="d44"></data>
+  <data key="d45">0.0</data>
+</edge>
+<edge source="person-alice-chen" target="team-backend-engineering-guild">
+  <data key="d36">edge-770457</data>
+  <data key="d37">manages</data>
+  <data key="d38">0.85</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="person-alice-chen" target="project-db-migration-project">
+  <data key="d36">edge-f77976</data>
+  <data key="d37">contributes_to</data>
+  <data key="d38">0.93</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">Core engineering contributor</data>
+  <data key="d41">0.92</data>
+</edge>
+<edge source="person-alice-chen" target="project-rag-pipeline-project">
+  <data key="d36">edge-9ca93e</data>
+  <data key="d37">contributes_to</data>
+  <data key="d38">0.9</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">Backend API work</data>
+  <data key="d41">0.9</data>
+</edge>
+<edge source="person-alice-chen" target="project-platform-secrets-service">
+  <data key="d36">edge-1a9de5</data>
+  <data key="d37">contributes_to</data>
+  <data key="d38">0.82</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">Requester</data>
+  <data key="d41">0.8</data>
+</edge>
+<edge source="person-bob-martinez" target="organization-acme-corp">
+  <data key="d36">edge-ece6c4</data>
+  <data key="d37">works_at</data>
+  <data key="d38">0.97</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">Director of Engineering</data>
+  <data key="d41">0.97</data>
+  <data key="d42">2018</data>
+  <data key="d43">0.93</data>
+  <data key="d44"></data>
+  <data key="d45">0.0</data>
+</edge>
+<edge source="person-bob-martinez" target="organization-google">
+  <data key="d36">edge-083f4a</data>
+  <data key="d37">works_at</data>
+  <data key="d38">0.9</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">Staff Engineer</data>
+  <data key="d41">0.9</data>
+  <data key="d42"></data>
+  <data key="d43">0.0</data>
+  <data key="d44"></data>
+  <data key="d45">0.0</data>
+</edge>
+<edge source="person-bob-martinez" target="person-sandra-kim">
+  <data key="d36">edge-9dc267</data>
+  <data key="d37">reports_to</data>
+  <data key="d38">0.95</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="person-bob-martinez" target="team-infrastructure-team">
+  <data key="d36">edge-8c3e84</data>
+  <data key="d37">manages</data>
+  <data key="d38">0.95</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="person-bob-martinez" target="team-product-team">
+  <data key="d36">edge-cff8ed</data>
+  <data key="d37">manages</data>
+  <data key="d38">0.92</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="person-bob-martinez" target="project-db-migration-project">
+  <data key="d36">edge-350a81</data>
+  <data key="d37">contributes_to</data>
+  <data key="d38">0.85</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">Initiator</data>
+  <data key="d41">0.85</data>
+</edge>
+<edge source="person-carol-okafor" target="organization-acme-corp">
+  <data key="d36">edge-079047</data>
+  <data key="d37">works_at</data>
+  <data key="d38">0.96</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">Site Reliability Engineer</data>
+  <data key="d41">0.95</data>
+  <data key="d42">January 2023</data>
+  <data key="d43">0.93</data>
+  <data key="d44"></data>
+  <data key="d45">0.0</data>
+</edge>
+<edge source="person-carol-okafor" target="organization-datasystems-inc">
+  <data key="d36">edge-f1b25e</data>
+  <data key="d37">works_at</data>
+  <data key="d38">0.95</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">DevOps Engineer</data>
+  <data key="d41">0.95</data>
+  <data key="d42">2019</data>
+  <data key="d43">0.9</data>
+  <data key="d44">2022</data>
+  <data key="d45">0.9</data>
+</edge>
+<edge source="person-carol-okafor" target="person-dr-priya-nair">
+  <data key="d36">edge-f92d5f</data>
+  <data key="d37">reports_to</data>
+  <data key="d38">0.8</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="person-carol-okafor" target="team-infrastructure-team">
+  <data key="d36">edge-5f6aa7</data>
+  <data key="d37">member_of</data>
+  <data key="d38">0.93</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40"></data>
+  <data key="d41">0.0</data>
+</edge>
+<edge source="person-carol-okafor" target="project-db-migration-project">
+  <data key="d36">edge-1bb309</data>
+  <data key="d37">contributes_to</data>
+  <data key="d38">0.93</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">Core engineering contributor</data>
+  <data key="d41">0.92</data>
+</edge>
+<edge source="person-sandra-kim" target="organization-acme-corp">
+  <data key="d36">edge-793b1e</data>
+  <data key="d37">works_at</data>
+  <data key="d38">0.96</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">CEO</data>
+  <data key="d41">0.96</data>
+  <data key="d42">2015</data>
+  <data key="d43">0.85</data>
+  <data key="d44"></data>
+  <data key="d45">0.0</data>
+</edge>
+<edge source="person-sandra-kim" target="organization-novatech-inc">
+  <data key="d36">edge-f5f9c8</data>
+  <data key="d37">works_at</data>
+  <data key="d38">0.92</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">VP Engineering</data>
+  <data key="d41">0.92</data>
+  <data key="d42"></data>
+  <data key="d43">0.0</data>
+  <data key="d44"></data>
+  <data key="d45">0.0</data>
+</edge>
+<edge source="person-james-whitfield" target="organization-acme-corp">
+  <data key="d36">edge-94a3a9</data>
+  <data key="d37">works_at</data>
+  <data key="d38">0.96</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">CTO</data>
+  <data key="d41">0.96</data>
+  <data key="d42">2015</data>
+  <data key="d43">0.8</data>
+  <data key="d44"></data>
+  <data key="d45">0.0</data>
+</edge>
+<edge source="person-james-whitfield" target="team-platform-team">
+  <data key="d36">edge-73ec0d</data>
+  <data key="d37">manages</data>
+  <data key="d38">0.9</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="person-james-whitfield" target="team-ai-research-team">
+  <data key="d36">edge-8f0036</data>
+  <data key="d37">manages</data>
+  <data key="d38">0.88</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="person-james-whitfield" target="project-platform-secrets-service">
+  <data key="d36">edge-e68f52</data>
+  <data key="d37">contributes_to</data>
+  <data key="d38">0.9</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">Project owner</data>
+  <data key="d41">0.9</data>
+</edge>
+<edge source="person-dr-yuna-park" target="organization-acme-corp">
+  <data key="d36">edge-f8fd44</data>
+  <data key="d37">works_at</data>
+  <data key="d38">0.88</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">Principal Researcher</data>
+  <data key="d41">0.9</data>
+  <data key="d42"></data>
+  <data key="d43">0.0</data>
+  <data key="d44"></data>
+  <data key="d45">0.0</data>
+</edge>
+<edge source="person-dr-yuna-park" target="organization-deepmind">
+  <data key="d36">edge-283b79</data>
+  <data key="d37">works_at</data>
+  <data key="d38">0.85</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40"></data>
+  <data key="d41">0.0</data>
+  <data key="d42"></data>
+  <data key="d43">0.0</data>
+  <data key="d44"></data>
+  <data key="d45">0.0</data>
+</edge>
+<edge source="person-dr-yuna-park" target="team-ai-research-team">
+  <data key="d36">edge-439f54</data>
+  <data key="d37">manages</data>
+  <data key="d38">0.92</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="person-dr-yuna-park" target="project-rag-pipeline-project">
+  <data key="d36">edge-2433f1</data>
+  <data key="d37">contributes_to</data>
+  <data key="d38">0.92</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">Project lead</data>
+  <data key="d41">0.92</data>
+</edge>
+<edge source="person-dr-priya-nair" target="organization-datasystems-inc">
+  <data key="d36">edge-8adddb</data>
+  <data key="d37">works_at</data>
+  <data key="d38">0.93</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">VP of Engineering</data>
+  <data key="d41">0.92</data>
+  <data key="d42"></data>
+  <data key="d43">0.0</data>
+  <data key="d44"></data>
+  <data key="d45">0.0</data>
+</edge>
+<edge source="person-marcus-tan" target="organization-hashicorp">
+  <data key="d36">edge-c27b40</data>
+  <data key="d37">works_at</data>
+  <data key="d38">0.92</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">Enterprise Account Manager</data>
+  <data key="d41">0.92</data>
+  <data key="d42"></data>
+  <data key="d43">0.0</data>
+  <data key="d44"></data>
+  <data key="d45">0.0</data>
+</edge>
+<edge source="person-lisa-huang" target="organization-amazon-web-services-aws">
+  <data key="d36">edge-ee41b0</data>
+  <data key="d37">works_at</data>
+  <data key="d38">0.92</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d40">Account Manager</data>
+  <data key="d41">0.92</data>
+  <data key="d42"></data>
+  <data key="d43">0.0</data>
+  <data key="d44"></data>
+  <data key="d45">0.0</data>
+</edge>
+<edge source="organization-acme-corp" target="organization-datasystems-inc">
+  <data key="d36">edge-cb5ce9</data>
+  <data key="d37">partners_with</data>
+  <data key="d38">0.95</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d46">Strategic partnership</data>
+  <data key="d47">0.93</data>
+  <data key="d42">September 2025</data>
+  <data key="d43">0.92</data>
+</edge>
+<edge source="organization-acme-corp" target="organization-novatech-inc">
+  <data key="d36">edge-a69b31</data>
+  <data key="d37">partners_with</data>
+  <data key="d38">0.85</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+  <data key="d46">Informal advisory relationship</data>
+  <data key="d47">0.9</data>
+  <data key="d42"></data>
+  <data key="d43">0.0</data>
+</edge>
+<edge source="organization-datasystems-inc" target="location-san-francisco">
+  <data key="d36">edge-d1bc0d</data>
+  <data key="d37">located_in</data>
+  <data key="d38">0.92</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="organization-hashicorp" target="technology-hashicorp-vault">
+  <data key="d36">edge-9b016f</data>
+  <data key="d37">provides_technology</data>
+  <data key="d38">0.93</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="organization-amazon-web-services-aws" target="technology-aws-aurora">
+  <data key="d36">edge-22ebdc</data>
+  <data key="d37">provides_technology</data>
+  <data key="d38">0.9</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="organization-amazon-web-services-aws" target="technology-aws-sagemaker">
+  <data key="d36">edge-c69a76</data>
+  <data key="d37">provides_technology</data>
+  <data key="d38">0.85</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="team-infrastructure-team" target="project-db-migration-project">
+  <data key="d36">edge-8f9959</data>
+  <data key="d37">owns_project</data>
+  <data key="d38">0.9</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="team-infrastructure-team" target="organization-acme-corp">
+  <data key="d36">edge-e8a0d4</data>
+  <data key="d37">part_of</data>
+  <data key="d38">0.93</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="team-ai-research-team" target="project-rag-pipeline-project">
+  <data key="d36">edge-16dc00</data>
+  <data key="d37">owns_project</data>
+  <data key="d38">0.85</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="team-ai-research-team" target="organization-acme-corp">
+  <data key="d36">edge-bf8cce</data>
+  <data key="d37">part_of</data>
+  <data key="d38">0.93</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="team-platform-team" target="project-platform-secrets-service">
+  <data key="d36">edge-07c70d</data>
+  <data key="d37">owns_project</data>
+  <data key="d38">0.85</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="team-platform-team" target="organization-acme-corp">
+  <data key="d36">edge-7ebd4b</data>
+  <data key="d37">part_of</data>
+  <data key="d38">0.9</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="team-product-team" target="organization-acme-corp">
+  <data key="d36">edge-56ae94</data>
+  <data key="d37">part_of</data>
+  <data key="d38">0.85</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="team-backend-engineering-guild" target="organization-acme-corp">
+  <data key="d36">edge-5f072d</data>
+  <data key="d37">part_of</data>
+  <data key="d38">0.82</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="project-db-migration-project" target="project-platform-secrets-service">
+  <data key="d36">edge-629b4f</data>
+  <data key="d37">depends_on</data>
+  <data key="d38">0.9</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="project-db-migration-project" target="technology-aws-aurora">
+  <data key="d36">edge-554618</data>
+  <data key="d37">uses_technology</data>
+  <data key="d38">0.93</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="project-db-migration-project" target="technology-postgresql-15">
+  <data key="d36">edge-fb6892</data>
+  <data key="d37">uses_technology</data>
+  <data key="d38">0.85</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="project-rag-pipeline-project" target="technology-pinecone">
+  <data key="d36">edge-025633</data>
+  <data key="d37">uses_technology</data>
+  <data key="d38">0.92</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="project-rag-pipeline-project" target="technology-python">
+  <data key="d36">edge-ae6127</data>
+  <data key="d37">uses_technology</data>
+  <data key="d38">0.82</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+<edge source="project-platform-secrets-service" target="technology-hashicorp-vault">
+  <data key="d36">edge-bedee6</data>
+  <data key="d37">uses_technology</data>
+  <data key="d38">0.92</data>
+  <data key="d39">partners.md|projects.md|team.md|technologies.md</data>
+</edge>
+</graph></graphml>

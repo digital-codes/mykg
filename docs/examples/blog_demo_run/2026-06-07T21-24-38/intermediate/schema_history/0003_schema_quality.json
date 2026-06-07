@@ -1,0 +1,11 @@
+{
+  "seq": 3,
+  "trigger": "schema_quality",
+  "timestamp": "2026-06-07T21:27:41Z",
+  "concepts_added": [],
+  "concepts_removed": [],
+  "properties_added": [],
+  "properties_removed": [],
+  "concepts_total": 6,
+  "properties_total": 12
+}

@@ -1,0 +1,6214 @@
+{
+  "partners.md": {
+    "nodes": [
+      {
+        "id": "person-alice-chen",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Alice Chen",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "Senior Software Engineer",
+            "confidence": 0.97
+          },
+          "email": {
+            "value": "alice.chen@acme.com",
+            "confidence": 0.98
+          },
+          "education": {
+            "value": "BSc in Computer Science from MIT",
+            "confidence": 0.97
+          }
+        }
+      },
+      {
+        "id": "person-bob-martinez",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Bob Martinez",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "Director of Engineering",
+            "confidence": 0.97
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-carol-okafor",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Carol Okafor",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "Site Reliability Engineer",
+            "confidence": 0.95
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-sandra-kim",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Sandra Kim",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "CEO",
+            "confidence": 0.97
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-james-whitfield",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "James Whitfield",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "CTO",
+            "confidence": 0.97
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": "PhD in Computer Science from Stanford",
+            "confidence": 0.96
+          }
+        }
+      },
+      {
+        "id": "person-yuna-park",
+        "type": "Person",
+        "confidence": 0.97,
+        "attributes": {
+          "name": {
+            "value": "Dr. Yuna Park",
+            "confidence": 0.97
+          },
+          "title": {
+            "value": "Principal Researcher",
+            "confidence": 0.95
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-priya-nair",
+        "type": "Person",
+        "confidence": 0.95,
+        "attributes": {
+          "name": {
+            "value": "Dr. Priya Nair",
+            "confidence": 0.95
+          },
+          "title": {
+            "value": "VP of Engineering",
+            "confidence": 0.9
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-marcus-tan",
+        "type": "Person",
+        "confidence": 0.93,
+        "attributes": {
+          "name": {
+            "value": "Marcus Tan",
+            "confidence": 0.93
+          },
+          "title": {
+            "value": "Enterprise Account Manager",
+            "confidence": 0.9
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-lisa-huang",
+        "type": "Person",
+        "confidence": 0.93,
+        "attributes": {
+          "name": {
+            "value": "Lisa Huang",
+            "confidence": 0.93
+          },
+          "title": {
+            "value": "Account Manager",
+            "confidence": 0.9
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-acme-corp",
+        "type": "Organization",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Acme Corp",
+            "confidence": 0.98
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-datasystems",
+        "type": "Organization",
+        "confidence": 0.97,
+        "attributes": {
+          "name": {
+            "value": "DataSystems Inc",
+            "confidence": 0.97
+          },
+          "industry": {
+            "value": "Data infrastructure",
+            "confidence": 0.95
+          },
+          "headquarters": {
+            "value": "San Francisco",
+            "confidence": 0.95
+          }
+        }
+      },
+      {
+        "id": "org-novatech",
+        "type": "Organization",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "NovaTech Inc",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": "SaaS / developer tooling",
+            "confidence": 0.93
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-hashicorp",
+        "type": "Organization",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "HashiCorp",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-aws",
+        "type": "Organization",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "Amazon Web Services (AWS)",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": "Cloud provider",
+            "confidence": 0.93
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-google",
+        "type": "Organization",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "Google",
+            "confidence": 0.9
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-deepmind",
+        "type": "Organization",
+        "confidence": 0.88,
+        "attributes": {
+          "name": {
+            "value": "DeepMind",
+            "confidence": 0.88
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-mit",
+        "type": "Organization",
+        "confidence": 0.82,
+        "attributes": {
+          "name": {
+            "value": "MIT",
+            "confidence": 0.82
+          },
+          "industry": {
+            "value": "Education",
+            "confidence": 0.7
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-stanford",
+        "type": "Organization",
+        "confidence": 0.82,
+        "attributes": {
+          "name": {
+            "value": "Stanford",
+            "confidence": 0.82
+          },
+          "industry": {
+            "value": "Education",
+            "confidence": 0.7
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "team-infrastructure",
+        "type": "Team",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "Infrastructure team",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": "Cloud operations, CI/CD pipelines, on-call rotations",
+            "confidence": 0.93
+          },
+          "member_count": {
+            "value": "5",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "team-ai-research",
+        "type": "Team",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "AI Research team",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": "Retrieval-augmented generation (RAG) and knowledge graph applications",
+            "confidence": 0.93
+          },
+          "member_count": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "team-platform",
+        "type": "Team",
+        "confidence": 0.93,
+        "attributes": {
+          "name": {
+            "value": "Platform team",
+            "confidence": 0.93
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": "Secrets management",
+            "confidence": 0.7
+          },
+          "member_count": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "team-product",
+        "type": "Team",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "Product team",
+            "confidence": 0.85
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "member_count": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "team-backend-guild",
+        "type": "Team",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "Backend engineering guild",
+            "confidence": 0.85
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": "Backend language choices; Python (FastAPI), Go",
+            "confidence": 0.8
+          },
+          "member_count": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "project-db-migration",
+        "type": "Project",
+        "confidence": 0.97,
+        "attributes": {
+          "name": {
+            "value": "DB Migration Project",
+            "confidence": 0.97
+          },
+          "status": {
+            "value": "In progress",
+            "confidence": 0.95
+          },
+          "target_date": {
+            "value": "End of Q3 2026",
+            "confidence": 0.93
+          },
+          "budget": {
+            "value": "$120,000",
+            "confidence": 0.95
+          }
+        }
+      },
+      {
+        "id": "project-rag-pipeline",
+        "type": "Project",
+        "confidence": 0.97,
+        "attributes": {
+          "name": {
+            "value": "RAG Pipeline Project",
+            "confidence": 0.97
+          },
+          "status": {
+            "value": "Design phase",
+            "confidence": 0.93
+          },
+          "target_date": {
+            "value": "Q4 2026",
+            "confidence": 0.92
+          },
+          "budget": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "project-secrets-service",
+        "type": "Project",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "Platform Secrets Service",
+            "confidence": 0.96
+          },
+          "status": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "target_date": {
+            "value": "August 2026",
+            "confidence": 0.92
+          },
+          "budget": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "project-data-lake-migration",
+        "type": "Project",
+        "confidence": 0.8,
+        "attributes": {
+          "name": {
+            "value": "Data lake migration",
+            "confidence": 0.8
+          },
+          "status": {
+            "value": "Planned",
+            "confidence": 0.85
+          },
+          "target_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "budget": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-aws-aurora",
+        "type": "Technology",
+        "confidence": 0.95,
+        "attributes": {
+          "name": {
+            "value": "AWS Aurora",
+            "confidence": 0.95
+          },
+          "category": {
+            "value": "Database",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": "AWS",
+            "confidence": 0.9
+          }
+        }
+      },
+      {
+        "id": "tech-postgresql",
+        "type": "Technology",
+        "confidence": 0.93,
+        "attributes": {
+          "name": {
+            "value": "PostgreSQL 15",
+            "confidence": 0.93
+          },
+          "category": {
+            "value": "Database",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-pinecone",
+        "type": "Technology",
+        "confidence": 0.94,
+        "attributes": {
+          "name": {
+            "value": "Pinecone",
+            "confidence": 0.94
+          },
+          "category": {
+            "value": "Vector database",
+            "confidence": 0.92
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-weaviate",
+        "type": "Technology",
+        "confidence": 0.8,
+        "attributes": {
+          "name": {
+            "value": "Weaviate",
+            "confidence": 0.8
+          },
+          "category": {
+            "value": "Vector database",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-qdrant",
+        "type": "Technology",
+        "confidence": 0.8,
+        "attributes": {
+          "name": {
+            "value": "Qdrant",
+            "confidence": 0.8
+          },
+          "category": {
+            "value": "Vector database",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-vault",
+        "type": "Technology",
+        "confidence": 0.94,
+        "attributes": {
+          "name": {
+            "value": "HashiCorp Vault",
+            "confidence": 0.94
+          },
+          "category": {
+            "value": "Secrets management",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": "HashiCorp",
+            "confidence": 0.93
+          }
+        }
+      },
+      {
+        "id": "tech-github-actions",
+        "type": "Technology",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "GitHub Actions",
+            "confidence": 0.9
+          },
+          "category": {
+            "value": "CI/CD",
+            "confidence": 0.88
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-kubernetes",
+        "type": "Technology",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "Kubernetes (EKS)",
+            "confidence": 0.9
+          },
+          "category": {
+            "value": "Container orchestration",
+            "confidence": 0.88
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-python",
+        "type": "Technology",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "Python",
+            "confidence": 0.9
+          },
+          "category": {
+            "value": "Programming language",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-pytorch",
+        "type": "Technology",
+        "confidence": 0.88,
+        "attributes": {
+          "name": {
+            "value": "PyTorch",
+            "confidence": 0.88
+          },
+          "category": {
+            "value": "ML framework",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-hf-transformers",
+        "type": "Technology",
+        "confidence": 0.87,
+        "attributes": {
+          "name": {
+            "value": "Hugging Face Transformers",
+            "confidence": 0.87
+          },
+          "category": {
+            "value": "ML library",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-sagemaker",
+        "type": "Technology",
+        "confidence": 0.87,
+        "attributes": {
+          "name": {
+            "value": "AWS SageMaker",
+            "confidence": 0.87
+          },
+          "category": {
+            "value": "ML platform",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": "AWS",
+            "confidence": 0.88
+          }
+        }
+      },
+      {
+        "id": "tech-fastapi",
+        "type": "Technology",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "FastAPI",
+            "confidence": 0.85
+          },
+          "category": {
+            "value": "Web framework",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-go",
+        "type": "Technology",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "Go",
+            "confidence": 0.85
+          },
+          "category": {
+            "value": "Programming language",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-react",
+        "type": "Technology",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "React",
+            "confidence": 0.85
+          },
+          "category": {
+            "value": "Frontend framework",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-typescript",
+        "type": "Technology",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "TypeScript",
+            "confidence": 0.85
+          },
+          "category": {
+            "value": "Programming language",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "location-san-francisco",
+        "type": "Location",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "San Francisco",
+            "confidence": 0.9
+          },
+          "country": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "region": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge-001",
+        "type": "works_at",
+        "from": "person-alice-chen",
+        "to": "org-acme-corp",
+        "confidence": 0.97,
+        "attributes": {
+          "role": {
+            "value": "Senior Software Engineer",
+            "confidence": 0.97
+          },
+          "start_date": {
+            "value": "March 2021",
+            "confidence": 0.95
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-002",
+        "type": "works_at",
+        "from": "person-bob-martinez",
+        "to": "org-acme-corp",
+        "confidence": 0.97,
+        "attributes": {
+          "role": {
+            "value": "Director of Engineering",
+            "confidence": 0.97
+          },
+          "start_date": {
+            "value": "2018",
+            "confidence": 0.93
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-003",
+        "type": "works_at",
+        "from": "person-bob-martinez",
+        "to": "org-google",
+        "confidence": 0.9,
+        "attributes": {
+          "role": {
+            "value": "Staff Engineer",
+            "confidence": 0.9
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-004",
+        "type": "works_at",
+        "from": "person-carol-okafor",
+        "to": "org-acme-corp",
+        "confidence": 0.96,
+        "attributes": {
+          "role": {
+            "value": "Site Reliability Engineer",
+            "confidence": 0.95
+          },
+          "start_date": {
+            "value": "January 2023",
+            "confidence": 0.93
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-005",
+        "type": "works_at",
+        "from": "person-carol-okafor",
+        "to": "org-datasystems",
+        "confidence": 0.95,
+        "attributes": {
+          "role": {
+            "value": "DevOps Engineer",
+            "confidence": 0.95
+          },
+          "start_date": {
+            "value": "2019",
+            "confidence": 0.9
+          },
+          "end_date": {
+            "value": "2022",
+            "confidence": 0.9
+          }
+        }
+      },
+      {
+        "id": "edge-006",
+        "type": "works_at",
+        "from": "person-sandra-kim",
+        "to": "org-acme-corp",
+        "confidence": 0.96,
+        "attributes": {
+          "role": {
+            "value": "CEO",
+            "confidence": 0.96
+          },
+          "start_date": {
+            "value": "2015",
+            "confidence": 0.85
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-007",
+        "type": "works_at",
+        "from": "person-sandra-kim",
+        "to": "org-novatech",
+        "confidence": 0.92,
+        "attributes": {
+          "role": {
+            "value": "VP Engineering",
+            "confidence": 0.92
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-008",
+        "type": "works_at",
+        "from": "person-james-whitfield",
+        "to": "org-acme-corp",
+        "confidence": 0.96,
+        "attributes": {
+          "role": {
+            "value": "CTO",
+            "confidence": 0.96
+          },
+          "start_date": {
+            "value": "2015",
+            "confidence": 0.8
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-009",
+        "type": "works_at",
+        "from": "person-yuna-park",
+        "to": "org-acme-corp",
+        "confidence": 0.88,
+        "attributes": {
+          "role": {
+            "value": "Principal Researcher",
+            "confidence": 0.9
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-010",
+        "type": "works_at",
+        "from": "person-yuna-park",
+        "to": "org-deepmind",
+        "confidence": 0.85,
+        "attributes": {
+          "role": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-011",
+        "type": "works_at",
+        "from": "person-priya-nair",
+        "to": "org-datasystems",
+        "confidence": 0.93,
+        "attributes": {
+          "role": {
+            "value": "VP of Engineering",
+            "confidence": 0.92
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-012",
+        "type": "works_at",
+        "from": "person-marcus-tan",
+        "to": "org-hashicorp",
+        "confidence": 0.92,
+        "attributes": {
+          "role": {
+            "value": "Enterprise Account Manager",
+            "confidence": 0.92
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-013",
+        "type": "works_at",
+        "from": "person-lisa-huang",
+        "to": "org-aws",
+        "confidence": 0.92,
+        "attributes": {
+          "role": {
+            "value": "Account Manager",
+            "confidence": 0.92
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-014",
+        "type": "reports_to",
+        "from": "person-bob-martinez",
+        "to": "person-sandra-kim",
+        "confidence": 0.95,
+        "attributes": {}
+      },
+      {
+        "id": "edge-015",
+        "type": "reports_to",
+        "from": "person-carol-okafor",
+        "to": "person-priya-nair",
+        "confidence": 0.8,
+        "attributes": {}
+      },
+      {
+        "id": "edge-016",
+        "type": "manages",
+        "from": "person-bob-martinez",
+        "to": "team-infrastructure",
+        "confidence": 0.95,
+        "attributes": {}
+      },
+      {
+        "id": "edge-017",
+        "type": "manages",
+        "from": "person-bob-martinez",
+        "to": "team-product",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-018",
+        "type": "manages",
+        "from": "person-james-whitfield",
+        "to": "team-platform",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-019",
+        "type": "manages",
+        "from": "person-james-whitfield",
+        "to": "team-ai-research",
+        "confidence": 0.88,
+        "attributes": {}
+      },
+      {
+        "id": "edge-020",
+        "type": "manages",
+        "from": "person-yuna-park",
+        "to": "team-ai-research",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-021",
+        "type": "manages",
+        "from": "person-alice-chen",
+        "to": "team-backend-guild",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-022",
+        "type": "member_of",
+        "from": "person-carol-okafor",
+        "to": "team-infrastructure",
+        "confidence": 0.93,
+        "attributes": {
+          "role": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-023",
+        "type": "contributes_to",
+        "from": "person-alice-chen",
+        "to": "project-db-migration",
+        "confidence": 0.93,
+        "attributes": {
+          "role": {
+            "value": "Core engineering contributor",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "edge-024",
+        "type": "contributes_to",
+        "from": "person-carol-okafor",
+        "to": "project-db-migration",
+        "confidence": 0.93,
+        "attributes": {
+          "role": {
+            "value": "Core engineering contributor",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "edge-025",
+        "type": "contributes_to",
+        "from": "person-bob-martinez",
+        "to": "project-db-migration",
+        "confidence": 0.85,
+        "attributes": {
+          "role": {
+            "value": "Initiator",
+            "confidence": 0.85
+          }
+        }
+      },
+      {
+        "id": "edge-026",
+        "type": "contributes_to",
+        "from": "person-alice-chen",
+        "to": "project-rag-pipeline",
+        "confidence": 0.9,
+        "attributes": {
+          "role": {
+            "value": "Backend API work",
+            "confidence": 0.9
+          }
+        }
+      },
+      {
+        "id": "edge-027",
+        "type": "contributes_to",
+        "from": "person-yuna-park",
+        "to": "project-rag-pipeline",
+        "confidence": 0.92,
+        "attributes": {
+          "role": {
+            "value": "Project lead",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "edge-028",
+        "type": "contributes_to",
+        "from": "person-james-whitfield",
+        "to": "project-secrets-service",
+        "confidence": 0.9,
+        "attributes": {
+          "role": {
+            "value": "Project owner",
+            "confidence": 0.9
+          }
+        }
+      },
+      {
+        "id": "edge-029",
+        "type": "contributes_to",
+        "from": "person-alice-chen",
+        "to": "project-secrets-service",
+        "confidence": 0.82,
+        "attributes": {
+          "role": {
+            "value": "Requester",
+            "confidence": 0.8
+          }
+        }
+      },
+      {
+        "id": "edge-030",
+        "type": "owns_project",
+        "from": "team-infrastructure",
+        "to": "project-db-migration",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-031",
+        "type": "owns_project",
+        "from": "team-ai-research",
+        "to": "project-rag-pipeline",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-032",
+        "type": "owns_project",
+        "from": "team-platform",
+        "to": "project-secrets-service",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-033",
+        "type": "depends_on",
+        "from": "project-db-migration",
+        "to": "project-secrets-service",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-034",
+        "type": "uses_technology",
+        "from": "project-db-migration",
+        "to": "tech-aws-aurora",
+        "confidence": 0.93,
+        "attributes": {}
+      },
+      {
+        "id": "edge-035",
+        "type": "uses_technology",
+        "from": "project-db-migration",
+        "to": "tech-postgresql",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-036",
+        "type": "uses_technology",
+        "from": "project-rag-pipeline",
+        "to": "tech-pinecone",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-037",
+        "type": "uses_technology",
+        "from": "project-rag-pipeline",
+        "to": "tech-python",
+        "confidence": 0.82,
+        "attributes": {}
+      },
+      {
+        "id": "edge-038",
+        "type": "uses_technology",
+        "from": "project-secrets-service",
+        "to": "tech-vault",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-039",
+        "type": "partners_with",
+        "from": "org-acme-corp",
+        "to": "org-datasystems",
+        "confidence": 0.95,
+        "attributes": {
+          "type": {
+            "value": "Strategic partnership",
+            "confidence": 0.93
+          },
+          "start_date": {
+            "value": "September 2025",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "edge-040",
+        "type": "partners_with",
+        "from": "org-acme-corp",
+        "to": "org-novatech",
+        "confidence": 0.85,
+        "attributes": {
+          "type": {
+            "value": "Informal advisory relationship",
+            "confidence": 0.9
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-041",
+        "type": "provides_technology",
+        "from": "org-hashicorp",
+        "to": "tech-vault",
+        "confidence": 0.93,
+        "attributes": {}
+      },
+      {
+        "id": "edge-042",
+        "type": "provides_technology",
+        "from": "org-aws",
+        "to": "tech-aws-aurora",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-043",
+        "type": "provides_technology",
+        "from": "org-aws",
+        "to": "tech-sagemaker",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-044",
+        "type": "located_in",
+        "from": "org-datasystems",
+        "to": "location-san-francisco",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-045",
+        "type": "part_of",
+        "from": "team-infrastructure",
+        "to": "org-acme-corp",
+        "confidence": 0.93,
+        "attributes": {}
+      },
+      {
+        "id": "edge-046",
+        "type": "part_of",
+        "from": "team-ai-research",
+        "to": "org-acme-corp",
+        "confidence": 0.93,
+        "attributes": {}
+      },
+      {
+        "id": "edge-047",
+        "type": "part_of",
+        "from": "team-platform",
+        "to": "org-acme-corp",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-048",
+        "type": "part_of",
+        "from": "team-product",
+        "to": "org-acme-corp",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-049",
+        "type": "part_of",
+        "from": "team-backend-guild",
+        "to": "org-acme-corp",
+        "confidence": 0.82,
+        "attributes": {}
+      }
+    ]
+  },
+  "projects.md": {
+    "nodes": [
+      {
+        "id": "person-alice-chen",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Alice Chen",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "Senior Software Engineer",
+            "confidence": 0.97
+          },
+          "email": {
+            "value": "alice.chen@acme.com",
+            "confidence": 0.98
+          },
+          "education": {
+            "value": "BSc in Computer Science from MIT",
+            "confidence": 0.97
+          }
+        }
+      },
+      {
+        "id": "person-bob-martinez",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Bob Martinez",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "Director of Engineering",
+            "confidence": 0.97
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-carol-okafor",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Carol Okafor",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "Site Reliability Engineer",
+            "confidence": 0.95
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-sandra-kim",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Sandra Kim",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "CEO",
+            "confidence": 0.97
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-james-whitfield",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "James Whitfield",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "CTO",
+            "confidence": 0.97
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": "PhD in Computer Science from Stanford",
+            "confidence": 0.96
+          }
+        }
+      },
+      {
+        "id": "person-yuna-park",
+        "type": "Person",
+        "confidence": 0.97,
+        "attributes": {
+          "name": {
+            "value": "Dr. Yuna Park",
+            "confidence": 0.97
+          },
+          "title": {
+            "value": "Principal Researcher",
+            "confidence": 0.95
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-priya-nair",
+        "type": "Person",
+        "confidence": 0.95,
+        "attributes": {
+          "name": {
+            "value": "Dr. Priya Nair",
+            "confidence": 0.95
+          },
+          "title": {
+            "value": "VP of Engineering",
+            "confidence": 0.9
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-marcus-tan",
+        "type": "Person",
+        "confidence": 0.93,
+        "attributes": {
+          "name": {
+            "value": "Marcus Tan",
+            "confidence": 0.93
+          },
+          "title": {
+            "value": "Enterprise Account Manager",
+            "confidence": 0.9
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-lisa-huang",
+        "type": "Person",
+        "confidence": 0.93,
+        "attributes": {
+          "name": {
+            "value": "Lisa Huang",
+            "confidence": 0.93
+          },
+          "title": {
+            "value": "Account Manager",
+            "confidence": 0.9
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-acme-corp",
+        "type": "Organization",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Acme Corp",
+            "confidence": 0.98
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-datasystems",
+        "type": "Organization",
+        "confidence": 0.97,
+        "attributes": {
+          "name": {
+            "value": "DataSystems Inc",
+            "confidence": 0.97
+          },
+          "industry": {
+            "value": "Data infrastructure",
+            "confidence": 0.95
+          },
+          "headquarters": {
+            "value": "San Francisco",
+            "confidence": 0.95
+          }
+        }
+      },
+      {
+        "id": "org-novatech",
+        "type": "Organization",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "NovaTech Inc",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": "SaaS / developer tooling",
+            "confidence": 0.93
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-hashicorp",
+        "type": "Organization",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "HashiCorp",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-aws",
+        "type": "Organization",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "Amazon Web Services (AWS)",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": "Cloud provider",
+            "confidence": 0.93
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-google",
+        "type": "Organization",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "Google",
+            "confidence": 0.9
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-deepmind",
+        "type": "Organization",
+        "confidence": 0.88,
+        "attributes": {
+          "name": {
+            "value": "DeepMind",
+            "confidence": 0.88
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-mit",
+        "type": "Organization",
+        "confidence": 0.82,
+        "attributes": {
+          "name": {
+            "value": "MIT",
+            "confidence": 0.82
+          },
+          "industry": {
+            "value": "Education",
+            "confidence": 0.7
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-stanford",
+        "type": "Organization",
+        "confidence": 0.82,
+        "attributes": {
+          "name": {
+            "value": "Stanford",
+            "confidence": 0.82
+          },
+          "industry": {
+            "value": "Education",
+            "confidence": 0.7
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "team-infrastructure",
+        "type": "Team",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "Infrastructure team",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": "Cloud operations, CI/CD pipelines, on-call rotations",
+            "confidence": 0.93
+          },
+          "member_count": {
+            "value": "5",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "team-ai-research",
+        "type": "Team",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "AI Research team",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": "Retrieval-augmented generation (RAG) and knowledge graph applications",
+            "confidence": 0.93
+          },
+          "member_count": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "team-platform",
+        "type": "Team",
+        "confidence": 0.93,
+        "attributes": {
+          "name": {
+            "value": "Platform team",
+            "confidence": 0.93
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": "Secrets management",
+            "confidence": 0.7
+          },
+          "member_count": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "team-product",
+        "type": "Team",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "Product team",
+            "confidence": 0.85
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "member_count": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "team-backend-guild",
+        "type": "Team",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "Backend engineering guild",
+            "confidence": 0.85
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": "Backend language choices; Python (FastAPI), Go",
+            "confidence": 0.8
+          },
+          "member_count": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "project-db-migration",
+        "type": "Project",
+        "confidence": 0.97,
+        "attributes": {
+          "name": {
+            "value": "DB Migration Project",
+            "confidence": 0.97
+          },
+          "status": {
+            "value": "In progress",
+            "confidence": 0.95
+          },
+          "target_date": {
+            "value": "End of Q3 2026",
+            "confidence": 0.93
+          },
+          "budget": {
+            "value": "$120,000",
+            "confidence": 0.95
+          }
+        }
+      },
+      {
+        "id": "project-rag-pipeline",
+        "type": "Project",
+        "confidence": 0.97,
+        "attributes": {
+          "name": {
+            "value": "RAG Pipeline Project",
+            "confidence": 0.97
+          },
+          "status": {
+            "value": "Design phase",
+            "confidence": 0.93
+          },
+          "target_date": {
+            "value": "Q4 2026",
+            "confidence": 0.92
+          },
+          "budget": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "project-secrets-service",
+        "type": "Project",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "Platform Secrets Service",
+            "confidence": 0.96
+          },
+          "status": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "target_date": {
+            "value": "August 2026",
+            "confidence": 0.92
+          },
+          "budget": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "project-data-lake-migration",
+        "type": "Project",
+        "confidence": 0.8,
+        "attributes": {
+          "name": {
+            "value": "Data lake migration",
+            "confidence": 0.8
+          },
+          "status": {
+            "value": "Planned",
+            "confidence": 0.85
+          },
+          "target_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "budget": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-aws-aurora",
+        "type": "Technology",
+        "confidence": 0.95,
+        "attributes": {
+          "name": {
+            "value": "AWS Aurora",
+            "confidence": 0.95
+          },
+          "category": {
+            "value": "Database",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": "AWS",
+            "confidence": 0.9
+          }
+        }
+      },
+      {
+        "id": "tech-postgresql",
+        "type": "Technology",
+        "confidence": 0.93,
+        "attributes": {
+          "name": {
+            "value": "PostgreSQL 15",
+            "confidence": 0.93
+          },
+          "category": {
+            "value": "Database",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-pinecone",
+        "type": "Technology",
+        "confidence": 0.94,
+        "attributes": {
+          "name": {
+            "value": "Pinecone",
+            "confidence": 0.94
+          },
+          "category": {
+            "value": "Vector database",
+            "confidence": 0.92
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-weaviate",
+        "type": "Technology",
+        "confidence": 0.8,
+        "attributes": {
+          "name": {
+            "value": "Weaviate",
+            "confidence": 0.8
+          },
+          "category": {
+            "value": "Vector database",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-qdrant",
+        "type": "Technology",
+        "confidence": 0.8,
+        "attributes": {
+          "name": {
+            "value": "Qdrant",
+            "confidence": 0.8
+          },
+          "category": {
+            "value": "Vector database",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-vault",
+        "type": "Technology",
+        "confidence": 0.94,
+        "attributes": {
+          "name": {
+            "value": "HashiCorp Vault",
+            "confidence": 0.94
+          },
+          "category": {
+            "value": "Secrets management",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": "HashiCorp",
+            "confidence": 0.93
+          }
+        }
+      },
+      {
+        "id": "tech-github-actions",
+        "type": "Technology",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "GitHub Actions",
+            "confidence": 0.9
+          },
+          "category": {
+            "value": "CI/CD",
+            "confidence": 0.88
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-kubernetes",
+        "type": "Technology",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "Kubernetes (EKS)",
+            "confidence": 0.9
+          },
+          "category": {
+            "value": "Container orchestration",
+            "confidence": 0.88
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-python",
+        "type": "Technology",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "Python",
+            "confidence": 0.9
+          },
+          "category": {
+            "value": "Programming language",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-pytorch",
+        "type": "Technology",
+        "confidence": 0.88,
+        "attributes": {
+          "name": {
+            "value": "PyTorch",
+            "confidence": 0.88
+          },
+          "category": {
+            "value": "ML framework",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-hf-transformers",
+        "type": "Technology",
+        "confidence": 0.87,
+        "attributes": {
+          "name": {
+            "value": "Hugging Face Transformers",
+            "confidence": 0.87
+          },
+          "category": {
+            "value": "ML library",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-sagemaker",
+        "type": "Technology",
+        "confidence": 0.87,
+        "attributes": {
+          "name": {
+            "value": "AWS SageMaker",
+            "confidence": 0.87
+          },
+          "category": {
+            "value": "ML platform",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": "AWS",
+            "confidence": 0.88
+          }
+        }
+      },
+      {
+        "id": "tech-fastapi",
+        "type": "Technology",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "FastAPI",
+            "confidence": 0.85
+          },
+          "category": {
+            "value": "Web framework",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-go",
+        "type": "Technology",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "Go",
+            "confidence": 0.85
+          },
+          "category": {
+            "value": "Programming language",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-react",
+        "type": "Technology",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "React",
+            "confidence": 0.85
+          },
+          "category": {
+            "value": "Frontend framework",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-typescript",
+        "type": "Technology",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "TypeScript",
+            "confidence": 0.85
+          },
+          "category": {
+            "value": "Programming language",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "location-san-francisco",
+        "type": "Location",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "San Francisco",
+            "confidence": 0.9
+          },
+          "country": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "region": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge-001",
+        "type": "works_at",
+        "from": "person-alice-chen",
+        "to": "org-acme-corp",
+        "confidence": 0.97,
+        "attributes": {
+          "role": {
+            "value": "Senior Software Engineer",
+            "confidence": 0.97
+          },
+          "start_date": {
+            "value": "March 2021",
+            "confidence": 0.95
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-002",
+        "type": "works_at",
+        "from": "person-bob-martinez",
+        "to": "org-acme-corp",
+        "confidence": 0.97,
+        "attributes": {
+          "role": {
+            "value": "Director of Engineering",
+            "confidence": 0.97
+          },
+          "start_date": {
+            "value": "2018",
+            "confidence": 0.93
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-003",
+        "type": "works_at",
+        "from": "person-bob-martinez",
+        "to": "org-google",
+        "confidence": 0.9,
+        "attributes": {
+          "role": {
+            "value": "Staff Engineer",
+            "confidence": 0.9
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-004",
+        "type": "works_at",
+        "from": "person-carol-okafor",
+        "to": "org-acme-corp",
+        "confidence": 0.96,
+        "attributes": {
+          "role": {
+            "value": "Site Reliability Engineer",
+            "confidence": 0.95
+          },
+          "start_date": {
+            "value": "January 2023",
+            "confidence": 0.93
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-005",
+        "type": "works_at",
+        "from": "person-carol-okafor",
+        "to": "org-datasystems",
+        "confidence": 0.95,
+        "attributes": {
+          "role": {
+            "value": "DevOps Engineer",
+            "confidence": 0.95
+          },
+          "start_date": {
+            "value": "2019",
+            "confidence": 0.9
+          },
+          "end_date": {
+            "value": "2022",
+            "confidence": 0.9
+          }
+        }
+      },
+      {
+        "id": "edge-006",
+        "type": "works_at",
+        "from": "person-sandra-kim",
+        "to": "org-acme-corp",
+        "confidence": 0.96,
+        "attributes": {
+          "role": {
+            "value": "CEO",
+            "confidence": 0.96
+          },
+          "start_date": {
+            "value": "2015",
+            "confidence": 0.85
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-007",
+        "type": "works_at",
+        "from": "person-sandra-kim",
+        "to": "org-novatech",
+        "confidence": 0.92,
+        "attributes": {
+          "role": {
+            "value": "VP Engineering",
+            "confidence": 0.92
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-008",
+        "type": "works_at",
+        "from": "person-james-whitfield",
+        "to": "org-acme-corp",
+        "confidence": 0.96,
+        "attributes": {
+          "role": {
+            "value": "CTO",
+            "confidence": 0.96
+          },
+          "start_date": {
+            "value": "2015",
+            "confidence": 0.8
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-009",
+        "type": "works_at",
+        "from": "person-yuna-park",
+        "to": "org-acme-corp",
+        "confidence": 0.88,
+        "attributes": {
+          "role": {
+            "value": "Principal Researcher",
+            "confidence": 0.9
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-010",
+        "type": "works_at",
+        "from": "person-yuna-park",
+        "to": "org-deepmind",
+        "confidence": 0.85,
+        "attributes": {
+          "role": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-011",
+        "type": "works_at",
+        "from": "person-priya-nair",
+        "to": "org-datasystems",
+        "confidence": 0.93,
+        "attributes": {
+          "role": {
+            "value": "VP of Engineering",
+            "confidence": 0.92
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-012",
+        "type": "works_at",
+        "from": "person-marcus-tan",
+        "to": "org-hashicorp",
+        "confidence": 0.92,
+        "attributes": {
+          "role": {
+            "value": "Enterprise Account Manager",
+            "confidence": 0.92
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-013",
+        "type": "works_at",
+        "from": "person-lisa-huang",
+        "to": "org-aws",
+        "confidence": 0.92,
+        "attributes": {
+          "role": {
+            "value": "Account Manager",
+            "confidence": 0.92
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-014",
+        "type": "reports_to",
+        "from": "person-bob-martinez",
+        "to": "person-sandra-kim",
+        "confidence": 0.95,
+        "attributes": {}
+      },
+      {
+        "id": "edge-015",
+        "type": "reports_to",
+        "from": "person-carol-okafor",
+        "to": "person-priya-nair",
+        "confidence": 0.8,
+        "attributes": {}
+      },
+      {
+        "id": "edge-016",
+        "type": "manages",
+        "from": "person-bob-martinez",
+        "to": "team-infrastructure",
+        "confidence": 0.95,
+        "attributes": {}
+      },
+      {
+        "id": "edge-017",
+        "type": "manages",
+        "from": "person-bob-martinez",
+        "to": "team-product",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-018",
+        "type": "manages",
+        "from": "person-james-whitfield",
+        "to": "team-platform",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-019",
+        "type": "manages",
+        "from": "person-james-whitfield",
+        "to": "team-ai-research",
+        "confidence": 0.88,
+        "attributes": {}
+      },
+      {
+        "id": "edge-020",
+        "type": "manages",
+        "from": "person-yuna-park",
+        "to": "team-ai-research",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-021",
+        "type": "manages",
+        "from": "person-alice-chen",
+        "to": "team-backend-guild",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-022",
+        "type": "member_of",
+        "from": "person-carol-okafor",
+        "to": "team-infrastructure",
+        "confidence": 0.93,
+        "attributes": {
+          "role": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-023",
+        "type": "contributes_to",
+        "from": "person-alice-chen",
+        "to": "project-db-migration",
+        "confidence": 0.93,
+        "attributes": {
+          "role": {
+            "value": "Core engineering contributor",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "edge-024",
+        "type": "contributes_to",
+        "from": "person-carol-okafor",
+        "to": "project-db-migration",
+        "confidence": 0.93,
+        "attributes": {
+          "role": {
+            "value": "Core engineering contributor",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "edge-025",
+        "type": "contributes_to",
+        "from": "person-bob-martinez",
+        "to": "project-db-migration",
+        "confidence": 0.85,
+        "attributes": {
+          "role": {
+            "value": "Initiator",
+            "confidence": 0.85
+          }
+        }
+      },
+      {
+        "id": "edge-026",
+        "type": "contributes_to",
+        "from": "person-alice-chen",
+        "to": "project-rag-pipeline",
+        "confidence": 0.9,
+        "attributes": {
+          "role": {
+            "value": "Backend API work",
+            "confidence": 0.9
+          }
+        }
+      },
+      {
+        "id": "edge-027",
+        "type": "contributes_to",
+        "from": "person-yuna-park",
+        "to": "project-rag-pipeline",
+        "confidence": 0.92,
+        "attributes": {
+          "role": {
+            "value": "Project lead",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "edge-028",
+        "type": "contributes_to",
+        "from": "person-james-whitfield",
+        "to": "project-secrets-service",
+        "confidence": 0.9,
+        "attributes": {
+          "role": {
+            "value": "Project owner",
+            "confidence": 0.9
+          }
+        }
+      },
+      {
+        "id": "edge-029",
+        "type": "contributes_to",
+        "from": "person-alice-chen",
+        "to": "project-secrets-service",
+        "confidence": 0.82,
+        "attributes": {
+          "role": {
+            "value": "Requester",
+            "confidence": 0.8
+          }
+        }
+      },
+      {
+        "id": "edge-030",
+        "type": "owns_project",
+        "from": "team-infrastructure",
+        "to": "project-db-migration",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-031",
+        "type": "owns_project",
+        "from": "team-ai-research",
+        "to": "project-rag-pipeline",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-032",
+        "type": "owns_project",
+        "from": "team-platform",
+        "to": "project-secrets-service",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-033",
+        "type": "depends_on",
+        "from": "project-db-migration",
+        "to": "project-secrets-service",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-034",
+        "type": "uses_technology",
+        "from": "project-db-migration",
+        "to": "tech-aws-aurora",
+        "confidence": 0.93,
+        "attributes": {}
+      },
+      {
+        "id": "edge-035",
+        "type": "uses_technology",
+        "from": "project-db-migration",
+        "to": "tech-postgresql",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-036",
+        "type": "uses_technology",
+        "from": "project-rag-pipeline",
+        "to": "tech-pinecone",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-037",
+        "type": "uses_technology",
+        "from": "project-rag-pipeline",
+        "to": "tech-python",
+        "confidence": 0.82,
+        "attributes": {}
+      },
+      {
+        "id": "edge-038",
+        "type": "uses_technology",
+        "from": "project-secrets-service",
+        "to": "tech-vault",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-039",
+        "type": "partners_with",
+        "from": "org-acme-corp",
+        "to": "org-datasystems",
+        "confidence": 0.95,
+        "attributes": {
+          "type": {
+            "value": "Strategic partnership",
+            "confidence": 0.93
+          },
+          "start_date": {
+            "value": "September 2025",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "edge-040",
+        "type": "partners_with",
+        "from": "org-acme-corp",
+        "to": "org-novatech",
+        "confidence": 0.85,
+        "attributes": {
+          "type": {
+            "value": "Informal advisory relationship",
+            "confidence": 0.9
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-041",
+        "type": "provides_technology",
+        "from": "org-hashicorp",
+        "to": "tech-vault",
+        "confidence": 0.93,
+        "attributes": {}
+      },
+      {
+        "id": "edge-042",
+        "type": "provides_technology",
+        "from": "org-aws",
+        "to": "tech-aws-aurora",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-043",
+        "type": "provides_technology",
+        "from": "org-aws",
+        "to": "tech-sagemaker",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-044",
+        "type": "located_in",
+        "from": "org-datasystems",
+        "to": "location-san-francisco",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-045",
+        "type": "part_of",
+        "from": "team-infrastructure",
+        "to": "org-acme-corp",
+        "confidence": 0.93,
+        "attributes": {}
+      },
+      {
+        "id": "edge-046",
+        "type": "part_of",
+        "from": "team-ai-research",
+        "to": "org-acme-corp",
+        "confidence": 0.93,
+        "attributes": {}
+      },
+      {
+        "id": "edge-047",
+        "type": "part_of",
+        "from": "team-platform",
+        "to": "org-acme-corp",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-048",
+        "type": "part_of",
+        "from": "team-product",
+        "to": "org-acme-corp",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-049",
+        "type": "part_of",
+        "from": "team-backend-guild",
+        "to": "org-acme-corp",
+        "confidence": 0.82,
+        "attributes": {}
+      }
+    ]
+  },
+  "team.md": {
+    "nodes": [
+      {
+        "id": "person-alice-chen",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Alice Chen",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "Senior Software Engineer",
+            "confidence": 0.97
+          },
+          "email": {
+            "value": "alice.chen@acme.com",
+            "confidence": 0.98
+          },
+          "education": {
+            "value": "BSc in Computer Science from MIT",
+            "confidence": 0.97
+          }
+        }
+      },
+      {
+        "id": "person-bob-martinez",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Bob Martinez",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "Director of Engineering",
+            "confidence": 0.97
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-carol-okafor",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Carol Okafor",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "Site Reliability Engineer",
+            "confidence": 0.95
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-sandra-kim",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Sandra Kim",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "CEO",
+            "confidence": 0.97
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-james-whitfield",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "James Whitfield",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "CTO",
+            "confidence": 0.97
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": "PhD in Computer Science from Stanford",
+            "confidence": 0.96
+          }
+        }
+      },
+      {
+        "id": "person-yuna-park",
+        "type": "Person",
+        "confidence": 0.97,
+        "attributes": {
+          "name": {
+            "value": "Dr. Yuna Park",
+            "confidence": 0.97
+          },
+          "title": {
+            "value": "Principal Researcher",
+            "confidence": 0.95
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-priya-nair",
+        "type": "Person",
+        "confidence": 0.95,
+        "attributes": {
+          "name": {
+            "value": "Dr. Priya Nair",
+            "confidence": 0.95
+          },
+          "title": {
+            "value": "VP of Engineering",
+            "confidence": 0.9
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-marcus-tan",
+        "type": "Person",
+        "confidence": 0.93,
+        "attributes": {
+          "name": {
+            "value": "Marcus Tan",
+            "confidence": 0.93
+          },
+          "title": {
+            "value": "Enterprise Account Manager",
+            "confidence": 0.9
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-lisa-huang",
+        "type": "Person",
+        "confidence": 0.93,
+        "attributes": {
+          "name": {
+            "value": "Lisa Huang",
+            "confidence": 0.93
+          },
+          "title": {
+            "value": "Account Manager",
+            "confidence": 0.9
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-acme-corp",
+        "type": "Organization",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Acme Corp",
+            "confidence": 0.98
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-datasystems",
+        "type": "Organization",
+        "confidence": 0.97,
+        "attributes": {
+          "name": {
+            "value": "DataSystems Inc",
+            "confidence": 0.97
+          },
+          "industry": {
+            "value": "Data infrastructure",
+            "confidence": 0.95
+          },
+          "headquarters": {
+            "value": "San Francisco",
+            "confidence": 0.95
+          }
+        }
+      },
+      {
+        "id": "org-novatech",
+        "type": "Organization",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "NovaTech Inc",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": "SaaS / developer tooling",
+            "confidence": 0.93
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-hashicorp",
+        "type": "Organization",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "HashiCorp",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-aws",
+        "type": "Organization",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "Amazon Web Services (AWS)",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": "Cloud provider",
+            "confidence": 0.93
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-google",
+        "type": "Organization",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "Google",
+            "confidence": 0.9
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-deepmind",
+        "type": "Organization",
+        "confidence": 0.88,
+        "attributes": {
+          "name": {
+            "value": "DeepMind",
+            "confidence": 0.88
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-mit",
+        "type": "Organization",
+        "confidence": 0.82,
+        "attributes": {
+          "name": {
+            "value": "MIT",
+            "confidence": 0.82
+          },
+          "industry": {
+            "value": "Education",
+            "confidence": 0.7
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-stanford",
+        "type": "Organization",
+        "confidence": 0.82,
+        "attributes": {
+          "name": {
+            "value": "Stanford",
+            "confidence": 0.82
+          },
+          "industry": {
+            "value": "Education",
+            "confidence": 0.7
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "team-infrastructure",
+        "type": "Team",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "Infrastructure team",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": "Cloud operations, CI/CD pipelines, on-call rotations",
+            "confidence": 0.93
+          },
+          "member_count": {
+            "value": "5",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "team-ai-research",
+        "type": "Team",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "AI Research team",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": "Retrieval-augmented generation (RAG) and knowledge graph applications",
+            "confidence": 0.93
+          },
+          "member_count": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "team-platform",
+        "type": "Team",
+        "confidence": 0.93,
+        "attributes": {
+          "name": {
+            "value": "Platform team",
+            "confidence": 0.93
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": "Secrets management",
+            "confidence": 0.7
+          },
+          "member_count": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "team-product",
+        "type": "Team",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "Product team",
+            "confidence": 0.85
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "member_count": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "team-backend-guild",
+        "type": "Team",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "Backend engineering guild",
+            "confidence": 0.85
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": "Backend language choices; Python (FastAPI), Go",
+            "confidence": 0.8
+          },
+          "member_count": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "project-db-migration",
+        "type": "Project",
+        "confidence": 0.97,
+        "attributes": {
+          "name": {
+            "value": "DB Migration Project",
+            "confidence": 0.97
+          },
+          "status": {
+            "value": "In progress",
+            "confidence": 0.95
+          },
+          "target_date": {
+            "value": "End of Q3 2026",
+            "confidence": 0.93
+          },
+          "budget": {
+            "value": "$120,000",
+            "confidence": 0.95
+          }
+        }
+      },
+      {
+        "id": "project-rag-pipeline",
+        "type": "Project",
+        "confidence": 0.97,
+        "attributes": {
+          "name": {
+            "value": "RAG Pipeline Project",
+            "confidence": 0.97
+          },
+          "status": {
+            "value": "Design phase",
+            "confidence": 0.93
+          },
+          "target_date": {
+            "value": "Q4 2026",
+            "confidence": 0.92
+          },
+          "budget": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "project-secrets-service",
+        "type": "Project",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "Platform Secrets Service",
+            "confidence": 0.96
+          },
+          "status": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "target_date": {
+            "value": "August 2026",
+            "confidence": 0.92
+          },
+          "budget": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "project-data-lake-migration",
+        "type": "Project",
+        "confidence": 0.8,
+        "attributes": {
+          "name": {
+            "value": "Data lake migration",
+            "confidence": 0.8
+          },
+          "status": {
+            "value": "Planned",
+            "confidence": 0.85
+          },
+          "target_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "budget": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-aws-aurora",
+        "type": "Technology",
+        "confidence": 0.95,
+        "attributes": {
+          "name": {
+            "value": "AWS Aurora",
+            "confidence": 0.95
+          },
+          "category": {
+            "value": "Database",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": "AWS",
+            "confidence": 0.9
+          }
+        }
+      },
+      {
+        "id": "tech-postgresql",
+        "type": "Technology",
+        "confidence": 0.93,
+        "attributes": {
+          "name": {
+            "value": "PostgreSQL 15",
+            "confidence": 0.93
+          },
+          "category": {
+            "value": "Database",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-pinecone",
+        "type": "Technology",
+        "confidence": 0.94,
+        "attributes": {
+          "name": {
+            "value": "Pinecone",
+            "confidence": 0.94
+          },
+          "category": {
+            "value": "Vector database",
+            "confidence": 0.92
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-weaviate",
+        "type": "Technology",
+        "confidence": 0.8,
+        "attributes": {
+          "name": {
+            "value": "Weaviate",
+            "confidence": 0.8
+          },
+          "category": {
+            "value": "Vector database",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-qdrant",
+        "type": "Technology",
+        "confidence": 0.8,
+        "attributes": {
+          "name": {
+            "value": "Qdrant",
+            "confidence": 0.8
+          },
+          "category": {
+            "value": "Vector database",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-vault",
+        "type": "Technology",
+        "confidence": 0.94,
+        "attributes": {
+          "name": {
+            "value": "HashiCorp Vault",
+            "confidence": 0.94
+          },
+          "category": {
+            "value": "Secrets management",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": "HashiCorp",
+            "confidence": 0.93
+          }
+        }
+      },
+      {
+        "id": "tech-github-actions",
+        "type": "Technology",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "GitHub Actions",
+            "confidence": 0.9
+          },
+          "category": {
+            "value": "CI/CD",
+            "confidence": 0.88
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-kubernetes",
+        "type": "Technology",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "Kubernetes (EKS)",
+            "confidence": 0.9
+          },
+          "category": {
+            "value": "Container orchestration",
+            "confidence": 0.88
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-python",
+        "type": "Technology",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "Python",
+            "confidence": 0.9
+          },
+          "category": {
+            "value": "Programming language",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-pytorch",
+        "type": "Technology",
+        "confidence": 0.88,
+        "attributes": {
+          "name": {
+            "value": "PyTorch",
+            "confidence": 0.88
+          },
+          "category": {
+            "value": "ML framework",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-hf-transformers",
+        "type": "Technology",
+        "confidence": 0.87,
+        "attributes": {
+          "name": {
+            "value": "Hugging Face Transformers",
+            "confidence": 0.87
+          },
+          "category": {
+            "value": "ML library",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-sagemaker",
+        "type": "Technology",
+        "confidence": 0.87,
+        "attributes": {
+          "name": {
+            "value": "AWS SageMaker",
+            "confidence": 0.87
+          },
+          "category": {
+            "value": "ML platform",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": "AWS",
+            "confidence": 0.88
+          }
+        }
+      },
+      {
+        "id": "tech-fastapi",
+        "type": "Technology",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "FastAPI",
+            "confidence": 0.85
+          },
+          "category": {
+            "value": "Web framework",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-go",
+        "type": "Technology",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "Go",
+            "confidence": 0.85
+          },
+          "category": {
+            "value": "Programming language",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-react",
+        "type": "Technology",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "React",
+            "confidence": 0.85
+          },
+          "category": {
+            "value": "Frontend framework",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-typescript",
+        "type": "Technology",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "TypeScript",
+            "confidence": 0.85
+          },
+          "category": {
+            "value": "Programming language",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "location-san-francisco",
+        "type": "Location",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "San Francisco",
+            "confidence": 0.9
+          },
+          "country": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "region": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge-001",
+        "type": "works_at",
+        "from": "person-alice-chen",
+        "to": "org-acme-corp",
+        "confidence": 0.97,
+        "attributes": {
+          "role": {
+            "value": "Senior Software Engineer",
+            "confidence": 0.97
+          },
+          "start_date": {
+            "value": "March 2021",
+            "confidence": 0.95
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-002",
+        "type": "works_at",
+        "from": "person-bob-martinez",
+        "to": "org-acme-corp",
+        "confidence": 0.97,
+        "attributes": {
+          "role": {
+            "value": "Director of Engineering",
+            "confidence": 0.97
+          },
+          "start_date": {
+            "value": "2018",
+            "confidence": 0.93
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-003",
+        "type": "works_at",
+        "from": "person-bob-martinez",
+        "to": "org-google",
+        "confidence": 0.9,
+        "attributes": {
+          "role": {
+            "value": "Staff Engineer",
+            "confidence": 0.9
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-004",
+        "type": "works_at",
+        "from": "person-carol-okafor",
+        "to": "org-acme-corp",
+        "confidence": 0.96,
+        "attributes": {
+          "role": {
+            "value": "Site Reliability Engineer",
+            "confidence": 0.95
+          },
+          "start_date": {
+            "value": "January 2023",
+            "confidence": 0.93
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-005",
+        "type": "works_at",
+        "from": "person-carol-okafor",
+        "to": "org-datasystems",
+        "confidence": 0.95,
+        "attributes": {
+          "role": {
+            "value": "DevOps Engineer",
+            "confidence": 0.95
+          },
+          "start_date": {
+            "value": "2019",
+            "confidence": 0.9
+          },
+          "end_date": {
+            "value": "2022",
+            "confidence": 0.9
+          }
+        }
+      },
+      {
+        "id": "edge-006",
+        "type": "works_at",
+        "from": "person-sandra-kim",
+        "to": "org-acme-corp",
+        "confidence": 0.96,
+        "attributes": {
+          "role": {
+            "value": "CEO",
+            "confidence": 0.96
+          },
+          "start_date": {
+            "value": "2015",
+            "confidence": 0.85
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-007",
+        "type": "works_at",
+        "from": "person-sandra-kim",
+        "to": "org-novatech",
+        "confidence": 0.92,
+        "attributes": {
+          "role": {
+            "value": "VP Engineering",
+            "confidence": 0.92
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-008",
+        "type": "works_at",
+        "from": "person-james-whitfield",
+        "to": "org-acme-corp",
+        "confidence": 0.96,
+        "attributes": {
+          "role": {
+            "value": "CTO",
+            "confidence": 0.96
+          },
+          "start_date": {
+            "value": "2015",
+            "confidence": 0.8
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-009",
+        "type": "works_at",
+        "from": "person-yuna-park",
+        "to": "org-acme-corp",
+        "confidence": 0.88,
+        "attributes": {
+          "role": {
+            "value": "Principal Researcher",
+            "confidence": 0.9
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-010",
+        "type": "works_at",
+        "from": "person-yuna-park",
+        "to": "org-deepmind",
+        "confidence": 0.85,
+        "attributes": {
+          "role": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-011",
+        "type": "works_at",
+        "from": "person-priya-nair",
+        "to": "org-datasystems",
+        "confidence": 0.93,
+        "attributes": {
+          "role": {
+            "value": "VP of Engineering",
+            "confidence": 0.92
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-012",
+        "type": "works_at",
+        "from": "person-marcus-tan",
+        "to": "org-hashicorp",
+        "confidence": 0.92,
+        "attributes": {
+          "role": {
+            "value": "Enterprise Account Manager",
+            "confidence": 0.92
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-013",
+        "type": "works_at",
+        "from": "person-lisa-huang",
+        "to": "org-aws",
+        "confidence": 0.92,
+        "attributes": {
+          "role": {
+            "value": "Account Manager",
+            "confidence": 0.92
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-014",
+        "type": "reports_to",
+        "from": "person-bob-martinez",
+        "to": "person-sandra-kim",
+        "confidence": 0.95,
+        "attributes": {}
+      },
+      {
+        "id": "edge-015",
+        "type": "reports_to",
+        "from": "person-carol-okafor",
+        "to": "person-priya-nair",
+        "confidence": 0.8,
+        "attributes": {}
+      },
+      {
+        "id": "edge-016",
+        "type": "manages",
+        "from": "person-bob-martinez",
+        "to": "team-infrastructure",
+        "confidence": 0.95,
+        "attributes": {}
+      },
+      {
+        "id": "edge-017",
+        "type": "manages",
+        "from": "person-bob-martinez",
+        "to": "team-product",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-018",
+        "type": "manages",
+        "from": "person-james-whitfield",
+        "to": "team-platform",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-019",
+        "type": "manages",
+        "from": "person-james-whitfield",
+        "to": "team-ai-research",
+        "confidence": 0.88,
+        "attributes": {}
+      },
+      {
+        "id": "edge-020",
+        "type": "manages",
+        "from": "person-yuna-park",
+        "to": "team-ai-research",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-021",
+        "type": "manages",
+        "from": "person-alice-chen",
+        "to": "team-backend-guild",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-022",
+        "type": "member_of",
+        "from": "person-carol-okafor",
+        "to": "team-infrastructure",
+        "confidence": 0.93,
+        "attributes": {
+          "role": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-023",
+        "type": "contributes_to",
+        "from": "person-alice-chen",
+        "to": "project-db-migration",
+        "confidence": 0.93,
+        "attributes": {
+          "role": {
+            "value": "Core engineering contributor",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "edge-024",
+        "type": "contributes_to",
+        "from": "person-carol-okafor",
+        "to": "project-db-migration",
+        "confidence": 0.93,
+        "attributes": {
+          "role": {
+            "value": "Core engineering contributor",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "edge-025",
+        "type": "contributes_to",
+        "from": "person-bob-martinez",
+        "to": "project-db-migration",
+        "confidence": 0.85,
+        "attributes": {
+          "role": {
+            "value": "Initiator",
+            "confidence": 0.85
+          }
+        }
+      },
+      {
+        "id": "edge-026",
+        "type": "contributes_to",
+        "from": "person-alice-chen",
+        "to": "project-rag-pipeline",
+        "confidence": 0.9,
+        "attributes": {
+          "role": {
+            "value": "Backend API work",
+            "confidence": 0.9
+          }
+        }
+      },
+      {
+        "id": "edge-027",
+        "type": "contributes_to",
+        "from": "person-yuna-park",
+        "to": "project-rag-pipeline",
+        "confidence": 0.92,
+        "attributes": {
+          "role": {
+            "value": "Project lead",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "edge-028",
+        "type": "contributes_to",
+        "from": "person-james-whitfield",
+        "to": "project-secrets-service",
+        "confidence": 0.9,
+        "attributes": {
+          "role": {
+            "value": "Project owner",
+            "confidence": 0.9
+          }
+        }
+      },
+      {
+        "id": "edge-029",
+        "type": "contributes_to",
+        "from": "person-alice-chen",
+        "to": "project-secrets-service",
+        "confidence": 0.82,
+        "attributes": {
+          "role": {
+            "value": "Requester",
+            "confidence": 0.8
+          }
+        }
+      },
+      {
+        "id": "edge-030",
+        "type": "owns_project",
+        "from": "team-infrastructure",
+        "to": "project-db-migration",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-031",
+        "type": "owns_project",
+        "from": "team-ai-research",
+        "to": "project-rag-pipeline",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-032",
+        "type": "owns_project",
+        "from": "team-platform",
+        "to": "project-secrets-service",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-033",
+        "type": "depends_on",
+        "from": "project-db-migration",
+        "to": "project-secrets-service",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-034",
+        "type": "uses_technology",
+        "from": "project-db-migration",
+        "to": "tech-aws-aurora",
+        "confidence": 0.93,
+        "attributes": {}
+      },
+      {
+        "id": "edge-035",
+        "type": "uses_technology",
+        "from": "project-db-migration",
+        "to": "tech-postgresql",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-036",
+        "type": "uses_technology",
+        "from": "project-rag-pipeline",
+        "to": "tech-pinecone",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-037",
+        "type": "uses_technology",
+        "from": "project-rag-pipeline",
+        "to": "tech-python",
+        "confidence": 0.82,
+        "attributes": {}
+      },
+      {
+        "id": "edge-038",
+        "type": "uses_technology",
+        "from": "project-secrets-service",
+        "to": "tech-vault",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-039",
+        "type": "partners_with",
+        "from": "org-acme-corp",
+        "to": "org-datasystems",
+        "confidence": 0.95,
+        "attributes": {
+          "type": {
+            "value": "Strategic partnership",
+            "confidence": 0.93
+          },
+          "start_date": {
+            "value": "September 2025",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "edge-040",
+        "type": "partners_with",
+        "from": "org-acme-corp",
+        "to": "org-novatech",
+        "confidence": 0.85,
+        "attributes": {
+          "type": {
+            "value": "Informal advisory relationship",
+            "confidence": 0.9
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-041",
+        "type": "provides_technology",
+        "from": "org-hashicorp",
+        "to": "tech-vault",
+        "confidence": 0.93,
+        "attributes": {}
+      },
+      {
+        "id": "edge-042",
+        "type": "provides_technology",
+        "from": "org-aws",
+        "to": "tech-aws-aurora",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-043",
+        "type": "provides_technology",
+        "from": "org-aws",
+        "to": "tech-sagemaker",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-044",
+        "type": "located_in",
+        "from": "org-datasystems",
+        "to": "location-san-francisco",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-045",
+        "type": "part_of",
+        "from": "team-infrastructure",
+        "to": "org-acme-corp",
+        "confidence": 0.93,
+        "attributes": {}
+      },
+      {
+        "id": "edge-046",
+        "type": "part_of",
+        "from": "team-ai-research",
+        "to": "org-acme-corp",
+        "confidence": 0.93,
+        "attributes": {}
+      },
+      {
+        "id": "edge-047",
+        "type": "part_of",
+        "from": "team-platform",
+        "to": "org-acme-corp",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-048",
+        "type": "part_of",
+        "from": "team-product",
+        "to": "org-acme-corp",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-049",
+        "type": "part_of",
+        "from": "team-backend-guild",
+        "to": "org-acme-corp",
+        "confidence": 0.82,
+        "attributes": {}
+      }
+    ]
+  },
+  "technologies.md": {
+    "nodes": [
+      {
+        "id": "person-alice-chen",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Alice Chen",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "Senior Software Engineer",
+            "confidence": 0.97
+          },
+          "email": {
+            "value": "alice.chen@acme.com",
+            "confidence": 0.98
+          },
+          "education": {
+            "value": "BSc in Computer Science from MIT",
+            "confidence": 0.97
+          }
+        }
+      },
+      {
+        "id": "person-bob-martinez",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Bob Martinez",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "Director of Engineering",
+            "confidence": 0.97
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-carol-okafor",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Carol Okafor",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "Site Reliability Engineer",
+            "confidence": 0.95
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-sandra-kim",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Sandra Kim",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "CEO",
+            "confidence": 0.97
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-james-whitfield",
+        "type": "Person",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "James Whitfield",
+            "confidence": 0.98
+          },
+          "title": {
+            "value": "CTO",
+            "confidence": 0.97
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": "PhD in Computer Science from Stanford",
+            "confidence": 0.96
+          }
+        }
+      },
+      {
+        "id": "person-yuna-park",
+        "type": "Person",
+        "confidence": 0.97,
+        "attributes": {
+          "name": {
+            "value": "Dr. Yuna Park",
+            "confidence": 0.97
+          },
+          "title": {
+            "value": "Principal Researcher",
+            "confidence": 0.95
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-priya-nair",
+        "type": "Person",
+        "confidence": 0.95,
+        "attributes": {
+          "name": {
+            "value": "Dr. Priya Nair",
+            "confidence": 0.95
+          },
+          "title": {
+            "value": "VP of Engineering",
+            "confidence": 0.9
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-marcus-tan",
+        "type": "Person",
+        "confidence": 0.93,
+        "attributes": {
+          "name": {
+            "value": "Marcus Tan",
+            "confidence": 0.93
+          },
+          "title": {
+            "value": "Enterprise Account Manager",
+            "confidence": 0.9
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "person-lisa-huang",
+        "type": "Person",
+        "confidence": 0.93,
+        "attributes": {
+          "name": {
+            "value": "Lisa Huang",
+            "confidence": 0.93
+          },
+          "title": {
+            "value": "Account Manager",
+            "confidence": 0.9
+          },
+          "email": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "education": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-acme-corp",
+        "type": "Organization",
+        "confidence": 0.98,
+        "attributes": {
+          "name": {
+            "value": "Acme Corp",
+            "confidence": 0.98
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-datasystems",
+        "type": "Organization",
+        "confidence": 0.97,
+        "attributes": {
+          "name": {
+            "value": "DataSystems Inc",
+            "confidence": 0.97
+          },
+          "industry": {
+            "value": "Data infrastructure",
+            "confidence": 0.95
+          },
+          "headquarters": {
+            "value": "San Francisco",
+            "confidence": 0.95
+          }
+        }
+      },
+      {
+        "id": "org-novatech",
+        "type": "Organization",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "NovaTech Inc",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": "SaaS / developer tooling",
+            "confidence": 0.93
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-hashicorp",
+        "type": "Organization",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "HashiCorp",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-aws",
+        "type": "Organization",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "Amazon Web Services (AWS)",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": "Cloud provider",
+            "confidence": 0.93
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-google",
+        "type": "Organization",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "Google",
+            "confidence": 0.9
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-deepmind",
+        "type": "Organization",
+        "confidence": 0.88,
+        "attributes": {
+          "name": {
+            "value": "DeepMind",
+            "confidence": 0.88
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-mit",
+        "type": "Organization",
+        "confidence": 0.82,
+        "attributes": {
+          "name": {
+            "value": "MIT",
+            "confidence": 0.82
+          },
+          "industry": {
+            "value": "Education",
+            "confidence": 0.7
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "org-stanford",
+        "type": "Organization",
+        "confidence": 0.82,
+        "attributes": {
+          "name": {
+            "value": "Stanford",
+            "confidence": 0.82
+          },
+          "industry": {
+            "value": "Education",
+            "confidence": 0.7
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "team-infrastructure",
+        "type": "Team",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "Infrastructure team",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": "Cloud operations, CI/CD pipelines, on-call rotations",
+            "confidence": 0.93
+          },
+          "member_count": {
+            "value": "5",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "team-ai-research",
+        "type": "Team",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "AI Research team",
+            "confidence": 0.96
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": "Retrieval-augmented generation (RAG) and knowledge graph applications",
+            "confidence": 0.93
+          },
+          "member_count": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "team-platform",
+        "type": "Team",
+        "confidence": 0.93,
+        "attributes": {
+          "name": {
+            "value": "Platform team",
+            "confidence": 0.93
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": "Secrets management",
+            "confidence": 0.7
+          },
+          "member_count": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "team-product",
+        "type": "Team",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "Product team",
+            "confidence": 0.85
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "member_count": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "team-backend-guild",
+        "type": "Team",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "Backend engineering guild",
+            "confidence": 0.85
+          },
+          "industry": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "headquarters": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "focus": {
+            "value": "Backend language choices; Python (FastAPI), Go",
+            "confidence": 0.8
+          },
+          "member_count": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "project-db-migration",
+        "type": "Project",
+        "confidence": 0.97,
+        "attributes": {
+          "name": {
+            "value": "DB Migration Project",
+            "confidence": 0.97
+          },
+          "status": {
+            "value": "In progress",
+            "confidence": 0.95
+          },
+          "target_date": {
+            "value": "End of Q3 2026",
+            "confidence": 0.93
+          },
+          "budget": {
+            "value": "$120,000",
+            "confidence": 0.95
+          }
+        }
+      },
+      {
+        "id": "project-rag-pipeline",
+        "type": "Project",
+        "confidence": 0.97,
+        "attributes": {
+          "name": {
+            "value": "RAG Pipeline Project",
+            "confidence": 0.97
+          },
+          "status": {
+            "value": "Design phase",
+            "confidence": 0.93
+          },
+          "target_date": {
+            "value": "Q4 2026",
+            "confidence": 0.92
+          },
+          "budget": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "project-secrets-service",
+        "type": "Project",
+        "confidence": 0.96,
+        "attributes": {
+          "name": {
+            "value": "Platform Secrets Service",
+            "confidence": 0.96
+          },
+          "status": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "target_date": {
+            "value": "August 2026",
+            "confidence": 0.92
+          },
+          "budget": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "project-data-lake-migration",
+        "type": "Project",
+        "confidence": 0.8,
+        "attributes": {
+          "name": {
+            "value": "Data lake migration",
+            "confidence": 0.8
+          },
+          "status": {
+            "value": "Planned",
+            "confidence": 0.85
+          },
+          "target_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "budget": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-aws-aurora",
+        "type": "Technology",
+        "confidence": 0.95,
+        "attributes": {
+          "name": {
+            "value": "AWS Aurora",
+            "confidence": 0.95
+          },
+          "category": {
+            "value": "Database",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": "AWS",
+            "confidence": 0.9
+          }
+        }
+      },
+      {
+        "id": "tech-postgresql",
+        "type": "Technology",
+        "confidence": 0.93,
+        "attributes": {
+          "name": {
+            "value": "PostgreSQL 15",
+            "confidence": 0.93
+          },
+          "category": {
+            "value": "Database",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-pinecone",
+        "type": "Technology",
+        "confidence": 0.94,
+        "attributes": {
+          "name": {
+            "value": "Pinecone",
+            "confidence": 0.94
+          },
+          "category": {
+            "value": "Vector database",
+            "confidence": 0.92
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-weaviate",
+        "type": "Technology",
+        "confidence": 0.8,
+        "attributes": {
+          "name": {
+            "value": "Weaviate",
+            "confidence": 0.8
+          },
+          "category": {
+            "value": "Vector database",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-qdrant",
+        "type": "Technology",
+        "confidence": 0.8,
+        "attributes": {
+          "name": {
+            "value": "Qdrant",
+            "confidence": 0.8
+          },
+          "category": {
+            "value": "Vector database",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-vault",
+        "type": "Technology",
+        "confidence": 0.94,
+        "attributes": {
+          "name": {
+            "value": "HashiCorp Vault",
+            "confidence": 0.94
+          },
+          "category": {
+            "value": "Secrets management",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": "HashiCorp",
+            "confidence": 0.93
+          }
+        }
+      },
+      {
+        "id": "tech-github-actions",
+        "type": "Technology",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "GitHub Actions",
+            "confidence": 0.9
+          },
+          "category": {
+            "value": "CI/CD",
+            "confidence": 0.88
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-kubernetes",
+        "type": "Technology",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "Kubernetes (EKS)",
+            "confidence": 0.9
+          },
+          "category": {
+            "value": "Container orchestration",
+            "confidence": 0.88
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-python",
+        "type": "Technology",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "Python",
+            "confidence": 0.9
+          },
+          "category": {
+            "value": "Programming language",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-pytorch",
+        "type": "Technology",
+        "confidence": 0.88,
+        "attributes": {
+          "name": {
+            "value": "PyTorch",
+            "confidence": 0.88
+          },
+          "category": {
+            "value": "ML framework",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-hf-transformers",
+        "type": "Technology",
+        "confidence": 0.87,
+        "attributes": {
+          "name": {
+            "value": "Hugging Face Transformers",
+            "confidence": 0.87
+          },
+          "category": {
+            "value": "ML library",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-sagemaker",
+        "type": "Technology",
+        "confidence": 0.87,
+        "attributes": {
+          "name": {
+            "value": "AWS SageMaker",
+            "confidence": 0.87
+          },
+          "category": {
+            "value": "ML platform",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": "AWS",
+            "confidence": 0.88
+          }
+        }
+      },
+      {
+        "id": "tech-fastapi",
+        "type": "Technology",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "FastAPI",
+            "confidence": 0.85
+          },
+          "category": {
+            "value": "Web framework",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-go",
+        "type": "Technology",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "Go",
+            "confidence": 0.85
+          },
+          "category": {
+            "value": "Programming language",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-react",
+        "type": "Technology",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "React",
+            "confidence": 0.85
+          },
+          "category": {
+            "value": "Frontend framework",
+            "confidence": 0.85
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "tech-typescript",
+        "type": "Technology",
+        "confidence": 0.85,
+        "attributes": {
+          "name": {
+            "value": "TypeScript",
+            "confidence": 0.85
+          },
+          "category": {
+            "value": "Programming language",
+            "confidence": 0.9
+          },
+          "vendor": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "location-san-francisco",
+        "type": "Location",
+        "confidence": 0.9,
+        "attributes": {
+          "name": {
+            "value": "San Francisco",
+            "confidence": 0.9
+          },
+          "country": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "region": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge-001",
+        "type": "works_at",
+        "from": "person-alice-chen",
+        "to": "org-acme-corp",
+        "confidence": 0.97,
+        "attributes": {
+          "role": {
+            "value": "Senior Software Engineer",
+            "confidence": 0.97
+          },
+          "start_date": {
+            "value": "March 2021",
+            "confidence": 0.95
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-002",
+        "type": "works_at",
+        "from": "person-bob-martinez",
+        "to": "org-acme-corp",
+        "confidence": 0.97,
+        "attributes": {
+          "role": {
+            "value": "Director of Engineering",
+            "confidence": 0.97
+          },
+          "start_date": {
+            "value": "2018",
+            "confidence": 0.93
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-003",
+        "type": "works_at",
+        "from": "person-bob-martinez",
+        "to": "org-google",
+        "confidence": 0.9,
+        "attributes": {
+          "role": {
+            "value": "Staff Engineer",
+            "confidence": 0.9
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-004",
+        "type": "works_at",
+        "from": "person-carol-okafor",
+        "to": "org-acme-corp",
+        "confidence": 0.96,
+        "attributes": {
+          "role": {
+            "value": "Site Reliability Engineer",
+            "confidence": 0.95
+          },
+          "start_date": {
+            "value": "January 2023",
+            "confidence": 0.93
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-005",
+        "type": "works_at",
+        "from": "person-carol-okafor",
+        "to": "org-datasystems",
+        "confidence": 0.95,
+        "attributes": {
+          "role": {
+            "value": "DevOps Engineer",
+            "confidence": 0.95
+          },
+          "start_date": {
+            "value": "2019",
+            "confidence": 0.9
+          },
+          "end_date": {
+            "value": "2022",
+            "confidence": 0.9
+          }
+        }
+      },
+      {
+        "id": "edge-006",
+        "type": "works_at",
+        "from": "person-sandra-kim",
+        "to": "org-acme-corp",
+        "confidence": 0.96,
+        "attributes": {
+          "role": {
+            "value": "CEO",
+            "confidence": 0.96
+          },
+          "start_date": {
+            "value": "2015",
+            "confidence": 0.85
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-007",
+        "type": "works_at",
+        "from": "person-sandra-kim",
+        "to": "org-novatech",
+        "confidence": 0.92,
+        "attributes": {
+          "role": {
+            "value": "VP Engineering",
+            "confidence": 0.92
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-008",
+        "type": "works_at",
+        "from": "person-james-whitfield",
+        "to": "org-acme-corp",
+        "confidence": 0.96,
+        "attributes": {
+          "role": {
+            "value": "CTO",
+            "confidence": 0.96
+          },
+          "start_date": {
+            "value": "2015",
+            "confidence": 0.8
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-009",
+        "type": "works_at",
+        "from": "person-yuna-park",
+        "to": "org-acme-corp",
+        "confidence": 0.88,
+        "attributes": {
+          "role": {
+            "value": "Principal Researcher",
+            "confidence": 0.9
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-010",
+        "type": "works_at",
+        "from": "person-yuna-park",
+        "to": "org-deepmind",
+        "confidence": 0.85,
+        "attributes": {
+          "role": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-011",
+        "type": "works_at",
+        "from": "person-priya-nair",
+        "to": "org-datasystems",
+        "confidence": 0.93,
+        "attributes": {
+          "role": {
+            "value": "VP of Engineering",
+            "confidence": 0.92
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-012",
+        "type": "works_at",
+        "from": "person-marcus-tan",
+        "to": "org-hashicorp",
+        "confidence": 0.92,
+        "attributes": {
+          "role": {
+            "value": "Enterprise Account Manager",
+            "confidence": 0.92
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-013",
+        "type": "works_at",
+        "from": "person-lisa-huang",
+        "to": "org-aws",
+        "confidence": 0.92,
+        "attributes": {
+          "role": {
+            "value": "Account Manager",
+            "confidence": 0.92
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          },
+          "end_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-014",
+        "type": "reports_to",
+        "from": "person-bob-martinez",
+        "to": "person-sandra-kim",
+        "confidence": 0.95,
+        "attributes": {}
+      },
+      {
+        "id": "edge-015",
+        "type": "reports_to",
+        "from": "person-carol-okafor",
+        "to": "person-priya-nair",
+        "confidence": 0.8,
+        "attributes": {}
+      },
+      {
+        "id": "edge-016",
+        "type": "manages",
+        "from": "person-bob-martinez",
+        "to": "team-infrastructure",
+        "confidence": 0.95,
+        "attributes": {}
+      },
+      {
+        "id": "edge-017",
+        "type": "manages",
+        "from": "person-bob-martinez",
+        "to": "team-product",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-018",
+        "type": "manages",
+        "from": "person-james-whitfield",
+        "to": "team-platform",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-019",
+        "type": "manages",
+        "from": "person-james-whitfield",
+        "to": "team-ai-research",
+        "confidence": 0.88,
+        "attributes": {}
+      },
+      {
+        "id": "edge-020",
+        "type": "manages",
+        "from": "person-yuna-park",
+        "to": "team-ai-research",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-021",
+        "type": "manages",
+        "from": "person-alice-chen",
+        "to": "team-backend-guild",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-022",
+        "type": "member_of",
+        "from": "person-carol-okafor",
+        "to": "team-infrastructure",
+        "confidence": 0.93,
+        "attributes": {
+          "role": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-023",
+        "type": "contributes_to",
+        "from": "person-alice-chen",
+        "to": "project-db-migration",
+        "confidence": 0.93,
+        "attributes": {
+          "role": {
+            "value": "Core engineering contributor",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "edge-024",
+        "type": "contributes_to",
+        "from": "person-carol-okafor",
+        "to": "project-db-migration",
+        "confidence": 0.93,
+        "attributes": {
+          "role": {
+            "value": "Core engineering contributor",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "edge-025",
+        "type": "contributes_to",
+        "from": "person-bob-martinez",
+        "to": "project-db-migration",
+        "confidence": 0.85,
+        "attributes": {
+          "role": {
+            "value": "Initiator",
+            "confidence": 0.85
+          }
+        }
+      },
+      {
+        "id": "edge-026",
+        "type": "contributes_to",
+        "from": "person-alice-chen",
+        "to": "project-rag-pipeline",
+        "confidence": 0.9,
+        "attributes": {
+          "role": {
+            "value": "Backend API work",
+            "confidence": 0.9
+          }
+        }
+      },
+      {
+        "id": "edge-027",
+        "type": "contributes_to",
+        "from": "person-yuna-park",
+        "to": "project-rag-pipeline",
+        "confidence": 0.92,
+        "attributes": {
+          "role": {
+            "value": "Project lead",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "edge-028",
+        "type": "contributes_to",
+        "from": "person-james-whitfield",
+        "to": "project-secrets-service",
+        "confidence": 0.9,
+        "attributes": {
+          "role": {
+            "value": "Project owner",
+            "confidence": 0.9
+          }
+        }
+      },
+      {
+        "id": "edge-029",
+        "type": "contributes_to",
+        "from": "person-alice-chen",
+        "to": "project-secrets-service",
+        "confidence": 0.82,
+        "attributes": {
+          "role": {
+            "value": "Requester",
+            "confidence": 0.8
+          }
+        }
+      },
+      {
+        "id": "edge-030",
+        "type": "owns_project",
+        "from": "team-infrastructure",
+        "to": "project-db-migration",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-031",
+        "type": "owns_project",
+        "from": "team-ai-research",
+        "to": "project-rag-pipeline",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-032",
+        "type": "owns_project",
+        "from": "team-platform",
+        "to": "project-secrets-service",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-033",
+        "type": "depends_on",
+        "from": "project-db-migration",
+        "to": "project-secrets-service",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-034",
+        "type": "uses_technology",
+        "from": "project-db-migration",
+        "to": "tech-aws-aurora",
+        "confidence": 0.93,
+        "attributes": {}
+      },
+      {
+        "id": "edge-035",
+        "type": "uses_technology",
+        "from": "project-db-migration",
+        "to": "tech-postgresql",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-036",
+        "type": "uses_technology",
+        "from": "project-rag-pipeline",
+        "to": "tech-pinecone",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-037",
+        "type": "uses_technology",
+        "from": "project-rag-pipeline",
+        "to": "tech-python",
+        "confidence": 0.82,
+        "attributes": {}
+      },
+      {
+        "id": "edge-038",
+        "type": "uses_technology",
+        "from": "project-secrets-service",
+        "to": "tech-vault",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-039",
+        "type": "partners_with",
+        "from": "org-acme-corp",
+        "to": "org-datasystems",
+        "confidence": 0.95,
+        "attributes": {
+          "type": {
+            "value": "Strategic partnership",
+            "confidence": 0.93
+          },
+          "start_date": {
+            "value": "September 2025",
+            "confidence": 0.92
+          }
+        }
+      },
+      {
+        "id": "edge-040",
+        "type": "partners_with",
+        "from": "org-acme-corp",
+        "to": "org-novatech",
+        "confidence": 0.85,
+        "attributes": {
+          "type": {
+            "value": "Informal advisory relationship",
+            "confidence": 0.9
+          },
+          "start_date": {
+            "value": null,
+            "confidence": 0.0
+          }
+        }
+      },
+      {
+        "id": "edge-041",
+        "type": "provides_technology",
+        "from": "org-hashicorp",
+        "to": "tech-vault",
+        "confidence": 0.93,
+        "attributes": {}
+      },
+      {
+        "id": "edge-042",
+        "type": "provides_technology",
+        "from": "org-aws",
+        "to": "tech-aws-aurora",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-043",
+        "type": "provides_technology",
+        "from": "org-aws",
+        "to": "tech-sagemaker",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-044",
+        "type": "located_in",
+        "from": "org-datasystems",
+        "to": "location-san-francisco",
+        "confidence": 0.92,
+        "attributes": {}
+      },
+      {
+        "id": "edge-045",
+        "type": "part_of",
+        "from": "team-infrastructure",
+        "to": "org-acme-corp",
+        "confidence": 0.93,
+        "attributes": {}
+      },
+      {
+        "id": "edge-046",
+        "type": "part_of",
+        "from": "team-ai-research",
+        "to": "org-acme-corp",
+        "confidence": 0.93,
+        "attributes": {}
+      },
+      {
+        "id": "edge-047",
+        "type": "part_of",
+        "from": "team-platform",
+        "to": "org-acme-corp",
+        "confidence": 0.9,
+        "attributes": {}
+      },
+      {
+        "id": "edge-048",
+        "type": "part_of",
+        "from": "team-product",
+        "to": "org-acme-corp",
+        "confidence": 0.85,
+        "attributes": {}
+      },
+      {
+        "id": "edge-049",
+        "type": "part_of",
+        "from": "team-backend-guild",
+        "to": "org-acme-corp",
+        "confidence": 0.82,
+        "attributes": {}
+      }
+    ]
+  }
+}

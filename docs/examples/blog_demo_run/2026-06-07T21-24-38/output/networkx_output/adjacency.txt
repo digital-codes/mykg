@@ -1,0 +1,47 @@
+#/Library/Frameworks/Python.framework/Versions/3.14/bin/mykg extract-graph notes --obsidian-vault
+# GMT Sun Jun  7 21:32:49 2026
+# mykg knowledge graph
+person-alice-chen organization-acme-corp team-backend-engineering-guild project-db-migration-project project-rag-pipeline-project project-platform-secrets-service
+person-bob-martinez organization-acme-corp organization-google person-sandra-kim team-infrastructure-team team-product-team project-db-migration-project
+person-carol-okafor organization-acme-corp organization-datasystems-inc person-dr-priya-nair team-infrastructure-team project-db-migration-project
+person-sandra-kim organization-acme-corp organization-novatech-inc
+person-james-whitfield organization-acme-corp team-platform-team team-ai-research-team project-platform-secrets-service
+person-dr-yuna-park organization-acme-corp organization-deepmind team-ai-research-team project-rag-pipeline-project
+person-dr-priya-nair organization-datasystems-inc
+person-marcus-tan organization-hashicorp
+person-lisa-huang organization-amazon-web-services-aws
+organization-acme-corp organization-datasystems-inc organization-novatech-inc
+organization-datasystems-inc location-san-francisco
+organization-novatech-inc
+organization-hashicorp technology-hashicorp-vault
+organization-amazon-web-services-aws technology-aws-aurora technology-aws-sagemaker
+organization-google
+organization-deepmind
+organization-mit
+organization-stanford
+team-infrastructure-team project-db-migration-project organization-acme-corp
+team-ai-research-team project-rag-pipeline-project organization-acme-corp
+team-platform-team project-platform-secrets-service organization-acme-corp
+team-product-team organization-acme-corp
+team-backend-engineering-guild organization-acme-corp
+project-db-migration-project project-platform-secrets-service technology-aws-aurora technology-postgresql-15
+project-rag-pipeline-project technology-pinecone technology-python
+project-platform-secrets-service technology-hashicorp-vault
+project-data-lake-migration
+technology-aws-aurora
+technology-postgresql-15
+technology-pinecone
+technology-weaviate
+technology-qdrant
+technology-hashicorp-vault
+technology-github-actions
+technology-kubernetes-eks
+technology-python
+technology-pytorch
+technology-hugging-face-transformers
+technology-aws-sagemaker
+technology-fastapi
+technology-go
+technology-react
+technology-typescript
+location-san-francisco
