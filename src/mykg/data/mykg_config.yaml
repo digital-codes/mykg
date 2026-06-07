@@ -723,7 +723,7 @@ profiles:
       max_retries: 0
     llm:
       max_output_tokens: 20000  # passed through to the task envelope; the skill enforces it
-      timeout: 180             # seconds the pipeline will wait for a .done sentinel
+      timeout: 300             # seconds the pipeline will wait for a .done sentinel
       retry_429_max: 0          # agent provider does not hit API rate limits
       retry_429_base_delay: 2.0
     agent:

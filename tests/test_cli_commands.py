@@ -75,6 +75,68 @@ def test_extract_append_and_from_step_mutually_exclusive(tmp_path, input_dir, mo
     assert "mutually exclusive" in out.lower() or "--append" in out or "--from-step" in out
 
 
+def _make_project(tmp_path):
+    """Create a project folder (the dir holding mykg_config.yaml) and return it."""
+    project = tmp_path / "proj"
+    project.mkdir()
+    (project / "mykg_config.yaml").write_text("# test config\n")
+    return project
+
+
+def test_extract_input_dir_is_project_folder_rejected(tmp_path, monkeypatch):
+    import mykg.cli as cli_mod
+    import mykg.config as cfg_mod
+
+    project = _make_project(tmp_path)
+    monkeypatch.setattr(cfg_mod, "CONFIG_PATH", project / "mykg_config.yaml")
+    monkeypatch.setattr("mykg.llm.config.load_adapter", lambda **kw: MagicMock())
+
+    runner = CliRunner()
+    result = runner.invoke(cli_mod.cli, ["extract-graph", str(project)])
+
+    assert result.exit_code != 0
+    assert "is the project folder" in _output(result)
+
+
+def test_validate_input_dir_rejects_ancestor(tmp_path, monkeypatch):
+    import mykg.config as cfg_mod
+    from mykg.cli import _validate_input_dir
+
+    project = _make_project(tmp_path)
+    monkeypatch.setattr(cfg_mod, "CONFIG_PATH", project / "mykg_config.yaml")
+    ancestor = tmp_path  # contains proj/
+
+    with pytest.raises(Exception) as exc:
+        _validate_input_dir(ancestor)
+    assert "is the project folder" in str(exc.value)
+
+
+def test_validate_input_dir_accepts_subfolder_of_project(tmp_path, monkeypatch):
+    import mykg.config as cfg_mod
+    from mykg.cli import _validate_input_dir
+
+    project = _make_project(tmp_path)
+    monkeypatch.setattr(cfg_mod, "CONFIG_PATH", project / "mykg_config.yaml")
+    notes = project / "my_notes"
+    notes.mkdir()
+
+    # A subfolder of the project (not the project root) must not raise.
+    _validate_input_dir(notes)
+
+
+def test_validate_input_dir_accepts_separate_folder(tmp_path, monkeypatch):
+    import mykg.config as cfg_mod
+    from mykg.cli import _validate_input_dir
+
+    project = _make_project(tmp_path)
+    monkeypatch.setattr(cfg_mod, "CONFIG_PATH", project / "mykg_config.yaml")
+    other = tmp_path / "other"
+    other.mkdir()
+
+    # A sibling/separate source folder must not raise.
+    _validate_input_dir(other)
+
+
 def test_approve_schema_writes_flag(tmp_path, monkeypatch):
     import mykg.cli as cli_mod
     import mykg.config as cfg_mod

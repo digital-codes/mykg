@@ -39,6 +39,30 @@ def _make_session_dirs(sessions_root: Path) -> tuple[str, Path, Path]:
     return name, root / "output", root / "intermediate"
 
 
+def _validate_input_dir(input_dir: Path) -> None:
+    """Reject an input that is the project folder or contains it.
+
+    ``_copy_input_files`` walks ``input_dir`` recursively and writes into the
+    session's ``input/`` folder, which lives under ``mykg_sessions/`` inside the
+    project folder. If ``input_dir`` is the project folder (or an ancestor that
+    contains it), the copy reads the tree it is writing into and grows without
+    bound. The project folder is the directory holding ``mykg_config.yaml``.
+    """
+    project_dir = _cfg().CONFIG_PATH.parent.resolve()
+    src = input_dir.resolve()
+    # Reject when src IS the project folder, or src is an ancestor that CONTAINS
+    # it (project_dir is a descendant of src → src appears in project_dir.parents).
+    # A subfolder of the project (project_dir in src.parents) is safe — allowed.
+    if src == project_dir or src in project_dir.parents:
+        raise click.ClickException(
+            f"Input directory {input_dir} is the project folder (or contains it). "
+            f"mykg copies the input into a session under {project_dir}, so this "
+            f"would copy the project into itself. Point extract-graph at a "
+            f"separate source folder, or a subfolder of the project that is not "
+            f"the project root."
+        )
+
+
 def _copy_input_files(input_dir: Path, session_root: Path, copy_config: bool = True) -> None:
     """Copy all files from input_dir into session_root/input/, preserving subfolder structure.
 
@@ -613,6 +637,14 @@ def extract_graph(
     from mykg.pipeline import STEPS
 
     sessions_root = _sessions_root()
+
+    # When a session will be used, the input tree is copied into the session's
+    # input/ folder (under mykg_sessions/, inside the project folder). Guard
+    # against an input that is the project folder or contains it, which would
+    # make that recursive copy loop. The explicit
+    # --output-dir/--intermediate-dir bypass does not copy, so it is exempt.
+    if not (output_dir is not None or intermediate_dir is not None):
+        _validate_input_dir(input_dir)
 
     if session and (output_dir is not None or intermediate_dir is not None):
         raise click.ClickException(

@@ -17,7 +17,7 @@
 [![Visitors](https://visitor-badge.laobi.icu/badge?page_id=SenolIsci.mykg)](https://github.com/SenolIsci/mykg)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-senolisci-0077B5?logo=linkedin)](https://www.linkedin.com/in/senolisci/)
 
-**myKG** automatically generates a confidence-scored knowledge graph from a directory of mixed documents — Markdown, PDF, Word, PowerPoint, HTML, and images — grounded in an inferred RDFS/OWL ontology.
+**myKG** automatically generates a confidence-scored knowledge graph from a directory of mixed documents — Markdown, PDF, Word, PowerPoint, HTML, and images — grounded in an induced RDFS/OWL ontology.
 
 ## Contents
 
@@ -61,6 +61,9 @@
 - **Incremental updates** — run with `--append` on an existing session to add new or modified Markdown files without re-running Pass 1; the schema is reused and only the new files go through Pass 2
 - **AI coding assistant friendly** — designed for smooth use alongside AI coding assistants such as [Claude Code](https://claude.ai/code); run extractions, inspect outputs, and iterate on your knowledge graph without leaving your coding environment; see [Using mykg with Claude Code](#using-mykg-with-claude-code)
 - **Second brain for AI coding assistants** — the Obsidian vault output turns your extracted knowledge graph into a directory of wikilinked Markdown notes that any AI coding assistant can read as project context; point Claude Code, Cursor, or Copilot at `output/obsidian_vault/` and ask questions, trace relationships, and get answers grounded in your own documents
+<p align="center">
+  <img src="https://gcore.jsdelivr.net/gh/SenolIsci/mykg@main/docs/diagrams/architecture-sketch.png" width="95%" style="vertical-align:middle;">
+</p>
 
 ### Input
 
@@ -74,10 +77,8 @@
 
   Anything outside the allowlist (e.g. `.svg`, `.css`, `.php` assets next to an HTML bundle) is logged and skipped, never silently dropped. The allowlist is configurable via `preprocess.extensions` in `mykg_config.yaml`.
 
-  **Incremental conversion** — unchanged non-md sources are skipped on re-run via a SHA-256 manifest. Adding one PDF to a corpus and re-running only re-converts that PDF. Force a full re-conversion with `mykg extract-graph --from-step preprocess`.
+  **Incremental conversion** — unchanged source files are skipped on re-run. Adding one PDF to a corpus and re-running only re-converts that PDF. Force a full re-conversion with `mykg extract-graph --from-step preprocess`.
 
-  **Tidy session folders** — by default (`preprocess.keep_artifacts: false`), only the final `<stem>.md` is kept under `input/_preprocessed/<rel>/`; MinerU's nested per-file subtree, `images/` folder, and `.mineru.json` sidecars are removed after each conversion. Set `keep_artifacts: true` to inspect the full MinerU layout. Standalone `mykg parse-docs` is unaffected and always keeps the full layout.
-- **Structural signals preserved** — YAML/TOML frontmatter, headings, lists, and code blocks all act as extraction hints regardless of the source format; subdirectory structure under the input dir is preserved through the pipeline.
 
 ### Graph & Output
 
@@ -99,9 +100,7 @@
 mykg extract-graph my_notes/        # any directory: .md, .pdf, .docx, .html, images
 ```
 It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema from your document corpus; Pass 2 extracts typed entity and relationship instances per file against that schema. Non-Markdown inputs (`.pdf .docx .doc .pptx .png .jpg .jpeg .html .htm`) are converted to Markdown automatically before extraction. The result is exported to multiple formats: JSONL for property-graph consumers such as Neo4j, Turtle RDF for OWL toolchains, seven NetworkX formats for graph analysis and visualization, an Obsidian vault — a second brain of wikilinked Markdown notes your AI coding assistant (Claude Code, Cursor, Copilot) can read and reason over directly — and optionally a Neo4j LOAD CSV bundle with a paste-and-run Cypher script for one-step import into Neo4j Browser or `cypher-shell`.
-<p align="center">
-  <img src="https://gcore.jsdelivr.net/gh/SenolIsci/mykg@main/docs/diagrams/architecture-sketch.png" width="95%" style="vertical-align:middle;">
-</p>
+
 
 ## Quick Start
 
@@ -198,7 +197,7 @@ mykg extract-graph <input_dir> [OPTIONS]
 # source installs: uv run mykg extract-graph <input_dir> [OPTIONS]
 ```
 
-`<input_dir>` is any directory of `.md` files. Subdirectories are included recursively.
+`<input_dir>` is any directory of `.md` files. Subdirectories are included recursively. It must not be the project folder (the directory containing `mykg_config.yaml`) or a path that contains it: each run copies the input tree into a session under the project, so pointing `extract-graph` at the project folder would copy the project into itself. Use a separate source folder, or a subfolder of the project that is not the project root.
 
 ### Options
 
