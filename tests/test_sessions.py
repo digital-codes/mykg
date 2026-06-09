@@ -189,6 +189,113 @@ def test_copy_input_files_includes_non_md_and_subdirs(tmp_path):
     assert (session / "input" / "dir1" / "deep.md").read_text() == "# deep"
 
 
+def test_copy_input_files_skips_sessions_dir(tmp_path, monkeypatch):
+    """Files inside sessions_root are not copied — prevents recursive copy when
+    input_dir is the project root or an ancestor containing it."""
+    import mykg.config as cfg_mod
+    from mykg.cli import _copy_input_files
+
+    project = tmp_path / "project"
+    project.mkdir()
+    (project / "mykg_config.yaml").write_text("dummy")
+    (project / "notes.md").write_text("hello")
+    sessions = project / "mykg_sessions"
+    (sessions / "old_session" / "input").mkdir(parents=True)
+    (sessions / "old_session" / "input" / "stale.md").write_text("stale")
+
+    monkeypatch.setattr(cfg_mod, "CONFIG_PATH", project / "mykg_config.yaml")
+    monkeypatch.setattr(cfg_mod, "SESSIONS_DIR", str(sessions))
+
+    session_root = tmp_path / "new_session"
+    session_root.mkdir()
+    _copy_input_files(project, session_root, copy_config=False)
+
+    dest = session_root / "input"
+    assert (dest / "notes.md").exists()
+    assert not any(dest.rglob("stale.md")), "sessions dir must not be copied"
+
+
+def test_copy_input_files_skips_config(tmp_path, monkeypatch):
+    """mykg_config.yaml is not double-copied as a regular file when the project
+    root is used as input_dir."""
+    import mykg.config as cfg_mod
+    from mykg.cli import _copy_input_files
+
+    project = tmp_path / "project"
+    project.mkdir()
+    cfg = project / "mykg_config.yaml"
+    cfg.write_text("dummy")
+    (project / "notes.md").write_text("hello")
+
+    monkeypatch.setattr(cfg_mod, "CONFIG_PATH", cfg)
+    monkeypatch.setattr(cfg_mod, "SESSIONS_DIR", str(project / "mykg_sessions"))
+
+    session_root = tmp_path / "sess"
+    session_root.mkdir()
+    _copy_input_files(project, session_root, copy_config=False)
+
+    dest = session_root / "input"
+    assert (dest / "notes.md").exists()
+    assert not (dest / "mykg_config.yaml").exists()
+
+
+def test_copy_input_files_extension_filter(tmp_path, monkeypatch):
+    """Only .md and PREPROCESS_EXTENSIONS files are copied; all others are dropped."""
+    import mykg.config as cfg_mod
+    from mykg.cli import _copy_input_files
+
+    project = tmp_path / "project"
+    project.mkdir()
+    cfg = project / "mykg_config.yaml"
+    cfg.write_text("dummy")
+    (project / "notes.md").write_text("hello")
+    (project / "paper.pdf").write_bytes(b"%PDF")
+    (project / "script.py").write_text("print('hi')")
+    (project / "data.json").write_text("{}")
+
+    monkeypatch.setattr(cfg_mod, "CONFIG_PATH", cfg)
+    monkeypatch.setattr(cfg_mod, "SESSIONS_DIR", str(project / "mykg_sessions"))
+    monkeypatch.setattr(cfg_mod, "PREPROCESS_EXTENSIONS", frozenset({".pdf", ".docx"}))
+
+    session_root = tmp_path / "sess"
+    session_root.mkdir()
+    _copy_input_files(project, session_root, copy_config=False)
+
+    dest = session_root / "input"
+    assert (dest / "notes.md").exists()
+    assert (dest / "paper.pdf").exists()
+    assert not (dest / "script.py").exists(), ".py must not be copied"
+    assert not (dest / "data.json").exists(), ".json must not be copied"
+
+
+def test_copy_input_files_skips_hidden_dirs(tmp_path, monkeypatch):
+    """Hidden directories (.venv, .git, .DS_Store, …) must not be copied."""
+    import mykg.config as cfg_mod
+    from mykg.cli import _copy_input_files
+
+    project = tmp_path / "project"
+    project.mkdir()
+    cfg = project / "mykg_config.yaml"
+    cfg.write_text("dummy")
+    (project / "notes.md").write_text("hello")
+    venv = project / ".venv" / "lib"
+    venv.mkdir(parents=True)
+    (venv / "some_lib.py").write_text("# lib")
+    (project / ".DS_Store").write_bytes(b"\x00")
+
+    monkeypatch.setattr(cfg_mod, "CONFIG_PATH", cfg)
+    monkeypatch.setattr(cfg_mod, "SESSIONS_DIR", str(project / "mykg_sessions"))
+
+    session_root = tmp_path / "sess"
+    session_root.mkdir()
+    _copy_input_files(project, session_root, copy_config=False)
+
+    dest = session_root / "input"
+    assert (dest / "notes.md").exists()
+    assert not any(dest.rglob("some_lib.py")), ".venv must not be copied"
+    assert not (dest / ".DS_Store").exists()
+
+
 # ---------------------------------------------------------------------------
 # 4. extract --help shows --session option
 # ---------------------------------------------------------------------------

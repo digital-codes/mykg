@@ -197,7 +197,12 @@ mykg extract-graph <input_dir> [OPTIONS]
 # source installs: uv run mykg extract-graph <input_dir> [OPTIONS]
 ```
 
-`<input_dir>` is any directory of `.md` files. Subdirectories are included recursively. It must not be the project folder (the directory containing `mykg_config.yaml`) or a path that contains it: each run copies the input tree into a session under the project, so pointing `extract-graph` at the project folder would copy the project into itself. Use a separate source folder, or a subfolder of the project that is not the project root.
+`<input_dir>` is any directory containing your source files. Subdirectories are included recursively. Only files matching the configured extensions are copied into the session:
+
+- `.md` — always included (the pipeline's native format)
+- All extensions listed under `preprocess.extensions` in `mykg_config.yaml` (`.pdf`, `.docx`, `.doc`, `.pptx`, `.png`, `.jpg`, `.jpeg`, `.html`, `.htm` by default)
+
+Everything else (`.py`, `.json`, `.yaml`, lock files, etc.) is ignored. Hidden directories (`.venv`, `.git`, etc.) and the sessions folder are also excluded automatically, so you can safely point `extract-graph` at the project root or any parent directory.
 
 ### Options
 

@@ -39,42 +39,39 @@ def _make_session_dirs(sessions_root: Path) -> tuple[str, Path, Path]:
     return name, root / "output", root / "intermediate"
 
 
-def _validate_input_dir(input_dir: Path) -> None:
-    """Reject an input that is the project folder or contains it.
-
-    ``_copy_input_files`` walks ``input_dir`` recursively and writes into the
-    session's ``input/`` folder, which lives under ``mykg_sessions/`` inside the
-    project folder. If ``input_dir`` is the project folder (or an ancestor that
-    contains it), the copy reads the tree it is writing into and grows without
-    bound. The project folder is the directory holding ``mykg_config.yaml``.
-    """
-    project_dir = _cfg().CONFIG_PATH.parent.resolve()
-    src = input_dir.resolve()
-    # Reject when src IS the project folder, or src is an ancestor that CONTAINS
-    # it (project_dir is a descendant of src → src appears in project_dir.parents).
-    # A subfolder of the project (project_dir in src.parents) is safe — allowed.
-    if src == project_dir or src in project_dir.parents:
-        raise click.ClickException(
-            f"Input directory {input_dir} is the project folder (or contains it). "
-            f"mykg copies the input into a session under {project_dir}, so this "
-            f"would copy the project into itself. Point extract-graph at a "
-            f"separate source folder, or a subfolder of the project that is not "
-            f"the project root."
-        )
-
-
 def _copy_input_files(input_dir: Path, session_root: Path, copy_config: bool = True) -> None:
     """Copy all files from input_dir into session_root/input/, preserving subfolder structure.
 
-    Non-Markdown files are copied so the optional preprocess step (D39–D48) can
-    convert them via MinerU. The ingest step still only reads ``*.md``.
+    Only ``.md`` files and files whose suffix is in ``PREPROCESS_EXTENSIONS``
+    (the allowlist from ``mykg_config.yaml → preprocess.extensions``) are
+    copied. Files inside the sessions directory are silently skipped so that
+    passing the project root as input_dir does not cause a recursive copy loop.
+    Hidden directories (any path component starting with ``.``) are skipped so
+    that ``.venv``, ``.git``, and similar tool directories are never copied.
+    ``mykg_config.yaml`` is skipped here because it is written separately below
+    when ``copy_config=True``.
     """
     dest = session_root / "input"
     dest.mkdir(parents=True, exist_ok=True)
+    sessions_root = _sessions_root().resolve()
+    config_path = _cfg().CONFIG_PATH.resolve()
+    allowed_exts = _cfg().PREPROCESS_EXTENSIONS | {".md"}
     for f in input_dir.rglob("*"):
         if not f.is_file():
             continue
+        if f.suffix.lower() not in allowed_exts:
+            continue  # only copy md + preprocess-eligible formats
+        resolved = f.resolve()
+        try:
+            resolved.relative_to(sessions_root)
+            continue  # inside sessions dir — skip to avoid recursive copy
+        except ValueError:
+            pass
+        if resolved == config_path:
+            continue  # copied separately below
         rel = f.relative_to(input_dir)
+        if any(part.startswith(".") for part in rel.parts):
+            continue  # skip hidden dirs/files (.venv, .git, .DS_Store, …)
         target = dest / rel
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(f, target)
@@ -637,14 +634,6 @@ def extract_graph(
     from mykg.pipeline import STEPS
 
     sessions_root = _sessions_root()
-
-    # When a session will be used, the input tree is copied into the session's
-    # input/ folder (under mykg_sessions/, inside the project folder). Guard
-    # against an input that is the project folder or contains it, which would
-    # make that recursive copy loop. The explicit
-    # --output-dir/--intermediate-dir bypass does not copy, so it is exempt.
-    if not (output_dir is not None or intermediate_dir is not None):
-        _validate_input_dir(input_dir)
 
     if session and (output_dir is not None or intermediate_dir is not None):
         raise click.ClickException(
