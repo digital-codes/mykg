@@ -75,7 +75,7 @@
   | Markdown | `.md` | passthrough (consumed as-is) |
   | PDF, Word, PowerPoint, images | `.pdf .docx .doc .pptx .png .jpg .jpeg` | [MinerU](https://github.com/opendatalab/mineru) in an ephemeral `uv`-managed Python 3.12 venv — nothing is installed into your active environment |
   | HTML | `.html .htm` | [`markdownify`](https://pypi.org/project/markdownify/) in-process; anchors and image tags stripped |
-  | Websites, GitHub repos | any URL | [`mykg fetch-web`](#website--repo-fetching-mykg-fetch-web) — [Crawlee](https://github.com/apify/crawlee) in an ephemeral `uv` venv, or `git clone --depth 1` for GitHub repos — produces an `input/` folder ready for `extract-graph` |
+  | Websites, GitHub repos | any URL | [Crawlee](https://github.com/apify/crawlee) in an ephemeral `uv` venv — produces an `mykg_web_fetch/` folder
 
   Anything outside the allowlist (e.g. `.svg`, `.css`, `.php` assets next to an HTML bundle) is logged and skipped, never silently dropped. The allowlist is configurable via `preprocess.extensions` in `mykg_config.yaml`.
 
