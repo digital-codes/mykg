@@ -952,7 +952,7 @@ profiles:
         comment_width: 42
         skos_namespace: "http://www.w3.org/2004/02/skos/core#"
         networkx_enabled: true
-        obsidian_enabled: false
+        obsidian_enabled: true
         obsidian_vault_dir: obsidian_vault
         neo4j_csv_enabled: false
         neo4j_csv_dir: neo4j_csv
