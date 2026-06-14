@@ -507,7 +507,15 @@ mykg fetch-web --url-list urls.txt --output ./mykg_web_fetch/batch/
 
 All knobs live under `fetch:` in `mykg_config.yaml` — see [docs/architecture.md](docs/architecture.md#website-and-repo-fetching-mykg-fetch-web) for the full crawl/clone sequence diagrams. Run `mykg fetch-web --help` for the complete flag list.
 
-**From Claude Code**, the [`/mykg` skill](#agent-mode-claude-code-skill) handles fetch requests in plain English — no flags to remember. `/mykg fetch https://example.com and extract`, `/mykg download the github repo owner/repo`, and `/mykg fetch these urls: <url1> <url2> ... and extract` all work: the skill picks the right `fetch-web` invocation (single page, GitHub clone, or `--url-list` batch with an auto-generated temp file for inline URLs), runs it, and — for the "and extract" intents — chains straight into `extract-graph` on the fetched output (one fresh session per seed for multi-seed fetches), confirming with you before the LLM-bearing extraction step.
+**From Claude Code**, the [`/mykg` skill](#agent-mode-claude-code-skill) handles fetch requests in plain English — no flags to remember:
+
+```bash
+/mykg fetch https://example.com and extract
+/mykg download the github repo owner/repo
+/mykg fetch these urls: <url1> <url2> ... and extract
+```
+
+All work: the skill picks the right `fetch-web` invocation (single page, GitHub clone, or `--url-list` batch with an auto-generated temp file for inline URLs), runs it, and — for the "and extract" intents — chains straight into `extract-graph` on the fetched output (one fresh session per seed for multi-seed fetches), confirming with you before the LLM-bearing extraction step.
 
 ### Append Mode
 
