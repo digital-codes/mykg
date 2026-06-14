@@ -107,7 +107,7 @@ profiles:
       pass2:
         max_workers: 8
         stateful_chunks: true   # pass prior-chunk nodes to next chunk so IDs stay stable across chunk boundaries
-        prep_mode: batch_chunks                # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
+        prep_mode: concat                # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
         concat_batch_token_target: 100000  # target token budget per virtual batch (≤ input_headroom = 100000); used when prep_mode=concat
         batch_token_target: 100000          # token budget per chunk batch (≤ input_headroom = 100000); used when prep_mode=batch_chunks
         batch_per_file: false              # when true, never mix chunks from different files in one batch; used when prep_mode=batch_chunks
@@ -197,9 +197,9 @@ profiles:
       max_retries: 2        # retries on empty/blank response; set to 0 to disable
     llm:
       context_window: 200000      # ① model's total context limit
-      max_output_tokens: 8192     # ② output cap — Sonnet/Opus default max
+      max_output_tokens: 32000     # ② output cap — Sonnet/Opus default max
       model: claude-sonnet-4-5
-      timeout: 300                # seconds per LLM call before raising a timeout error
+      timeout: 1800                # seconds per LLM call before raising a timeout error
       retry_429_max: 5            # max retries on HTTP 429 rate-limit before giving up
       retry_429_base_delay: 2.0   # initial backoff seconds; doubles on each retry (exponential)
       # base_url:                 # optional: override for Anthropic-compatible endpoint
@@ -263,13 +263,13 @@ profiles:
       # --- Pass 1: schema induction -------------------------------------------
       pass1:
         batch_token_target: 140000  # ≈ input_headroom × 0.95
-        max_workers: 4
+        max_workers: 8
         per_file_batching: false
       # --- Pass 2: instance extraction ----------------------------------------
       pass2:
-        max_workers: 4
+        max_workers: 8
         stateful_chunks: true
-        prep_mode: per_file                # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
+        prep_mode: concat                # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
         concat_batch_token_target: 140000  # target token budget per virtual batch (≤ batch_token_target); used when prep_mode=concat
         batch_token_target: 140000         # token budget per chunk batch (≤ batch_token_target); used when prep_mode=batch_chunks
         batch_per_file: false              # when true, never mix chunks from different files in one batch; used when prep_mode=batch_chunks
@@ -361,7 +361,7 @@ profiles:
       model: sonnet            # passed as --model to claude -p; "auto" = let CLI pick (no flag sent)
       effort: medium            # passed as --effort to claude -p; "auto" = let CLI pick (no flag sent)
       context_window: 200000    # ① model's total context limit — root anchor for all budget calculations below
-      max_output_tokens: 10000  # ② output cap; input_headroom = context_window − this = 100000
+      max_output_tokens: 32000  # ② output cap; input_headroom = context_window − this = 100000
       timeout: 1800             # seconds per claude -p subprocess call
       retry_429_max: 0          # claude-cli does not hit API rate limits
       retry_429_base_delay: 2.0
@@ -430,7 +430,7 @@ profiles:
       pass2:
         max_workers: 1          # claude-cli is serial — 1 worker only
         stateful_chunks: true   # pass prior-chunk nodes to next chunk so IDs stay stable across chunk boundaries
-        prep_mode: batch_chunks                # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
+        prep_mode: concat                # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
         concat_batch_token_target: 10000  # target token budget per virtual batch (≤ input_headroom = 100000); used when prep_mode=concat
         batch_token_target: 10000         # token budget per chunk batch (≤ input_headroom = 100000); used when prep_mode=batch_chunks
         batch_per_file: false              # when true, never mix chunks from different files in one batch; used when prep_mode=batch_chunks
@@ -526,7 +526,7 @@ profiles:
       context_window: 128000      # ① model's total context limit
       max_output_tokens: 16384    # ② output cap — gpt-4o max structured output
       model: gpt-5.4-mini-2026-03-17
-      timeout: 300                # seconds per LLM call before raising a timeout error
+      timeout: 1800                # seconds per LLM call before raising a timeout error
       retry_429_max: 5            # max retries on HTTP 429 rate-limit before giving up
       retry_429_base_delay: 2.0   # initial backoff seconds; doubles on each retry (exponential)
       # base_url:                 # optional: override for Azure OpenAI or compatible endpoint
@@ -596,7 +596,7 @@ profiles:
       pass2:
         max_workers: 8
         stateful_chunks: true
-        prep_mode: batch_chunks             # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
+        prep_mode: concat             # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
         concat_batch_token_target: 111616  # target token budget per virtual batch (≤ input_headroom = 111616); used when prep_mode=concat
         batch_token_target: 111616         # token budget per chunk batch (≤ input_headroom = 111616); used when prep_mode=batch_chunks
         batch_per_file: false              # when true, never mix chunks from different files in one batch; used when prep_mode=batch_chunks
@@ -686,10 +686,10 @@ profiles:
       max_retries: 2        # retries on empty/blank response; set to 0 to disable
     llm:
       context_window: 32768       # ① model's total context limit — adjust per model
-      max_output_tokens: 8192     # ② output cap
+      max_output_tokens: 32000     # ② output cap
       model: llama3.3             # any model you have pulled via `ollama pull`
       base_url: http://localhost:11434
-      timeout: 300                # seconds per LLM call; local inference can be slow
+      timeout: 1800                # seconds per LLM call; local inference can be slow
       stream: false               # Ollama streaming — keep false for pipeline use
       retry_429_max: 3
       retry_429_base_delay: 2.0
@@ -758,7 +758,7 @@ profiles:
       pass2:
         max_workers: 8
         stateful_chunks: true
-        prep_mode: per_file                # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
+        prep_mode: concat                # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
         concat_batch_token_target: 24576   # target token budget per virtual batch (≤ input_headroom = 24576); used when prep_mode=concat
         batch_token_target: 24576          # token budget per chunk batch (≤ input_headroom = 24576); used when prep_mode=batch_chunks
         batch_per_file: false              # when true, never mix chunks from different files in one batch; used when prep_mode=batch_chunks
@@ -847,7 +847,7 @@ profiles:
     llm_retry:
       max_retries: 0
     llm:
-      max_output_tokens: 20000  # passed through to the task envelope; the skill enforces it
+      max_output_tokens: 32000  # passed through to the task envelope; the skill enforces it
       timeout: 1800             # seconds the pipeline will wait for a .done sentinel
       retry_429_max: 0          # agent provider does not hit API rate limits
       retry_429_base_delay: 2.0
@@ -914,7 +914,7 @@ profiles:
       pass2:
         max_workers: 2
         stateful_chunks: true
-        prep_mode: batch_chunks
+        prep_mode: concat
         concat_batch_token_target: 15000
         batch_token_target: 15000
         batch_per_file: false
