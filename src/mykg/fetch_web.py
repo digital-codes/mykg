@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import mimetypes
 import os
 import re
 import shutil
@@ -193,6 +194,24 @@ def build_crawl_config(
 
 _HTML_EXT = ".html"
 
+# mimetypes.guess_extension picks oddities for some types we care about
+# (e.g. ".jpe" for image/jpeg on some platforms); override the ones that
+# matter for preprocess.extensions matching.
+_CONTENT_TYPE_EXT_OVERRIDES = {
+    "application/pdf": ".pdf",
+    "image/jpeg": ".jpg",
+}
+
+
+def ext_from_content_type(content_type: str) -> str:
+    """Guess a file extension (with leading dot, lowercase) from a MIME type,
+    or "" if unknown. Used as a fallback when a URL path has no extension —
+    e.g. arXiv serves PDFs at extensionless URLs like /pdf/2606.09884."""
+    mime = content_type.split(";")[0].strip().lower()
+    if mime in _CONTENT_TYPE_EXT_OVERRIDES:
+        return _CONTENT_TYPE_EXT_OVERRIDES[mime]
+    return (mimetypes.guess_extension(mime) or "").lower()
+
 
 def local_path_for_url(url: str, content_type: str) -> str:
     """Map a URL → a relative on-disk path under the output dir.
@@ -234,7 +253,16 @@ def local_path_for_url(url: str, content_type: str) -> str:
             return f"{stem}-{digest}{_HTML_EXT}"
         return f"{stem}{_HTML_EXT}"
 
-    # Non-HTML: keep the URL's own extension; hash query if present.
+    # Non-HTML: keep the URL's own extension if mimetypes recognizes it.
+    # Otherwise append one guessed from content-type — covers arXiv-style
+    # extensionless URLs (/pdf/2606.09884) and paths whose trailing
+    # ".<digits>" isn't really an extension (e.g. "2606.09884").
+    existing_ext = Path(base).suffix.lower()
+    if not existing_ext or mimetypes.guess_type(base)[0] is None:
+        guessed = ext_from_content_type(content_type)
+        if guessed and guessed != existing_ext:
+            base = f"{base}{guessed}"
+
     if parsed.query:
         digest = hashlib.sha1(parsed.query.encode()).hexdigest()[:8]
         if "." in os.path.basename(base):
@@ -296,6 +324,7 @@ def write_manifest(
 __all__ = [
     "default_output_dir",
     "build_crawl_config",
+    "ext_from_content_type",
     "local_path_for_url",
     "load_manifest",
     "is_already_fetched",

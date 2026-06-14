@@ -94,6 +94,29 @@ def test_local_path_for_url_html_and_query() -> None:
     assert local_path_for_url("https://example.com/g.pdf", "application/pdf") == "g.pdf"
 
 
+def test_ext_from_content_type() -> None:
+    from mykg.fetch_web import ext_from_content_type
+    assert ext_from_content_type("application/pdf") == ".pdf"
+    assert ext_from_content_type("application/pdf; charset=binary") == ".pdf"
+    assert ext_from_content_type("image/jpeg") == ".jpg"
+    assert ext_from_content_type("text/html") == ".html"
+    assert ext_from_content_type("application/x-totally-unknown") == ""
+
+
+def test_local_path_for_url_extensionless_non_html_uses_content_type() -> None:
+    """arXiv-style URLs (e.g. /pdf/2606.09884) have no extension in the path —
+    the saved filename must get one from content-type so preprocess.extensions
+    can match it downstream."""
+    from mykg.fetch_web import local_path_for_url
+    assert local_path_for_url("https://arxiv.org/pdf/2606.09884", "application/pdf") == "pdf/2606.09884.pdf"
+    # A path that already has an extension is left alone.
+    assert local_path_for_url("https://example.com/g.pdf", "application/pdf") == "g.pdf"
+    # Generic binary content-type gets the conventional .bin extension.
+    assert local_path_for_url("https://example.com/blob", "application/octet-stream") == "blob.bin"
+    # Truly unrecognized content-type with no path extension: no suffix appended.
+    assert local_path_for_url("https://example.com/blob", "application/x-totally-unknown") == "blob"
+
+
 def test_manifest_merge_and_atomic_write(tmp_path) -> None:
     from mykg.fetch_web import load_manifest, write_manifest
     out = tmp_path / "fw"
@@ -230,6 +253,8 @@ def test_crawl_runner_local_path_parity_with_fetch_web() -> None:
         ("https://example.com/g.pdf", "application/pdf"),
         ("https://example.com/foo.html", "text/html"),
         ("https://evil.com/../etc/passwd", "text/html"),
+        ("https://arxiv.org/pdf/2606.09884", "application/pdf"),
+        ("https://example.com/blob", "application/octet-stream"),
     ]
     for url, ctype in cases:
         assert mod._local_path_for_url(url, ctype) == local_path_for_url(
@@ -375,8 +400,20 @@ def test_crawl_runner_asset_allowed_predicate() -> None:
     assert mod._asset_allowed("https://x.com/doc.pdf?v=1", allowed) is True
     # Empty allowlist → nothing is allowed, regardless of suffix.
     assert mod._asset_allowed("https://x.com/doc.pdf", set()) is False
-    # No extension at all → not in any allowlist.
+    # No extension at all, no content-type → not in any allowlist.
     assert mod._asset_allowed("https://x.com/page", allowed) is False
+
+
+def test_crawl_runner_asset_allowed_falls_back_to_content_type() -> None:
+    """arXiv-style extensionless URLs (e.g. /pdf/2606.09884) are allowed when
+    content-type maps to an allowed suffix, and rejected otherwise."""
+    mod = _load_runner_module()
+    allowed = {".pdf", ".png"}
+    assert mod._asset_allowed("https://arxiv.org/pdf/2606.09884", allowed, "application/pdf") is True
+    # A path extension still wins over content-type when both are present.
+    assert mod._asset_allowed("https://x.com/doc.pdf", allowed, "text/html") is True
+    # No path extension, content-type not in allowlist.
+    assert mod._asset_allowed("https://x.com/page", allowed, "text/plain") is False
 
 
 def test_crawl_runner_should_skip_predicate() -> None:

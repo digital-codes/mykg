@@ -15,6 +15,7 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import json
+import mimetypes
 import os
 import sys
 from datetime import datetime, timezone
@@ -27,6 +28,20 @@ def sha256_bytes(data: bytes) -> str:
 
 
 _HTML_EXT = ".html"
+
+# Mirror of fetch_web._CONTENT_TYPE_EXT_OVERRIDES — keep in sync.
+_CONTENT_TYPE_EXT_OVERRIDES = {
+    "application/pdf": ".pdf",
+    "image/jpeg": ".jpg",
+}
+
+
+def _ext_from_content_type(content_type: str) -> str:
+    """Mirror of fetch_web.ext_from_content_type — keep in sync."""
+    mime = content_type.split(";")[0].strip().lower()
+    if mime in _CONTENT_TYPE_EXT_OVERRIDES:
+        return _CONTENT_TYPE_EXT_OVERRIDES[mime]
+    return (mimetypes.guess_extension(mime) or "").lower()
 
 
 def _local_path_for_url(url: str, content_type: str) -> str:
@@ -62,6 +77,16 @@ def _local_path_for_url(url: str, content_type: str) -> str:
             return f"{stem}-{digest}{_HTML_EXT}"
         return f"{stem}{_HTML_EXT}"
 
+    # Non-HTML: keep the URL's own extension if mimetypes recognizes it.
+    # Otherwise append one guessed from content-type — covers arXiv-style
+    # extensionless URLs (/pdf/2606.09884) and paths whose trailing
+    # ".<digits>" isn't really an extension (e.g. "2606.09884").
+    existing_ext = Path(base).suffix.lower()
+    if not existing_ext or mimetypes.guess_type(base)[0] is None:
+        guessed = _ext_from_content_type(content_type)
+        if guessed and guessed != existing_ext:
+            base = f"{base}{guessed}"
+
     if parsed.query:
         digest = hashlib.sha1(parsed.query.encode()).hexdigest()[:8]
         if "." in os.path.basename(base):
@@ -71,15 +96,23 @@ def _local_path_for_url(url: str, content_type: str) -> str:
     return base
 
 
-def _asset_allowed(url: str, allowed: set[str]) -> bool:
+def _asset_allowed(url: str, allowed: set[str], content_type: str = "") -> bool:
     """Decide whether a non-HTML asset body should be saved.
 
     Pure predicate so it can be unit-tested without a live crawl. The suffix is
-    taken from the URL path (e.g. "/foo/bar.pdf" → ".pdf"). Returns True iff the
-    lowercased suffix is in `allowed`. An empty `allowed` (download_assets off)
-    means no non-HTML asset is ever saved.
+    taken from the URL path (e.g. "/foo/bar.pdf" → ".pdf"). If the path has no
+    suffix, or its trailing ".<segment>" isn't a suffix mimetypes recognizes
+    (e.g. arXiv's /pdf/2606.09884, where ".09884" is part of the ID, not an
+    extension), falls back to a suffix guessed from `content_type`. Returns
+    True iff the lowercased suffix is in `allowed`. An empty `allowed`
+    (download_assets off) means no non-HTML asset is ever saved.
     """
-    suffix = Path(urlparse(url).path).suffix.lower()
+    path = urlparse(url).path
+    suffix = Path(path).suffix.lower()
+    if content_type and (not suffix or mimetypes.guess_type(path)[0] is None):
+        guessed = _ext_from_content_type(content_type)
+        if guessed:
+            suffix = guessed
     return suffix in allowed
 
 
@@ -203,7 +236,7 @@ async def crawl(cfg: dict) -> dict:
         else:
             # Non-HTML asset: only save (and count) it if its suffix is on the
             # allowlist. With download_assets off, `allowed` is empty → skip all.
-            if not _asset_allowed(url, allowed):
+            if not _asset_allowed(url, allowed, ctype):
                 return
             row = save_page(output_dir, url, ctype, body)
             row["status"] = status
