@@ -19,6 +19,10 @@
 
 **myKG** automatically generates a confidence-scored knowledge graph from a set of mixed documents — Markdown, PDF, Word, PowerPoint, HTML, and images — grounded in an induced RDFS/OWL ontology.
 
+<p align="center">
+  <img src="https://gcore.jsdelivr.net/gh/SenolIsci/mykg@main/docs/mykg_logo_panel.png" width="95%" style="vertical-align:middle;">
+</p>
+
 ## Contents
 
 - [Features](#features)
