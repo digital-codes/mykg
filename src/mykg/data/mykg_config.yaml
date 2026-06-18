@@ -687,7 +687,7 @@ profiles:
     llm:
       context_window: 64000      # ① model's total context limit — adjust per model
       max_output_tokens: 32000     # ② output cap
-      model: llama3.3             # any model you have pulled via `ollama pull`
+      model: gemma4:e4b             # any model you have pulled via `ollama pull`
       base_url: http://localhost:11434
       timeout: 1800                # seconds per LLM call; local inference can be slow
       stream: false               # Ollama streaming — keep false for pipeline use
