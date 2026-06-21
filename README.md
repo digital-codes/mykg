@@ -44,6 +44,7 @@
   - [SKOS Thesaurus](#skos-thesaurus---thesaurus)
   - [Website / Repo Fetching](#website--repo-fetching-mykg-fetch-web)
   - [Append Mode](#append-mode)
+    - [Incremental Schema Growth](#incremental-schema-growth---append-with-grow-schema)
   - [Merging Sessions](#merging-sessions)
   - [Walkthrough Report](#walkthrough-report)
   - [Obsidian Vault Export](#obsidian-vault-export)
@@ -66,7 +67,7 @@ MyKG builds trustworthy knowledge graphs through a self-evolving ontology that c
 - **SKOS thesaurus support** — pass `--thesaurus` to load a SKOS vocabulary; `skos:exactMatch` terms are collapsed silently, `skos:closeMatch` terms trigger a warning — giving the schema merger richer synonym awareness than string matching alone
 - **Verifiable TTL ontology** — after Pass 1, the induced schema is exported as a valid RDFS/OWL Turtle file (`intermediate/schema.ttl`) that can be opened directly in ontology editors such as [Protégé](https://protege.stanford.edu/). The TTL is validated by rdflib (syntax + semantic checks: domain/range refer to declared classes, no conflicting ranges) before any extraction begins
 - **Human-in-the-loop ontology design** — run with `--review` to pause after schema induction; inspect and edit `schema.json` (or load `schema.ttl` in Protégé, modify, and save back) before a single entity is extracted; resume with `mykg approve-schema`
-- **Incremental updates** — run with `--append` on an existing session to add new or modified Markdown files without re-running Pass 1; the schema is reused and only the new files go through Pass 2
+- **Incremental updates** — run with `--append` on an existing session to add new or modified Markdown files without re-running Pass 1; the schema is reused and only the new files go through Pass 2. Use `--append-with-grow-schema` when the new documents introduce entity types the current schema doesn't cover — it runs a locked Pass 1 over changed files to expand the vocabulary while preserving everything already in the schema
 - **AI coding assistant friendly** — designed for smooth use alongside AI coding assistants such as [Claude Code](https://claude.ai/code); run extractions, inspect outputs, and iterate on your knowledge graph without leaving your coding environment; see [Using mykg with Claude Code](#using-mykg-with-claude-code)
 - **Second brain for AI coding assistants** — the Obsidian vault output turns your extracted knowledge graph into a directory of wikilinked Markdown notes that any AI coding assistant can read as project context; point Claude Code, Cursor, or Copilot at `output/obsidian_vault/` and ask questions, trace relationships, and get answers grounded in your own documents
 <p align="center">
@@ -261,6 +262,7 @@ Everything else (`.py`, `.json`, `.yaml`, lock files, etc.) is ignored. Hidden d
 | `--from-step NAME` | Delete a step's outputs and re-run from that point |
 | `--review` | Pause after Pass 1 for manual schema review |
 | `--append` | Skip Pass 1; re-run only on new/modified files |
+| `--append-with-grow-schema` | Like `--append`, but runs a locked Pass 1 over changed files to expand the schema |
 | `--workers N` | Parallel workers for Pass 2 |
 | `--confidence-agg mean\|max` | Confidence aggregation when deduplicating |
 | `--base-schema PATH` | Locked TBox TTL file (locked classes/properties cannot be changed by the LLM) |
@@ -572,6 +574,18 @@ Re-run the pipeline on new or modified files without re-running Pass 1:
 mykg extract-graph my_notes/ --session <name> --append
 ```
 
+#### Incremental Schema Growth (`--append-with-grow-schema`)
+
+Plain `--append` freezes the schema — Pass 1 is skipped, so new entity types and relationships are never induced. Use `--append-with-grow-schema` when you add documents that introduce concepts the current schema doesn't cover:
+
+```bash
+mykg extract-graph my_notes/ --session <name> --append-with-grow-schema
+```
+
+This runs a **locked Pass 1** over only the changed files: the LLM may add new concepts and properties but cannot rename, remove, or restructure existing ones. When the schema grows, a surgical back-fill re-extracts the old chunks most likely to contain instances of the new types (configurable via `append.grow_schema_backfill_top_k_chunks_per_type`, default 10; set 0 to disable). When the new documents don't introduce new types, the run collapses to a plain `--append` at no extra cost.
+
+The flag implies `--append` (no need to pass both) and is mutually exclusive with `--from-step` and `--base-schema` (the session's existing `schema.ttl` is auto-loaded as the locked base).
+
 > **Note:** Append mode currently only supports adding or updating `.md` files. Mixed-format inputs (PDF, DOCX, HTML, etc. — i.e. anything requiring the `preprocess` step) are not yet supported on the `--append` code path. As a workaround, convert non-Markdown files to Markdown manually with `mykg parse-docs` first, then point `--append` at the converted output:
 >
 > ```bash
@@ -824,6 +838,7 @@ Examples:
 | `/mykg ./docs` | `mykg extract-graph ./docs` (legacy positional alias) |
 | `/mykg extract ./docs with human review` | `mykg extract-graph ./docs --review` |
 | `/mykg append the new notes in ./docs` | `mykg extract-graph ./docs --append --session <latest>` |
+| `/mykg expand the schema with ./docs` | `mykg extract-graph ./docs --append-with-grow-schema --session <latest>` |
 | `/mykg resume the last session` | `mykg extract-graph --session <latest>` |
 | `/mykg approve the schema` | `mykg approve-schema --session <latest>` |
 | `/mykg make a walkthrough` | `mykg walkthrough --session <latest>` |
