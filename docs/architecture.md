@@ -343,20 +343,22 @@ This keeps the graph consistent — instances of a newly-added type appear in BO
 
 ### Mode Comparison
 
-| | Fresh extract | `--base-schema` | `--append` | `--append-with-grow-schema` |
-|---|---|---|---|---|
-| **Pass 1** | All files | All files, locked base injected | Skipped | Changed files only, locked |
-| **Schema** | Induced from scratch | Induced + locked entries preserved | Frozen (reused from prior run) | Grown: locked entries preserved, LLM may add new |
-| **Pass 2** | All files | All files | New/modified files only | New/modified + surgical back-fill of old chunks |
-| **Requires existing session** | No | No | Yes | Yes |
-| **LLM cost** | O(all files) | O(all files) | O(new files) | O(new files) + bounded back-fill |
-| **Schema source** | LLM proposals | LLM proposals + user TTL | `schema.json` (unchanged) | Session `schema.ttl` auto-loaded as locked base |
-| **Can add concepts/properties** | Yes | Yes (around locked) | No | Yes (around locked) |
-| **Can rename/remove existing** | N/A | No (locked) | N/A (frozen) | No (locked) |
-| **Back-fill old files** | N/A | N/A | No | Yes, surgically |
-| **`--base-schema` compatible** | Yes | N/A | Yes | No (auto-loads session schema) |
-| **`--from-step` compatible** | Yes | Yes | Not in same command | Not in same command |
-| **Empty delta behavior** | N/A | N/A | N/A | Collapses to plain `--append` |
+| | Fresh extract | `--base-schema` | `--append` | `--append-with-grow-schema` | Orphan schema-gap restart |
+|---|---|---|---|---|---|
+| **Pass 1** | All files | All files, locked base injected | Skipped | Changed files only, locked | Skipped (schema already updated) |
+| **Schema** | Induced from scratch | Induced + locked entries preserved | Frozen (reused from prior run) | Grown: locked entries preserved, LLM may add new | Grown: new properties added by orphan pass |
+| **Pass 2** | All files | All files | New/modified files only | New/modified + surgical back-fill of old chunks | Surgical re-extraction of affected chunks only |
+| **Requires existing session** | No | No | Yes | Yes | Automatic (mid-run) |
+| **LLM cost** | O(all files) | O(all files) | O(new files) | O(new files) + bounded back-fill | O(affected chunks) |
+| **Schema source** | LLM proposals | LLM proposals + user TTL | `schema.json` (unchanged) | Session `schema.ttl` auto-loaded as locked base | `orphan_connect` LLM proposal |
+| **Can add concepts** | Yes | Yes (around locked) | No | Yes (around locked) | No |
+| **Can add properties** | Yes | Yes (around locked) | No | Yes (around locked) | Yes |
+| **Can add instances** | Yes | Yes | Yes (new files only) | Yes (new + back-filled old) | Yes (affected chunks) |
+| **Can rename/remove existing** | N/A | No (locked) | N/A (frozen) | No (locked) | No |
+| **Back-fill old files** | N/A | N/A | No | Yes, surgically | Yes, surgically |
+| **`--base-schema` compatible** | Yes | N/A | Yes | No (auto-loads session schema) | Yes |
+| **`--from-step` compatible** | Yes | Yes | Not in same command | Not in same command | N/A (automatic) |
+| **Empty delta behavior** | N/A | N/A | N/A | Collapses to plain `--append` | No restart if no new properties |
 
 ### Assembly and Deduplication
 
