@@ -341,6 +341,23 @@ The flow has three parts:
 
 This keeps the graph consistent — instances of a newly-added type appear in BOTH the new and the old documents — while staying sub-linear in corpus size (Invariant 16). The selector is a heuristic: false negatives are backstopped by the orphan pass and future runs, and a false positive costs only one no-op LLM call, bounded by the top-K cap. All exported formats are kept in sync by the same export-time validation as a fresh run (Invariant 14).
 
+### Mode Comparison
+
+| | Fresh extract | `--base-schema` | `--append` | `--append-with-grow-schema` |
+|---|---|---|---|---|
+| **Pass 1** | All files | All files, locked base injected | Skipped | Changed files only, locked |
+| **Schema** | Induced from scratch | Induced + locked entries preserved | Frozen (reused from prior run) | Grown: locked entries preserved, LLM may add new |
+| **Pass 2** | All files | All files | New/modified files only | New/modified + surgical back-fill of old chunks |
+| **Requires existing session** | No | No | Yes | Yes |
+| **LLM cost** | O(all files) | O(all files) | O(new files) | O(new files) + bounded back-fill |
+| **Schema source** | LLM proposals | LLM proposals + user TTL | `schema.json` (unchanged) | Session `schema.ttl` auto-loaded as locked base |
+| **Can add concepts/properties** | Yes | Yes (around locked) | No | Yes (around locked) |
+| **Can rename/remove existing** | N/A | No (locked) | N/A (frozen) | No (locked) |
+| **Back-fill old files** | N/A | N/A | No | Yes, surgically |
+| **`--base-schema` compatible** | Yes | N/A | Yes | No (auto-loads session schema) |
+| **`--from-step` compatible** | Yes | Yes | Not in same command | Not in same command |
+| **Empty delta behavior** | N/A | N/A | N/A | Collapses to plain `--append` |
+
 ### Assembly and Deduplication
 
 Once all files are extracted, the assembler combines everything into a single consistent graph.
