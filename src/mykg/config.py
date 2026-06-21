@@ -225,7 +225,7 @@ PREPROCESS_EXTENSIONS: frozenset[str] = frozenset(
     for ext in _get_opt(
         "preprocess",
         "extensions",
-        [".pdf", ".docx", ".doc", ".pptx", ".png", ".jpg", ".jpeg", ".html", ".htm"],
+        [".pdf", ".docx", ".doc", ".pptx", ".png", ".jpg", ".jpeg", ".html", ".htm", ".txt"],
     )
 )
 

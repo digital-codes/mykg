@@ -969,7 +969,7 @@ def merge_graphs(
 # MinerU cannot convert HTML; the pipeline's `step_preprocess` routes HTML
 # files through markdownify instead. `parse-docs` is MinerU-only and therefore
 # always skips these suffixes regardless of `preprocess.extensions`.
-_PARSE_DOCS_HARDCODED_SKIP: frozenset[str] = frozenset({".html", ".htm"})
+_PARSE_DOCS_HARDCODED_SKIP: frozenset[str] = frozenset({".html", ".htm", ".txt"})
 
 
 def _build_parse_docs_targets(
@@ -999,8 +999,8 @@ def _build_parse_docs_targets(
         if suffix in _PARSE_DOCS_HARDCODED_SKIP:
             return (
                 False,
-                f"{suffix} is not supported by parse-docs (MinerU cannot convert HTML); "
-                "use `mykg extract-graph` for HTML support via markdownify",
+                f"{suffix} is not supported by parse-docs; "
+                "use `mykg extract-graph` which handles it in-process",
             )
         if allowed_exts is not None and suffix not in allowed_exts:
             return False, f"extension {suffix or '(none)'} not in preprocess.extensions"

@@ -45,7 +45,7 @@ The LLM layer is provider-pluggable: six adapters ship out of the box (Anthropic
   <img src="diagrams/system-overview.png" width="80%" style="vertical-align:middle;">
 </p>
 
-*Mixed input enters at the top; preprocessing routes non-Markdown files to MinerU or markdownify; Pass 1 induces a schema, Pass 2 extracts instances against it; the assembly stage deduplicates and writes the edge metadata sidecar; the orphan-connection pass reconnects isolated nodes and can escalate to a surgical Pass 2 restart when the schema is incomplete (dashed loop on the right); five output families are written from the same in-memory data.*
+*Mixed input enters at the top; preprocessing routes non-Markdown files to MinerU, markdownify, or rename (for plain text); Pass 1 induces a schema, Pass 2 extracts instances against it; the assembly stage deduplicates and writes the edge metadata sidecar; the orphan-connection pass reconnects isolated nodes and can escalate to a surgical Pass 2 restart when the schema is incomplete (dashed loop on the right); five output families are written from the same in-memory data.*
 
 ---
 
@@ -68,7 +68,7 @@ The extract pipeline (`mykg extract-graph`) runs 12 steps in sequence. Steps mar
 
 | # | Step | LLM | What it does | Key outputs |
 |---|---|---|---|---|
-| 1 | `preprocess` | — | Optional. Converts non-Markdown sources to `.md` before ingest. Routing is per file extension: PDF / DOCX / PPTX / images go to MinerU (subprocess in an ephemeral `uv` venv); HTML / HTM go to `markdownify` in-process; anything else is logged and skipped. Disabled unless `preprocess.enabled: true`. Skipped on re-entry when the sentinel exists | `preprocess.done`, `preprocess_manifest.json`, files under `input/_preprocessed/` |
+| 1 | `preprocess` | — | Optional. Converts non-Markdown sources to `.md` before ingest. Routing is per file extension: PDF / DOCX / PPTX / images go to MinerU (subprocess in an ephemeral `uv` venv); HTML / HTM go to `markdownify` in-process; TXT is renamed to `.md` in-process; anything else is logged and skipped. Disabled unless `preprocess.enabled: true`. Skipped on re-entry when the sentinel exists | `preprocess.done`, `preprocess_manifest.json`, files under `input/_preprocessed/` |
 | 2 | `ingest` | — | Reads all Markdown files (including converted output under `input/_preprocessed/`), computes content hashes, splits each file into overlapping token windows, and builds the file manifest used by all downstream steps | `file_manifest.json` |
 | 3 | `pass1` | ✓ (3 calls) | Induces a global RDFS schema from the corpus via parallel batch induction, algorithmic merge, LLM harmonization, and LLM quality review | `schema.json`, `schema.ttl`, `schema_history/` |
 | 4 | `schema_validate` | — | Validates `schema.json` with rdflib (syntax) and custom semantic checks (domain/range refer to declared classes, no conflicting ranges). On failure, sends a correction prompt to the LLM and retries once | `schema_validate.done` |
@@ -234,8 +234,9 @@ The fundamental separation is between **schema induction** — asking "what kind
 
 The preprocess step converts non-Markdown sources to Markdown so the rest of the pipeline only sees `.md`. It is opt-in via `preprocess.enabled: true` and a no-op when the input directory is pure Markdown.
 
-Discovery walks the session's `input/` tree and matches each non-`.md` file against a **single** flat allowlist in `mykg_config.yaml` — `preprocess.extensions` (default `.pdf .docx .doc .pptx .png .jpg .jpeg .html .htm`). For each suffix in the allowlist, the backend is chosen internally by a hardcoded mapping:
+Discovery walks the session's `input/` tree and matches each non-`.md` file against a **single** flat allowlist in `mykg_config.yaml` — `preprocess.extensions` (default `.pdf .docx .doc .pptx .png .jpg .jpeg .html .htm .txt`). For each suffix in the allowlist, the backend is chosen internally by a hardcoded mapping:
 
+- **Plain text** (`.txt`) → **renamed to `.md`**, in-process. The file content is already plain text, so no conversion is needed — it is copied with a `.md` extension. Subdirectory structure is preserved relative to the input dir.
 - **HTML** (`.html`, `.htm`) → **markdownify**, in-process. `markdownify(html, strip=["img", "a"])` is called per file — anchors and image tags are stripped because their `href`/`src` paths would not resolve outside the original page. Subdirectory structure is preserved relative to the input dir.
 - **Everything else in the allowlist** (PDF, DOCX, PPTX, images) → **MinerU**, invoked via a single `mykg parse-docs` subprocess. The subprocess builds one ephemeral Python 3.12 virtualenv via `uv`, installs `mineru[all]` into it, and loops MinerU per file inside that venv — one model load per file, but one install cost per run. The venv is deleted on exit. Nothing about MinerU is installed into mykg's own interpreter, which keeps mykg compatible with Python 3.11+ even though MinerU pins 3.12.
 - **Suffix not in the allowlist** is logged at INFO and recorded under `preprocess_manifest.json["skipped_files"]` as `{path, ext}` records. The file is left untouched on disk and never reaches `ingest`. This is the right behaviour for sidecar assets that accompany HTML pages (e.g. `.php`, `.svg`, `.css` files in a saved Wikipedia bundle) — neither dropped silently nor force-converted.
@@ -260,7 +261,9 @@ sequenceDiagram
         alt sha256 matches prior entry and output_md exists
             Step->>Step: reuse prior output_md, no conversion
         else new, modified, or output missing
-            alt suffix is .html / .htm
+            alt suffix is .txt
+                Step->>FS: rename to input/_preprocessed/<rel>/<stem>.md
+            else suffix is .html / .htm
                 Step->>MD: markdownify(html, strip=[img, a])
                 MD->>FS: write input/_preprocessed/<rel>/<stem>.md
             else PDF / DOCX / PPTX / image

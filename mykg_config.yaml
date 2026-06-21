@@ -70,6 +70,7 @@ profiles:
           - .jpeg
           - .html
           - .htm
+          - .txt
       # --- Fetch (optional web crawl via fetch-web command) --------------------
       # The crawler runs inside an ephemeral uv-managed venv created per fetch-web
       # call and deleted on exit; nothing is installed into mykg's interpreter.
@@ -235,6 +236,7 @@ profiles:
           - .jpeg
           - .html
           - .htm
+          - .txt
       # --- Fetch (optional web crawl via fetch-web command) --------------------
       # The crawler runs inside an ephemeral uv-managed venv created per fetch-web
       # call and deleted on exit; nothing is installed into mykg's interpreter.
@@ -399,6 +401,7 @@ profiles:
           - .jpeg
           - .html
           - .htm
+          - .txt
       # --- Fetch (optional web crawl via fetch-web command) --------------------
       # The crawler runs inside an ephemeral uv-managed venv created per fetch-web
       # call and deleted on exit; nothing is installed into mykg's interpreter.
@@ -568,6 +571,7 @@ profiles:
           - .jpeg
           - .html
           - .htm
+          - .txt
       # --- Fetch (optional web crawl via fetch-web command) --------------------
       # The crawler runs inside an ephemeral uv-managed venv created per fetch-web
       # call and deleted on exit; nothing is installed into mykg's interpreter.
@@ -733,6 +737,7 @@ profiles:
           - .jpeg
           - .html
           - .htm
+          - .txt
       # --- Fetch (optional web crawl via fetch-web command) --------------------
       # The crawler runs inside an ephemeral uv-managed venv created per fetch-web
       # call and deleted on exit; nothing is installed into mykg's interpreter.
@@ -894,6 +899,7 @@ profiles:
           - .jpeg
           - .html
           - .htm
+          - .txt
       # --- Fetch (optional web crawl via fetch-web command) --------------------
       # The crawler runs inside an ephemeral uv-managed venv created per fetch-web
       # call and deleted on exit; nothing is installed into mykg's interpreter.

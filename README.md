@@ -18,7 +18,7 @@
 [![Medium](https://img.shields.io/badge/Medium-000000?logo=medium&logoColor=white)](https://medium.com/@senol.isci)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-senolisci-0077B5?logo=linkedin)](https://www.linkedin.com/in/senolisci/)
 
-**myKG** automatically generates a confidence-scored knowledge graph from a set of mixed documents — Markdown, PDF, Word, PowerPoint, Excel, HTML, and images — grounded in an induced RDFS/OWL ontology.
+**myKG** automatically generates a confidence-scored knowledge graph from a set of mixed documents — Markdown, plain text, PDF, Word, PowerPoint, Excel, HTML, and images — grounded in an induced RDFS/OWL ontology.
 
 <p align="center">
   <img src="https://gcore.jsdelivr.net/gh/SenolIsci/mykg@main/docs/mykg_logo_panel.png" width="95%" style="vertical-align:middle;">
@@ -81,6 +81,7 @@ MyKG builds trustworthy knowledge graphs through a self-evolving ontology that c
   | Format | Extensions | Backend |
   |---|---|---|
   | Markdown | `.md` | passthrough (consumed as-is) |
+  | Plain text | `.txt` | renamed to `.md` in-process |
   | PDF, Word, PowerPoint, Excel, images | `.pdf .docx .doc .pptx .xlsx .png .jpg .jpeg` | [MinerU](https://github.com/opendatalab/mineru) in an ephemeral `uv`-managed Python 3.12 venv — nothing is installed into your active environment |
   | HTML | `.html .htm` | [`markdownify`](https://pypi.org/project/markdownify/) in-process; anchors and image tags stripped |
   | Websites, GitHub repos | any URL | [Crawlee](https://github.com/apify/crawlee) in an ephemeral `uv` venv — produces an `mykg_web_fetch/` folder
@@ -106,9 +107,9 @@ MyKG builds trustworthy knowledge graphs through a self-evolving ontology that c
 ## Command line
 
 ```
-mykg extract-graph my_notes/        # any directory: .md, .pdf, .docx, .html, images
+mykg extract-graph my_notes/        # any directory: .md, .txt, .pdf, .docx, .html, images
 ```
-It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema from your document corpus; Pass 2 extracts typed entity and relationship instances per file against that schema. Non-Markdown inputs (`.pdf .docx .doc .pptx .xlsx .png .jpg .jpeg .html .htm`) are converted to Markdown automatically before extraction. The result is exported to multiple formats: JSONL for property-graph consumers such as Neo4j, Turtle RDF for OWL toolchains, seven NetworkX formats for graph analysis and visualization, an Obsidian vault — a second brain of wikilinked Markdown notes your AI coding assistant (Claude Code, Cursor, Copilot) can read and reason over directly — and optionally a Neo4j LOAD CSV bundle with a paste-and-run Cypher script for one-step import into Neo4j Browser or `cypher-shell`.
+It uses a **two-pass LLM pipeline**: Pass 1 induces a global RDFS/OWL schema from your document corpus; Pass 2 extracts typed entity and relationship instances per file against that schema. Non-Markdown inputs (`.txt .pdf .docx .doc .pptx .xlsx .png .jpg .jpeg .html .htm`) are converted to Markdown automatically before extraction. The result is exported to multiple formats: JSONL for property-graph consumers such as Neo4j, Turtle RDF for OWL toolchains, seven NetworkX formats for graph analysis and visualization, an Obsidian vault — a second brain of wikilinked Markdown notes your AI coding assistant (Claude Code, Cursor, Copilot) can read and reason over directly — and optionally a Neo4j LOAD CSV bundle with a paste-and-run Cypher script for one-step import into Neo4j Browser or `cypher-shell`.
 
 
 ## Quick Start
@@ -250,7 +251,7 @@ mykg extract-graph <input_dir> [OPTIONS]
 `<input_dir>` is any directory containing your source files. Subdirectories are included recursively. Only files matching the configured extensions are copied into the session:
 
 - `.md` — always included (the pipeline's native format)
-- All extensions listed under `preprocess.extensions` in `mykg_config.yaml` (`.pdf`, `.docx`, `.doc`, `.pptx`, `.xlsx`, `.png`, `.jpg`, `.jpeg`, `.html`, `.htm` by default)
+- All extensions listed under `preprocess.extensions` in `mykg_config.yaml` (`.pdf`, `.docx`, `.doc`, `.pptx`, `.xlsx`, `.png`, `.jpg`, `.jpeg`, `.html`, `.htm`, `.txt` by default)
 
 Everything else (`.py`, `.json`, `.yaml`, lock files, etc.) is ignored. Hidden directories (`.venv`, `.git`, etc.) and the sessions folder are also excluded automatically, so you can safely point `extract-graph` at the project root or any parent directory.
 
@@ -318,7 +319,7 @@ The pipeline runs 12 steps in sequence. All intermediate state is written to dis
 
 | # | Step | LLM | Key outputs |
 |---|---|---|---|
-| 1 | `preprocess` | — | `preprocess.done`, `preprocess_manifest.json`, files under `input/_preprocessed/` *(routes non-md inputs to MinerU or markdownify; no-op for pure Markdown corpora)* |
+| 1 | `preprocess` | — | `preprocess.done`, `preprocess_manifest.json`, files under `input/_preprocessed/` *(routes non-md inputs to MinerU, markdownify, or rename; no-op for pure Markdown corpora)* |
 | 2 | `ingest` | — | `file_manifest.json` |
 | 3 | `pass1` | ✓ (3 calls) | `schema.json`, `schema.ttl`, `schema_history/` |
 | 4 | `schema_validate` | — | `schema_validate.done` |
