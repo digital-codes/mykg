@@ -104,7 +104,7 @@ PASS1_PER_FILE_BATCHING: bool = _get_opt("pass1", "per_file_batching", False)
 # ---------------------------------------------------------------------------
 PASS2_MAX_WORKERS: int = _get("pass2", "max_workers")
 PASS2_STATEFUL_CHUNKS: bool = _get("pass2", "stateful_chunks")
-PASS2_PREP_MODE: str = _get_opt("pass2", "prep_mode", "per_file")
+PASS2_PREP_MODE: str = _get_opt("pass2", "prep_mode", "batch_chunks")
 PASS2_CONCAT_BATCH_TOKEN_TARGET: int = _get_opt("pass2", "concat_batch_token_target", 100000)
 PASS2_BATCH_TOKEN_TARGET: int = _get_opt("pass2", "batch_token_target", 100000)
 PASS2_BATCH_PER_FILE: bool = _get_opt("pass2", "batch_per_file", False)

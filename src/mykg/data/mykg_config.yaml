@@ -109,7 +109,7 @@ profiles:
       pass2:
         max_workers: 8
         stateful_chunks: true   # pass prior-chunk nodes to next chunk so IDs stay stable across chunk boundaries
-        prep_mode: concat                # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
+        prep_mode: batch_chunks                # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
         concat_batch_token_target: 30000  # target token budget per virtual batch (≤ input_headroom = 32000); used when prep_mode=concat
         batch_token_target: 30000          # token budget per chunk batch (≤ input_headroom = 32000); used when prep_mode=batch_chunks
         batch_per_file: false              # when true, never mix chunks from different files in one batch; used when prep_mode=batch_chunks
@@ -275,7 +275,7 @@ profiles:
       pass2:
         max_workers: 8
         stateful_chunks: true
-        prep_mode: concat                # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
+        prep_mode: batch_chunks                # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
         concat_batch_token_target: 64000  # target token budget per virtual batch (≤ batch_token_target); used when prep_mode=concat
         batch_token_target: 64000         # token budget per chunk batch (≤ batch_token_target); used when prep_mode=batch_chunks
         batch_per_file: false              # when true, never mix chunks from different files in one batch; used when prep_mode=batch_chunks
@@ -440,7 +440,7 @@ profiles:
       pass2:
         max_workers: 1          # claude-cli is serial — 1 worker only
         stateful_chunks: true   # pass prior-chunk nodes to next chunk so IDs stay stable across chunk boundaries
-        prep_mode: concat                # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
+        prep_mode: batch_chunks                # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
         concat_batch_token_target: 64000  # target token budget per virtual batch (≤ input_headroom = 100000); used when prep_mode=concat
         batch_token_target: 64000         # token budget per chunk batch (≤ input_headroom = 100000); used when prep_mode=batch_chunks
         batch_per_file: false              # when true, never mix chunks from different files in one batch; used when prep_mode=batch_chunks
@@ -610,7 +610,7 @@ profiles:
       pass2:
         max_workers: 8
         stateful_chunks: true
-        prep_mode: concat             # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
+        prep_mode: batch_chunks             # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
         concat_batch_token_target: 64000  # target token budget per virtual batch (≤ input_headroom = 111616); used when prep_mode=concat
         batch_token_target: 64000         # token budget per chunk batch (≤ input_headroom = 111616); used when prep_mode=batch_chunks
         batch_per_file: false              # when true, never mix chunks from different files in one batch; used when prep_mode=batch_chunks
@@ -776,7 +776,7 @@ profiles:
       pass2:
         max_workers: 1
         stateful_chunks: true
-        prep_mode: concat                # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
+        prep_mode: batch_chunks                # per_file | concat | batch_chunks — controls how files are prepared before Pass 2
         concat_batch_token_target: 2000   # target token budget per virtual batch (≤ input_headroom = 32000); used when prep_mode=concat
         batch_token_target: 2000          # token budget per chunk batch (≤ input_headroom = 32000); used when prep_mode=batch_chunks
         batch_per_file: false              # when true, never mix chunks from different files in one batch; used when prep_mode=batch_chunks
@@ -936,7 +936,7 @@ profiles:
       pass2:
         max_workers: 2
         stateful_chunks: true
-        prep_mode: concat
+        prep_mode: batch_chunks
         concat_batch_token_target: 15000
         batch_token_target: 15000
         batch_per_file: false
