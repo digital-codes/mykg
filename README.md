@@ -31,7 +31,6 @@
 - [Quick Start](#quick-start)
 - [Articles & Tutorials](#articles--tutorials)
 - [Configuration](#configuration)
-  - [Pass 2 Prep Mode](#pass-2-prep-mode-pass2prep_mode)
 - [Extract Pipeline](#extract-pipeline)
   - [Running](#running)
   - [Sessions](#sessions)
