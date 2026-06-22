@@ -51,8 +51,8 @@
   - [Obsidian Vault Export](#obsidian-vault-export)
   - [Neo4j LOAD CSV Export](#neo4j-load-csv-export)
 - [Using mykg with Claude Code](#using-mykg-with-claude-code)
-  - [claude-cli profile](#claude-cli-profile)
   - [Agent mode (Claude Code skill)](#agent-mode-claude-code-skill)
+  - [claude-cli profile](#claude-cli-profile)
 - [Roadmap](#roadmap)
 - [Development](#development)
 - [Design](#design)
@@ -768,47 +768,10 @@ Disable with `pipeline.report.enabled: false`.
 
 myKG ships with two complementary integrations for running extractions from inside [Claude Code](https://claude.ai/code):
 
-- **`claude-cli` profile** — the pipeline shells out to the `claude -p` binary for each LLM step. Serial only.
 - **Agent mode (`agent-claude-code` profile + bundled skill)** — the pipeline writes LLM tasks to a session-local inbox folder and a Claude Code skill dispatches subagents to answer them. Parallel by default.
+- **`claude-cli` profile** — the pipeline shells out to the `claude -p` binary for each LLM step. Serial only.
 
-Pick the first for a drop-in `claude`-as-LLM experience; pick the second when you want parallel subagent dispatch and inspectable JSON I/O.
-
-### claude-cli profile
-
-myKG ships with a `claude-cli` profile that runs extractions through the locally-installed `claude` CLI.
-
-#### Setup
-
-Install the `claude` CLI, then install mykg and run the setup wizard — select **[5] Claude CLI** when prompted.
-
-```bash
-npm install -g @anthropic-ai/claude-code
-pip install mykg && mykg init
-mykg extract-graph my_notes/
-```
-
-#### How it works
-
-The `claude-cli` provider calls `claude -p` as a subprocess for every LLM step (Pass 1 schema induction, Pass 2 extraction, orphan connection, name normalization). All pipeline features — session isolation, resumability, orphan recovery, cross-session merge — work identically to API-based providers.
-
-**Key constraints of the `claude-cli` profile:**
-- `max_workers` must be `1` — the `claude` CLI is serial by design; parallel workers will queue
-- The `effort` and `model` fields in `mykg_config.yaml` map directly to `--effort` and `--model` flags passed to `claude -p`
-
-#### Using myKG from inside Claude Code Session
-
-You can run myKG extractions as a tool call from within a Claude Code session. This is useful for building knowledge graphs from notes or documentation while you work:
-
-```bash
-# From any Claude Code session terminal:
-mykg extract-graph ./docs/ --session my-docs-kg
-
-# Then reference the output in your session:
-# mykg_sessions/my-docs-kg/output/nodes.jsonl
-# mykg_sessions/my-docs-kg/output/knowledge_graph.ttl
-```
-
-Claude Code can then read `nodes.jsonl` or `edges.jsonl` as well as the Obsidian vault directly to answer questions about the extracted graph, or load `knowledge_graph.ttl` into a SPARQL tool for structured queries.
+Pick the `claude-cli` for a drop-in `claude`-as-LLM experience; pick `agent-claude-code` when you want agent skill and parallel subagent dispatch.
 
 ### Agent mode (Claude Code skill)
 
@@ -879,6 +842,45 @@ Any flag mykg accepts on the CLI works here too — the skill reads `--help` rat
 `mykg init` and `mykg merge-graphs` are intentionally not wrapped: init is interactive (run from a shell once per machine), and merge-graphs has additional design questions and will be added in a follow-up.
 
 Full design and contract: [docs/agent-mode.md](docs/agent-mode.md). Skill source: [src/mykg/data/skills/mykg/SKILL.md](src/mykg/data/skills/mykg/SKILL.md).
+
+
+### claude-cli profile
+
+myKG ships with a `claude-cli` profile that runs extractions through the locally-installed `claude` CLI.
+
+#### Setup
+
+Install the `claude` CLI, then install mykg and run the setup wizard — select **[5] Claude CLI** when prompted.
+
+```bash
+npm install -g @anthropic-ai/claude-code
+pip install mykg && mykg init
+mykg extract-graph my_notes/
+```
+
+#### How it works
+
+The `claude-cli` provider calls `claude -p` as a subprocess for every LLM step (Pass 1 schema induction, Pass 2 extraction, orphan connection, name normalization). All pipeline features — session isolation, resumability, orphan recovery, cross-session merge — work identically to API-based providers.
+
+**Key constraints of the `claude-cli` profile:**
+- `max_workers` must be `1` — the `claude` CLI is serial by design; parallel workers will queue
+- The `effort` and `model` fields in `mykg_config.yaml` map directly to `--effort` and `--model` flags passed to `claude -p`
+
+#### Using myKG from inside Claude Code Session
+
+You can run myKG extractions as a tool call from within a Claude Code session. This is useful for building knowledge graphs from notes or documentation while you work:
+
+```bash
+# From any Claude Code session terminal:
+mykg extract-graph ./docs/ --session my-docs-kg
+
+# Then reference the output in your session:
+# mykg_sessions/my-docs-kg/output/nodes.jsonl
+# mykg_sessions/my-docs-kg/output/knowledge_graph.ttl
+```
+
+Claude Code can then read `nodes.jsonl` or `edges.jsonl` as well as the Obsidian vault directly to answer questions about the extracted graph, or load `knowledge_graph.ttl` into a SPARQL tool for structured queries.
+
 
 ---
 
