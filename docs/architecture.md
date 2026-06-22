@@ -324,6 +324,12 @@ Pass 2 runs against the induced schema. For each document, it extracts the speci
 
 After each LLM call, the pipeline validates the response: edges whose type is not in the schema are rejected, as are edges that reference node IDs not present in the same extraction. Any node that exists solely to anchor a rejected edge is also dropped. Missing attributes are backfilled with a null value and zero confidence — they are never silently omitted.
 
+<p align="center">
+  <img src="diagrams/mykg_batching_and_chunking.png" width="90%" style="vertical-align:middle;">
+</p>
+
+*Pass 1 batches all chunks into token-bounded batches regardless of file boundaries. Pass 2 offers three prep modes — `per_file` keeps each source file as its own extraction unit, `concat` bin-packs whole files into virtual concatenations, and `batch_chunks` pools all chunks across the corpus into evenly-sized batches.*
+
 **Prep modes (`pass2.prep_mode`).** How files are packed into LLM calls is selectable; all three modes write per-file shards keyed by **real source filename**, so resumability and `--append` change-detection work identically across modes:
 
 - **`per_file`** — one LLM call per file. Most calls; simplest.
