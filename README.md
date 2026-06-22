@@ -31,6 +31,7 @@
 - [Quick Start](#quick-start)
 - [Articles & Tutorials](#articles--tutorials)
 - [Configuration](#configuration)
+  - [Pass 2 Prep Mode](#pass-2-prep-mode-pass2prep_mode)
 - [Extract Pipeline](#extract-pipeline)
   - [Running](#running)
   - [Sessions](#sessions)
@@ -208,6 +209,22 @@ context-calculator --from-config --input-dir my_notes/
 ```
 
 `--from-config` reads the active profile from `mykg_config.yaml`, measures token counts across your input files, and writes suggested values to `mykg_config_candidate.yaml` for review before copying them into `mykg_config.yaml`.
+
+### Pass 2 Prep Mode (`pass2.prep_mode`)
+
+Controls how source files are packed into Pass 2 LLM calls. Set it per profile under `pipeline.pass2.prep_mode` in `mykg_config.yaml`. All three modes write per-file shards keyed by the real source filename, so resumability and `--append` change-detection work the same across modes.
+
+| Mode | Unit of work | Best for |
+|---|---|---|
+| `batch_chunks` *(default)* | All files are chunked, then chunks are packed into token-bounded batches (`batch_token_target`), ignoring file boundaries — one LLM call per batch | Maximum throughput and extraction density; per-file incremental `--append`. Keeps all workers busy and a single large file never bottlenecks the run |
+| `concat` | Small files are merged into virtual batches up to `concat_batch_token_target` (grouped by directory, never split); each is re-chunked at `window_tokens` | Many small files needing moderate cross-file context; from-scratch runs (re-reads the whole corpus on `--append`) |
+| `per_file` | One file = one extraction unit, processed independently | Self-contained documents and audit/citation needs — every entity traces to exactly one source file (cleanest provenance) |
+
+Notes:
+- **Provenance trade-off** — `per_file` gives exact per-entity provenance. `concat` and `batch_chunks` mix files in a batch, so an entity's `source_files` may over-list members of its batch; the assembler's dedup collapses the overlap (no confidence inflation), but per-file citation is less precise. Set `pass2.batch_per_file: true` to keep a file's chunks from sharing a batch with other files when precise provenance matters under `batch_chunks`.
+- **Stateful chunks** — `per_file` and `concat` thread chunk N's entity IDs into chunk N+1 within a file/virtual batch (when `pass2.stateful_chunks: true`); `batch_chunks` does not (each batch is independent).
+
+See [docs/architecture.md](docs/architecture.md#choosing-a-prep-mode) for the full comparison and per-mode internals.
 
 ### Hitting API Rate Limits (HTTP 429)
 
