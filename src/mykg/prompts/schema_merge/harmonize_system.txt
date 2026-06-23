@@ -41,3 +41,6 @@ STRICT RULES
 - Do NOT add a "Relationship" class.
 - Do NOT invent new concepts or properties not derivable from the input.
 - Max 4 attributes per concept, max 4 attributes per property.
+- PRESERVE IDENTITY-LINKING PROPERTIES — do not collapse properties like "same_as",
+  "alias_of", or "became" into other relationship types. These link alter-ego /
+  identity-split entities and are semantically distinct from general relationships.

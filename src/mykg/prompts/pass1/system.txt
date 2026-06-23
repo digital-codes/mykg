@@ -41,5 +41,11 @@ RULES
   entities or domain-specific subtypes.
 - CLASSES vs. INSTANCES — this is the most common mistake: do NOT propose a concept
   type for a specific, named, one-of-a-kind entity.
+- ALTER-EGO / IDENTITY LINKING: If the source text contains entities that operate
+  under different names, identities, roles, or eras (e.g. a person adopts a new name,
+  a company rebrands, a character has an alter-ego), the schema MUST include a property
+  to link them — e.g. {"name": "same_as", "domain": "<Type>", "range": "<Type>",
+  "attributes": ["context"]} or "alias_of" / "became". Without this property, the
+  extraction step cannot connect alter-ego pairs and they become orphaned duplicates.
 
 ## SOURCE TEXT

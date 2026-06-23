@@ -42,6 +42,9 @@ STRICT RULES
   Every concept must have at least "name".
 - Do NOT add a "Relationship" class.
 - Do NOT invent new concepts or properties not derivable from the input.
+- PRESERVE IDENTITY-LINKING PROPERTIES — do not collapse properties like "same_as",
+  "alias_of", or "became" into other relationship types. These link alter-ego /
+  identity-split entities and are semantically distinct from general relationships.
 - NEVER drop an attribute that appeared on a concept in either session schema or in the
   merged schema. The attribute union is the ground truth — your only permitted changes to
   attributes are: renaming for consistency (rule D above), or adding "name" when it is

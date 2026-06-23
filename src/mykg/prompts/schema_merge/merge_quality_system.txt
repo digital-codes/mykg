@@ -65,5 +65,9 @@ RULES
   entities or domain-specific subtypes.
 - CLASSES vs. INSTANCES — this is the most common mistake: do NOT propose a concept
   type for a specific, named, one-of-a-kind entity.
+- PRESERVE IDENTITY-LINKING PROPERTIES — do not remove or rename properties like
+  "same_as", "alias_of", or "became" that link alter-ego / identity-split nodes.
+  These are structurally necessary for connecting entities that operate under different
+  names, roles, or eras (e.g. pre/post-rebrand, birth name vs adopted name).
 
 ## SCHEMA:
